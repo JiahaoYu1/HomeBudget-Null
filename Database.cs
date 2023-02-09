@@ -45,7 +45,7 @@ namespace Budget
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
-            // your code
+            using var con = new SQLiteConnection(filename);
         }
 
        // ===================================================================
