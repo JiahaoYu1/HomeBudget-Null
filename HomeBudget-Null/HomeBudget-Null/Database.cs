@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Threading;
+using System.Data.SqlClient;
 
 // ===================================================================
 // Very important notes:
@@ -59,7 +60,7 @@ namespace Budget
 
             CloseDatabaseAndReleaseFile();
 
-            dbConnection connection = new SQLiteConnection("./" + filename);
+            SQLiteConnection connection = new SQLiteConnection("./" + filename);
             connection.Open();
         }
 
