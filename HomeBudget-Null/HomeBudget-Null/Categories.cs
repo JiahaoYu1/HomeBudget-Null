@@ -294,6 +294,11 @@ namespace Budget
             
         }
 
+        public void UpdateProperties(int id, string newDesc, Category.CategoryType newType)
+        {
+            
+        }
+
         // ====================================================================
         // Return list of categories
         // Note:  make new copy of list, so user cannot modify what is part of

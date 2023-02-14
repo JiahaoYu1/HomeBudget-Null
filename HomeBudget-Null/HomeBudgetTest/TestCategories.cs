@@ -254,7 +254,7 @@ namespace BudgetCodeTests
             int id = 11;
 
             // Act
-            categories.UpdateProperties(id,newDescr, Category.CategoryType.Income);
+            categories.UpdateProperties(id, newDescr, Category.CategoryType.Income);
             Category category = categories.GetCategoryFromId(id);
 
             // Assert 
