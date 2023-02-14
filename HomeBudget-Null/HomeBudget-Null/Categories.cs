@@ -29,8 +29,8 @@ namespace Budget
         /// </summary>
         private static String DefaultFileName = "budgetCategories.txt";
         private List<Category> _Cats = new List<Category>();
-        private readonly string _FileName;
-        private readonly string _DirName;
+        private string _FileName;
+        private string _DirName;
 
         // ====================================================================
         // Properties
