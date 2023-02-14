@@ -17,119 +17,86 @@ namespace Budget
     //        - Valid category types: Income, Expense, Credit, Saving
     // ====================================================================
     /// <summary>
-    /// <h4>Represents an individual category for a budget program</h4>
-    /// 
+    /// An individual category for budget program,
+    /// valid category types: Income, Expense, Credit, Saving
     /// </summary>
     public class Category
     {
         // ====================================================================
         // Properties
         // ====================================================================
+
         /// <summary>
-        /// The identification number of the Category
+        /// 
+        /// Takes in a unique int identifier, data type of int, for example category ID 
+        /// and returns the value
+        /// 
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; }
+
         /// <summary>
-        /// The description of the Category
+        /// Takes in a data type of String of description to the budget
+        /// and returns the value
         /// </summary>
-        public String Description { get; set; }
+        
+        public String Description { get; }
+
         /// <summary>
-        /// The Category's budget type
+        /// Takes in a data type of CategoryType of Type which stores valid category types(Income, Expense, Credit and Savings)
+        /// and returns the value
         /// </summary>
-        public CategoryType Type { get; set; }
+        public CategoryType Type { get; }
+
         /// <summary>
-        /// <h4>The type of budget in an account</h4>
+        /// Ways to define different types of category
+        /// (Income, Expense, Credit and Savings) where we can use as a datatype for Type
         /// </summary>
         public enum CategoryType
         {
-            /// <summary>Represents all that is gained</summary>
+            /// <summary>
+            /// Valid category type represents the money received
+            /// </summary>
             Income,
-            /// <summary>Represents all that is spent</summary>
+            /// <summary>
+            /// Valid category type represents the money received
+            /// </summary>
             Expense,
-            /// <summary>Represents all that is spent through credit</summary>
+            /// <summary>
+            /// Valid category type represents the trust of a customer
+            /// </summary>
             Credit,
-            /// <summary>Represents all that is being saved for a specific occasion</summary>
+            /// <summary>
+            /// Valid category type represents the reduction in money
+            /// </summary>
             Savings
+
         };
 
         // ====================================================================
         // Constructor
         // ====================================================================
+
         /// <summary>
-        /// Initializes a new instance of the Category class with all properties filled in
-        /// 
-        /// <para>
-            /// <example>
-            /// Below is an example of how to use this constructor
-            /// 
-                /// <code>
-                /// <![CDATA[
-                /// int id = 1;
-                /// string description = "This is the income category";
-                /// CategoryType type = CategoryType.Income;
-                /// 
-                /// Category category = new Category(id, description, type);
-                /// ]]>
-                /// </code>
-            /// Print the properties of the newly made Category object to the console:
-                /// <code>
-                /// <![CDATA[
-                /// Console.WriteLine("Id: {0}\nDescription: {1}\nType: {2}", category.Id, category.Description, category.Type);
-                /// ]]>
-                /// </code>
-            /// 
-            /// Output:
-                /// <code>
-                /// Id: 1
-                /// Description: This is the income category
-                /// Type: Income
-                /// </code>
-            /// </example>
-        /// </para>
+        /// Constructor that takes in three parameters, where we set id, description and type into default values
         /// </summary>
-        /// <param name="id">The identification number of the Category object</param>
-        /// <param name="description">Tthe description of the Category object</param>
-        /// <param name="type">The type of category the object will be. Is <b>CategoryType.Expense</b> by default</param>
+        /// <param name="id">int datatype, unique identifier where it represents the budgets</param>
+        /// <param name="description">String datatype, a description to the budget</param>
+        /// <param name="type">CategoryType datatype, which stores valid category types(Income, Expense, Credit and Savings), 
+        /// if no type provided, will be expense by default </param>
         public Category(int id, String description, CategoryType type = CategoryType.Expense)
         {
-            this.Id = id;
-            this.Description = description;
-            this.Type = type;
+            Id = id;
+            Description = description;
+            Type = type;
         }
 
         // ====================================================================
         // Copy Constructor
         // ====================================================================
         /// <summary>
-        /// Initializes an instance of Category that has the same properties as another. Requires an existing Category object
-        /// 
-        /// <para>
-            /// <example>
-            /// For the example below, assume <i>category1</i> is an existing instance of the Category class with 1 as its Id, "Sample description" as its description, 
-            /// and CategoryType.Expense as its Type
-            ///         
-                /// <code>
-                /// <![CDATA[Category category2 = new Category(category1);]]>
-                /// </code>
-            /// Print the properties of the newly made Category object to the console:
-                /// <code>
-                /// <![CDATA[
-                /// Console.WriteLine("Id: {0}\nDescription: {1}\nType: {2}", category.Id, category.Description, category.Type);
-                /// ]]>
-                /// </code>
-            /// 
-            /// Output:
-                /// <code>
-                /// Id: 1
-                /// Description: Sample description
-                /// Type: Expense
-                /// </code>
-            /// </example>
-        /// </para>
-        /// 
+        /// Copy Constructor: Constructor that takes in one parameter, where we set id, description and type as the object under the parameter "category"
         /// </summary>
-        /// <param name="category">Category object to be cloned</param>
-
+        /// <param name="category">datatype of Category, which is used to set id, description and type</param>
         public Category(Category category)
         {
             this.Id = category.Id;;
@@ -140,25 +107,17 @@ namespace Budget
         // String version of object
         // ====================================================================
         /// <summary>
-        /// Returns the Description of the object
-        /// 
-        /// <para>
-            /// <example>
-            /// For the example below, assume <i>category</i> is an existing instance of the Category class with "Sample description" as the value of its Description property
-            /// <code>
-            /// <![CDATA[
-            /// string desc = category.ToString();
-            /// Console.WriteLine(desc);
-            /// ]]>
-            /// </code>
-            /// Output:
-            /// <code>
-            /// Sample description
-            /// </code>
-            /// </example>
-        /// </para>
+        /// Method that returns a string that represents the description
         /// </summary>
-        /// <returns>The Description property of the Category object</returns>
+        /// <returns>Returns the Description</returns>
+        /// <example>
+        /// <b>To return a string that represents the description (group by year/month)</b>
+        /// <code>
+        /// <![CDATA[
+        /// var GroupedByMonth = items.GroupBy(c => c.Date.Year.ToString("D4") + "/" + c.Date.Month.ToString("D2"));
+        /// ]]>
+        /// </code>
+        /// </example>
         public override string ToString()
         {
             return Description;
