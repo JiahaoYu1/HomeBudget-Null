@@ -20,40 +20,39 @@ namespace Budget
     //        - etc
     // ====================================================================
     /// <summary>
-    /// <h4>Represents a collection of category items</h4>
+    /// A collection of category items, Read/write to file and etc
     /// </summary>
     public class Categories
     {
+        /// <summary>
+        /// Backing field
+        /// </summary>
         private static String DefaultFileName = "budgetCategories.txt";
         private List<Category> _Cats = new List<Category>();
-        private string _FileName;
-        private string _DirName;
+        private readonly string _FileName;
+        private readonly string _DirName;
 
         // ====================================================================
         // Properties
         // ====================================================================
+
         /// <summary>
-        /// The name of the file to read/write to. Is <b>"budgetCategories.txt"</b> by default
+        /// Readonly property where returns the name of the file from backing field where the datatype is string
         /// </summary>
         public String FileName { get { return _FileName; } }
+
         /// <summary>
-        /// The name of the directory that holds the file to read/write to
+        /// Readonly property where returns the name of the directory from backing field where the datatype is string
         /// </summary>
         public String DirName { get { return _DirName; } }
 
         // ====================================================================
         // Constructor
         // ====================================================================
+
         /// <summary>
-        /// Initializes a new instance of the Categories class, with every Category object being set to default values
-        /// 
-        /// <example>
-        /// <para>Below is an example of how to use this constructor:</para>
-        /// 
-        /// <code>
-        /// Categories cats = new Categories();
-        /// </code>
-        /// </example>
+        /// Default constructor where calls the SetCategoriesToDefaults method 
+        /// where reset any current categories and adds all defaults 
         /// </summary>
         public Categories()
         {
@@ -63,32 +62,23 @@ namespace Budget
         // ====================================================================
         // get a specific category from the list where the id is the one specified
         // ====================================================================
+
         /// <summary>
-        /// Returns a Category object whose id is the same as the argument
-        /// 
-        /// <para>
-        ///     For the example below, assume there exists a Category object in the list with its Id set to 1:
-            /// <example>
-                /// <code>
-                /// int idToFind = 1;
-                /// 
-                /// Categories cats = new Categories();
-                /// Category categoryWithIdOfOne = cats.GetCategoryFromId(idToFind);
-                /// 
-                /// // Print the id to the console
-                /// Console.WriteLine(categoryWithIdOfOne.Id);
-                /// </code>
-            /// Output:
-                /// <code>
-                /// 1
-                /// </code>
-            /// </example>
-        /// </para>
+        /// Second constructor where takes in a parameter of int.
+        /// Declares a value called c with a datatype of Category.
+        /// Loops through all the ids inside the categories and finds the id where equals to i and returns it if c is null throw a new exception
         /// </summary>
-        /// 
-        /// <param name="i">The id to be found</param>
-        /// <returns>A Category object with the same id as the argument</returns>
-        /// <exception cref="Exception">Throws when no Category with the given id was found</exception>
+        /// <param name="i">the unique identifier of the category</param>
+        /// <returns>returns the category where the parameter is equal to the id of the category</returns>
+        /// <exception cref="Exception">Throw an exception if the category is null</exception>
+        /// <example>
+        /// <b>To get the category from id: </b>
+        /// <code>
+        /// <![CDATA[
+        /// GetCategoryFromId(i);
+        /// ]]>
+        /// </code>
+        /// </example>
         public Category GetCategoryFromId(int i)
         {
             Category c = _Cats.Find(x => x.Id == i);
@@ -105,31 +95,21 @@ namespace Budget
         // Throws System.IO.FileNotFoundException if file does not exist
         // Throws System.Exception if cannot read the file correctly (parsing XML)
         // ====================================================================
+
         /// <summary>
-        /// Resets all Categories and reads from a given file path. If the file is an XML file and is in correct format, the list will get filled with Category objects
-        /// with properties that the XML file defines
-        /// 
-        /// <para>
-        /// For the example below, assume that <i>./categories.cats</i> is an existing XML file that defines 10 Category objects and <i>cats</i> is an existing 
-        /// Categories object whose list length is 8:
-            /// <example>
-                /// <code>
-                /// string filePath = "./categories.cats";
-                /// Console.WriteLine("List length before reading file: " + cats.List().Count);
-                /// 
-                /// cats.ReadFromFile(filePath);
-                /// // The list is now filled with new Category objects
-                /// Console.WriteLine("List length after reading file: " + cats.List().Count);
-                /// </code>
-            /// Output:
-                /// <code>
-                /// List length before reading file: 8
-                /// List length after reading file: 10
-                /// </code>
-            /// </example>
-        /// </para>
+        /// Fill categories from a file, if no filepath is supplied, read/save in the AppData file.
+        /// If the file does not exist, a System.IO.FileNotFoundException is thrown.
+        /// If the file cannot be read correctly, a System.Exception will be thrown
         /// </summary>
-        /// <param name="filepath">The file path to be read. If null, it will be "./budgetCategories.txt"</param>
+        /// <param name="filepath">Represents the path of the file</param>
+        /// <example>
+        /// <b>To read categories from the respective files: </b>
+        /// <code>
+        /// <![CDATA[
+        ///  _categories.ReadFromFile(folder + "\\" + filenames[0]);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void ReadFromFile(String filepath = null)
         {
 
@@ -163,20 +143,18 @@ namespace Budget
         // if filepath is not specified, read/save in AppData file
         // ====================================================================
         /// <summary>
-        /// Saves all Category objects to an XML document file. Sets the FileName property to the name of the file, and the Directory property to that file's directory
-        /// 
-        /// <para>
-        /// For the example below, assume that <i>cats</i> is an existing Categories object:
-            /// <example>
-                /// <code>
-                /// string filePath = "./categories.cats";
-                /// cats.SaveToFile(filePath);
-                /// </code>
-            /// In the local directory, a new file named <i>categories.cats</i> will appear
-            /// </example>
-        /// </para>
+        /// Save to a file
+        /// if filepath is not specified, read/save in AppData file
         /// </summary>
-        /// <param name="filepath">The path of the file to be saved to. If null, it will be a path that contains the Categories object's FileName and DirName properties</param>
+        /// <param name="filepath">Represents the path of the file</param>
+        /// <example>
+        /// <b>To save the categories into the own files: </b>
+        /// <code>
+        /// <![CDATA[
+        /// _categories.SaveToFile(categorypath);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void SaveToFile(String filepath = null)
         {
             // ---------------------------------------------------------------
@@ -214,36 +192,16 @@ namespace Budget
         // set categories to default
         // ====================================================================
         /// <summary>
-        /// Sets all categories to their default values
-        /// 
-        /// <para>
-        /// Below is an example of how to use this method: 
-            /// <example>
-                /// <code>
-                /// Categories cats = new Categories();
-                /// cats.SetCategoriesToDefaults();
-                /// </code>
-            /// Run through the <i>cats</i> object's list and print all of the Category descriptions:
-                /// <code>
-                /// foreach(Category cat in cats)
-                ///     Console.WriteLine(cat.Description);
-                /// </code>
-            /// Output:
-                /// <code>
-                /// Utilities
-                /// Rent
-                /// Food
-                /// Entertainment
-                /// Education
-                /// Miscellaneous
-                /// Medical Expenses
-                /// Vacation
-                /// Credit Card
-                /// ...
-                /// </code>
-            /// </example>
-        /// </para>
+        /// set categories to default
         /// </summary>
+        /// <example>
+        /// <b>To set categories to default: </b>
+        /// <code>
+        /// <![CDATA[
+        /// SetCategoriesToDefaults();
+        /// ]]>
+        /// </code>
+        /// </example>
         public void SetCategoriesToDefaults()
         {
             // ---------------------------------------------------------------
@@ -277,51 +235,28 @@ namespace Budget
         // Add category
         // ====================================================================
         /// <summary>
-        /// Adds a new Category object to the list 
-        /// <para>
-        /// Below is an example of how to use this method
-            /// <example>
-                /// <code>
-                /// int categoryId = 1;
-                /// string categoryDesc = "sample description";
-                /// CategoryType categoryType = CategoryType.Expense;
-                /// 
-                /// Categories cats = new Categories();
-                /// Category cat = new Category(categoryId, categoryDesc, categoryType);
-                /// 
-                /// cats.Add(cat);
-                /// // A new Category object has been added
-                /// </code>
-            /// </example>
-        /// </para>
+        /// Adds the category
         /// </summary>
-        /// 
-        /// <param name="cat">The Category object to be added</param>
+        /// <param name="cat">A datatype of Category that represents the category</param>
         private void Add(Category cat)
         {
             _Cats.Add(cat);
         }
 
-
         /// <summary>
-        /// Creates and adds a new Category object to the list
-        /// 
-        /// <para>
-        /// Below is an example of how to use this method:
-            /// <example>
-                /// <code>
-                /// string categoryDesc = "sample description";
-                /// CategoryType categoryType = CategoryType.Expense;
-                /// Categories cats = new Categories();
-                /// 
-                /// cats.Add(categoryDesc, categoryType);
-                /// // A new Category object has been added
-                /// </code>
-            /// </example>
-        /// </para>
+        /// Adds the category
+        /// if the number of category from the backing field is less than zero, select the max id in category and increment it once a time
         /// </summary>
-        /// <param name="desc">The description of the new Category</param>
-        /// <param name="type">The type of the new Category</param>
+        /// <param name="desc">The name of the stuff</param>
+        /// <param name="type">Type of the category</param>
+        /// <example>
+        /// <b>To add default:  </b>
+        /// <code>
+        /// <![CDATA[
+        /// Add("Utilities", Category.CategoryType.Expense);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void Add(String desc, Category.CategoryType type)
         {
             int new_num = 1;
@@ -337,28 +272,26 @@ namespace Budget
         // Delete category
         // ====================================================================
         /// <summary>
-        /// Deletes a Category object of a specific Id from the list 
-        /// 
-        /// <para>
-        /// Below is an example of how to use this method:
-            /// <example>
-                /// <code>
-                /// Categories cats = new Categories();
-                /// int idToDelete = 4;
-                /// 
-                /// cats.Delete(idToDelete);
-                /// </code>
-            /// </example>
-        /// </para>
+        /// Deletes the category,  
+        /// the method will find the index inside id and remove the index category
         /// </summary>
-        /// <param name="Id">The id of the Category to remove</param>
+        /// <param name="Id">The unique identity of the category</param>
+        /// <example>
+        /// <b>To delete the index category:</b>
+        /// <code>
+        /// <![CDATA[
+        /// Delete(id);
+        /// ]]>
+        /// </code>
+        /// </example>
         public void Delete(int Id)
         {
-            if (_Cats.Exists(x => x.Id == Id))
+            if(_Cats.Exists(x => x.Id == Id))
             {
                 int i = _Cats.FindIndex(x => x.Id == Id);
                 _Cats.RemoveAt(i);
-            } 
+            }
+            
         }
 
         // ====================================================================
@@ -367,38 +300,23 @@ namespace Budget
         //        this instance
         // ====================================================================
         /// <summary>
-        /// Returns a list of Categories
-        /// 
-        /// <para>
-        /// Below is an example of how to use this method:
-            /// <example>
-                /// <code>
-                /// <![CDATA[
-                /// Categories cats = new Categories();
-                /// List<Category> listOfCategories = cats.List();
-                /// 
-                /// // Print all the descriptions of the objects to the console
-                /// foreach(Category cat in listOfCategories)
-                ///     Console.WriteLine(cat.Description);
-                /// ]]>
-                /// </code>
-            /// Output:
-            /// <code>
-                /// Utilities
-                /// Rent
-                /// Food
-                /// Entertainment
-                /// Education
-                /// Miscellaneous
-                /// Medical Expenses
-                /// Vacation
-                /// Credit Card
-                /// ...
-            /// </code>
-            /// </example>
-        /// </para>
+        /// Returns the list of categories
+        /// the method will make new copy of list, so user cannot modify what is part of this instance
         /// </summary>
-        /// <returns>A list of Category objects</returns>
+        /// <returns>Returns a new list of categories</returns>
+        /// <example>
+        /// <b>To use the list method: </b>
+        /// <code>
+        /// <![CDATA[
+        /// Categories categories = new Categories();
+        /// categories.Add(DateTime.Now, (int) Category.CategoryType.categories,
+        /// 23.45, "textbook" );
+        /// List<categories> list = categories.List();
+        /// foreach (Categories categories in list)
+        /// Console.WriteLine(categories.Description);
+        /// ]]>
+        /// </code>
+        /// </example>
         public List<Category> List()
         {
             List<Category> newList = new List<Category>();
@@ -440,9 +358,6 @@ namespace Budget
                             break;
                         case "credit":
                             type = Category.CategoryType.Credit;
-                            break;
-                        case "savings":
-                            type = Category.CategoryType.Savings;
                             break;
                         default:
                             type = Category.CategoryType.Expense;
