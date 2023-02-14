@@ -45,7 +45,10 @@ namespace Budget
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
-            // your code
+
+            using var cmd = new SQLiteConnection("./" + filename);
+            cmd.Open();
+
         }
 
        // ===================================================================
@@ -56,7 +59,8 @@ namespace Budget
 
             CloseDatabaseAndReleaseFile();
 
-            // your code
+            dbConnection connection = new SQLiteConnection("./" + filename);
+            connection.Open();
         }
 
        // ===================================================================
