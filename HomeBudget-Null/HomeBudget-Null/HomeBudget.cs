@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Dynamic;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
