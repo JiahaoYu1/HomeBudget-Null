@@ -135,6 +135,13 @@ namespace Budget
             ReadFromFile(budgetFileName);
         }
 
+        public HomeBudget(string dbFile, string budgetFile, bool dbExists)
+        {
+            _categories = new Categories();
+            _expenses = new Expenses();
+            ReadFromFile(budgetFile);
+        }
+
         #region OpenNewAndSave
         // ---------------------------------------------------------------
         // Read
