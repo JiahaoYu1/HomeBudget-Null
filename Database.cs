@@ -59,7 +59,7 @@ namespace Budget
 
             CloseDatabaseAndReleaseFile();
 
-            dbConnection connection = new SQLiteConnection("./" + filename);
+            SQLiteConnection connection = new SQLiteConnection("./" + filename);
             connection.Open();
         }
 
