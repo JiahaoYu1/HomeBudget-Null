@@ -46,10 +46,24 @@ namespace Budget
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
+            SQLiteConnection.CreateFile(filename);
 
-            using var cmd = new SQLiteConnection("./" + filename);
-            cmd.Open();
+            using var connection = new SQLiteConnection($"Data Source={filename};Version=3;");
+            connection.Open();
 
+            using var cmd = new SQLiteCommand(connection);
+            cmd.CommandText = "CREATE TABLE categoryTypes (id INTEGER PRIMARY KEY, name TEXT NOT NULL)";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "CREATE TABLE expenses (id INTEGER PRIMARY KEY, category_id INTEGER NOT NULL, date TEXT NOT NULL, description TEXT, amount REAL NOT NULL)";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "CREATE TABLE categories (id INTEGER PRIMARY KEY, categoryType_id INTEGER NOT NULL, name TEXT NOT NULL)";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DELETE FROM categoryTypes";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DELETE FROM expenses";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DELETE FROM categories";
+            cmd.ExecuteNonQuery();
         }
 
        // ===================================================================

@@ -60,9 +60,36 @@ namespace Budget
             SetCategoriesToDefaults();
         }
 
-        public Categories(SQLiteConnection connection, bool isNewDB)
+        public Categories(SQLiteConnection connection, bool newDB)
         {
+            using var cmd = new SQLiteCommand(connection);
+
+            // Create the categoryType table
+            cmd.CommandText = "CREATE TABLE categoryType (id INT PRIMARY KEY AUTOINCREMENT, Description VARCHAR(20))";
+            cmd.ExecuteNonQuery();
+
+ //           foreach(Category.CategoryType type in Category.CategoryType)
+            {
+ //               cmd.CommandText = string.Format("INSERT INTO categoryType VALUES ({0})", type.ToString());
+  //              cmd.ExecuteNonQuery();
+            }
             
+
+
+
+            if (newDB)
+            {
+                SetCategoriesToDefaults();
+
+                foreach(Category category in _Cats)
+                {
+
+                }
+            }
+            else
+            {
+                
+            }
         }
 
         // ====================================================================
@@ -302,7 +329,13 @@ namespace Budget
 
         public void UpdateProperties(int id, string newDesc, Category.CategoryType newType)
         {
-            
+            Category c = _Cats.Find(x => x.Id == id);
+            if (c != null)
+            {
+         //       c.Description = newDesc;
+          //      c.Type = newType;
+            }
+
         }
 
         // ====================================================================

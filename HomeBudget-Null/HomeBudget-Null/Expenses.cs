@@ -135,7 +135,6 @@ namespace Budget
             {
                 filepath = DirName + "\\" + FileName;
             }
-
             // ---------------------------------------------------------------
             // just in case filepath doesn't exist, reset path info
             // ---------------------------------------------------------------
