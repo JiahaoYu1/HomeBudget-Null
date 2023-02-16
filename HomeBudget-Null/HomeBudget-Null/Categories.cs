@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Data.SQLite;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -51,12 +52,17 @@ namespace Budget
         // ====================================================================
 
         /// <summary>
-        /// Default constructor where calls the SetCategoriesToDefaults method 
-        /// where reset any current categories and adds all defaults 
+        /// Creates a new instance of Categories and sets all category objects to a default value (see method 
+        /// SetCategoriesToDefaults for more information)
         /// </summary>
         public Categories()
         {
             SetCategoriesToDefaults();
+        }
+
+        public Categories(SQLiteConnection connection, bool isNewDB)
+        {
+            
         }
 
         // ====================================================================
