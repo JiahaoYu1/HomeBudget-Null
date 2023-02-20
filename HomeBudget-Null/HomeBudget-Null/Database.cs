@@ -46,15 +46,19 @@ namespace Budget
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
-            SQLiteConnection.CreateFile(filename);
+            _connection = new SQLiteConnection($"Data Source={filename};Version=3;");
+            _connection.Open();
 
-            using var connection = new SQLiteConnection($"Data Source={filename};Version=3;");
-            connection.Open();
-
-            using var cmd = new SQLiteCommand(connection);
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DROP TABLE IF EXISTS expenses";
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = "DROP TABLE IF EXISTS categories";
+            cmd.ExecuteNonQuery();
             cmd.CommandText = "CREATE TABLE categoryTypes (id INTEGER PRIMARY KEY, name TEXT NOT NULL)";
             cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE expenses (id INTEGER PRIMARY KEY, category_id INTEGER NOT NULL, date TEXT NOT NULL, description TEXT, amount REAL NOT NULL)";
+            cmd.CommandText = "CREATE TABLE expenses (id INTEGER PRIMARY KEY, category_id INTEGER NOT NULL, date TEXT NOT NULL, description TEXT, amount DOUBLE NOT NULL)";
             cmd.ExecuteNonQuery();
             cmd.CommandText = "CREATE TABLE categories (id INTEGER PRIMARY KEY, categoryType_id INTEGER NOT NULL, name TEXT NOT NULL)";
             cmd.ExecuteNonQuery();
@@ -64,18 +68,19 @@ namespace Budget
             cmd.ExecuteNonQuery();
             cmd.CommandText = "DELETE FROM categories";
             cmd.ExecuteNonQuery();
+            //cmd.Dispose();
         }
 
-       // ===================================================================
-       // open an existing database
-       // ===================================================================
-       public static void existingDatabase(string filename)
+        // ===================================================================
+        // open an existing database
+        // ===================================================================
+        public static void existingDatabase(string filename)
         {
 
-            CloseDatabaseAndReleaseFile();
+            //CloseDatabaseAndReleaseFile();
 
-            SQLiteConnection connection = new SQLiteConnection("./" + filename);
-            connection.Open();
+            _connection = new SQLiteConnection($"Data Source={filename};Foreign Keys=1;");
+            _connection.Open();
         }
 
        // ===================================================================

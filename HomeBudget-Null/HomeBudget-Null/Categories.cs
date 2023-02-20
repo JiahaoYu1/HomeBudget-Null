@@ -60,36 +60,69 @@ namespace Budget
             SetCategoriesToDefaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Categories class, as well as creating several SQLite tables 
+        /// </summary>
+        /// <param name="connection">An existing SQLite connection</param>
+        /// <param name="newDB">Represents whether the Categories tables are going to use new (default) values or not</param>
         public Categories(SQLiteConnection connection, bool newDB)
         {
-            using var cmd = new SQLiteCommand(connection);
-
-            // Create the categoryType table
-            cmd.CommandText = "CREATE TABLE categoryType (id INT PRIMARY KEY AUTOINCREMENT, Description VARCHAR(20))";
-            cmd.ExecuteNonQuery();
-
- //           foreach(Category.CategoryType type in Category.CategoryType)
+            if (connection is not null)
             {
- //               cmd.CommandText = string.Format("INSERT INTO categoryType VALUES ({0})", type.ToString());
-  //              cmd.ExecuteNonQuery();
-            }
-            
+                using var cmd = new SQLiteCommand(connection);
+                Category.CategoryType[] types = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
+
+                // Drop the tables if they exist
+                cmd.CommandText = "DROP TABLE IF EXISTS categoryType";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "DROP TABLE IF EXISTS categories";
+                cmd.ExecuteNonQuery();
+
+                //// Create the categories and categoryType tables
+                cmd.CommandText = "CREATE TABLE categoryType (id INTEGER PRIMARY KEY AUTOINCREMENT, Description TEXT)";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE categories (id INTEGER PRIMARY KEY AUTOINCREMENT, Description TEXT, typeId INTEGER," +
+                    " FOREIGN KEY(typeId) REFERENCES categoryType(id))";
+                cmd.ExecuteNonQuery();
 
 
+                // Insert all Category Types into the categoryType table
+                bool firstInserted = false;
 
-            if (newDB)
-            {
-                SetCategoriesToDefaults();
-
-                foreach(Category category in _Cats)
+                foreach (Category.CategoryType type in types)
                 {
+                    cmd.CommandText = string.Format("INSERT INTO categoryType (Description) VALUES ('{0}')", type.ToString());
+                    cmd.ExecuteNonQuery();
+                    firstInserted = true;
+                }
 
+
+                if (newDB)
+                {
+                    SetCategoriesToDefaults();
+
+                    foreach (Category category in _Cats)
+                    {
+                        int typeId = -1;
+
+                        for (int i = 0; i < types.Length; i++)
+                        {
+                            if (types[i] == category.Type)
+                                typeId = i + 1;
+                        }
+                        if (typeId != -1)
+                        {
+                            cmd.CommandText = $"INSERT INTO categories (Description, typeId) VALUES ('{category.Description}', {typeId})";
+                            cmd.ExecuteNonQuery();
+                        }
+
+
+                    }
                 }
             }
-            else
-            {
-                
-            }
+            
         }
 
         // ====================================================================

@@ -135,6 +135,10 @@ namespace Budget
             {
                 filepath = DirName + "\\" + FileName;
             }
+            //if(!File.Exists(filepath))
+            //{
+                //File.Create(filepath);
+            //}
             // ---------------------------------------------------------------
             // just in case filepath doesn't exist, reset path info
             // ---------------------------------------------------------------
