@@ -42,33 +42,35 @@ namespace Budget
         // ===================================================================
         public static void newDatabase(string filename)
         {
-
+            
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
-            _connection = new SQLiteConnection($"Data Source={filename};Version=3;");
+            SQLiteConnection.CreateFile(filename);
+
+            _connection = new SQLiteConnection($"Data Source={filename};Version=3;Foreign Keys=1");
             _connection.Open();
 
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "DROP TABLE IF EXISTS expenses";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "DROP TABLE IF EXISTS categories";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE categoryTypes (id INTEGER PRIMARY KEY, name TEXT NOT NULL)";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE expenses (id INTEGER PRIMARY KEY, category_id INTEGER NOT NULL, date TEXT NOT NULL, description TEXT, amount DOUBLE NOT NULL)";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "CREATE TABLE categories (id INTEGER PRIMARY KEY, categoryType_id INTEGER NOT NULL, name TEXT NOT NULL)";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "DELETE FROM categoryTypes";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "DELETE FROM expenses";
-            cmd.ExecuteNonQuery();
-            cmd.CommandText = "DELETE FROM categories";
-            cmd.ExecuteNonQuery();
-            //cmd.Dispose();
+            using (var cmd = new SQLiteCommand(_connection)) {
+                cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "DROP TABLE IF EXISTS expenses";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "DROP TABLE IF EXISTS categories";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "CREATE TABLE categoryTypes (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL)";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "CREATE TABLE categories (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL, TypeId INTEGER NOT NULL, FOREIGN KEY (TypeId) REFERENCES categoryTypes(Id))";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "CREATE TABLE expenses (Id INTEGER PRIMARY KEY, CategoryId INTEGER NOT NULL, Date TEXT NOT NULL, Description TEXT NOT NULL, Amount DOUBLE NOT NULL, FOREIGN KEY(CategoryId) REFERENCES categories(Id))";
+                cmd.ExecuteNonQuery();
+                /*cmd.CommandText = "DELETE FROM categoryTypes";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "DELETE FROM expenses";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "DELETE FROM categories";
+                cmd.ExecuteNonQuery();*/
+            }
         }
 
         // ===================================================================

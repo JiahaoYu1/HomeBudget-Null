@@ -72,36 +72,11 @@ namespace Budget
                 using var cmd = new SQLiteCommand(connection);
                 Category.CategoryType[] types = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
 
-                // Drop the tables if they exist
-                cmd.CommandText = "DROP TABLE IF EXISTS categoryType";
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = "DROP TABLE IF EXISTS categories";
-                cmd.ExecuteNonQuery();
-
-                //// Create the categories and categoryType tables
-                cmd.CommandText = "CREATE TABLE categoryType (id INTEGER PRIMARY KEY AUTOINCREMENT, Description TEXT)";
-                cmd.ExecuteNonQuery();
-
-                cmd.CommandText = "CREATE TABLE categories (id INTEGER PRIMARY KEY AUTOINCREMENT, Description TEXT, typeId INTEGER," +
-                    " FOREIGN KEY(typeId) REFERENCES categoryType(id))";
-                cmd.ExecuteNonQuery();
-
-
-                // Insert all Category Types into the categoryType table
-                bool firstInserted = false;
-
-                foreach (Category.CategoryType type in types)
-                {
-                    cmd.CommandText = string.Format("INSERT INTO categoryType (Description) VALUES ('{0}')", type.ToString());
-                    cmd.ExecuteNonQuery();
-                    firstInserted = true;
-                }
-
 
                 if (newDB)
                 {
                     SetCategoriesToDefaults();
+
 
                     foreach (Category category in _Cats)
                     {
@@ -117,9 +92,27 @@ namespace Budget
                             cmd.CommandText = $"INSERT INTO categories (Description, typeId) VALUES ('{category.Description}', {typeId})";
                             cmd.ExecuteNonQuery();
                         }
-
-
                     }
+                }
+                else
+                {
+                    connection.Open();
+
+                    cmd.CommandText = "SELECT * FROM categories";
+                    SQLiteDataReader reader = cmd.ExecuteReader();
+
+                    try
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine(reader.GetString(1));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    
                 }
             }
             

@@ -135,10 +135,6 @@ namespace Budget
             {
                 filepath = DirName + "\\" + FileName;
             }
-            //if(!File.Exists(filepath))
-            //{
-                //File.Create(filepath);
-            //}
             // ---------------------------------------------------------------
             // just in case filepath doesn't exist, reset path info
             // ---------------------------------------------------------------
@@ -146,9 +142,26 @@ namespace Budget
             _FileName = null;
 
             // ---------------------------------------------------------------
+            // create the output directory if it doesn't exist
+            // ---------------------------------------------------------------
+            string directoryPath = Path.GetDirectoryName(filepath);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // ---------------------------------------------------------------
             // get filepath name (throws exception if it doesn't exist)
             // ---------------------------------------------------------------
             filepath = BudgetFiles.VerifyWriteToFileName(filepath, DefaultFileName);
+
+            // ---------------------------------------------------------------
+            // create the output file if it doesn't exist
+            // ---------------------------------------------------------------
+            if (!File.Exists(filepath))
+            {
+                File.Create(filepath).Dispose();
+            }
 
             // ---------------------------------------------------------------
             // save as XML
