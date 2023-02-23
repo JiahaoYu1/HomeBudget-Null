@@ -96,26 +96,19 @@ namespace Budget
                 }
                 else
                 {
-                    connection.Open();
 
-                    cmd.CommandText = "SELECT * FROM categories";
-                    SQLiteDataReader reader = cmd.ExecuteReader();
+                    string stm = "SELECT * FROM categories";
+                    using var cmd = new SQLiteCommand(stm, connection);
+                    using SQLiteDataReader reader = cmd.ExecuteReader();
 
-                    try
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            Console.WriteLine(reader.GetString(1));
-                        }
+                        Console.WriteLine(reader.GetString(0));
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                    
+
                 }
             }
-            
+
         }
 
         // ====================================================================
@@ -300,6 +293,10 @@ namespace Budget
         private void Add(Category cat)
         {
             _Cats.Add(cat);
+
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{cat.Description}', {_GetCategoryTypeId(cat.Type)})";
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -318,13 +315,20 @@ namespace Budget
         /// </example>
         public void Add(String desc, Category.CategoryType type)
         {
+            Category newCategory;
+
             int new_num = 1;
             if (_Cats.Count > 0)
             {
                 new_num = (from c in _Cats select c.Id).Max();
                 new_num++;
             }
-            _Cats.Add(new Category(new_num, desc, type));
+            newCategory = new Category(new_num, desc, type);
+            _Cats.Add(newCategory);
+
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{newCategory.Description}', {_GetCategoryTypeId(newCategory.Type)})";
+            cmd.ExecuteNonQuery();
         }
 
         // ====================================================================
@@ -345,12 +349,12 @@ namespace Budget
         /// </example>
         public void Delete(int Id)
         {
-            if(_Cats.Exists(x => x.Id == Id))
+            if (_Cats.Exists(x => x.Id == Id))
             {
                 int i = _Cats.FindIndex(x => x.Id == Id);
                 _Cats.RemoveAt(i);
             }
-            
+
         }
 
         public void UpdateProperties(int id, string newDesc, Category.CategoryType newType)
@@ -358,8 +362,8 @@ namespace Budget
             Category c = _Cats.Find(x => x.Id == id);
             if (c != null)
             {
-         //       c.Description = newDesc;
-          //      c.Type = newType;
+                //       c.Description = newDesc;
+                //      c.Type = newType;
             }
 
         }
@@ -395,6 +399,22 @@ namespace Budget
                 newList.Add(new Category(category));
             }
             return newList;
+        }
+
+        // ====================================================================
+        // Get a categoryType enum Id
+        // ====================================================================
+        private int _GetCategoryTypeId(Category.CategoryType type)
+        {
+            Category.CategoryType[] types = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (types[i] == type)
+                    return i + 1;
+            }
+
+            return -1;
         }
 
         // ====================================================================

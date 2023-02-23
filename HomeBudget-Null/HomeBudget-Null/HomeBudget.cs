@@ -488,47 +488,47 @@ namespace Budget
         /// <br/>See also: <b>GetBudgetItems()</b>
         /// 
         /// <para>
-            /// <example>
-            /// For the example below, assume <i>budget.budget</i> is an existing file with the following contents:
-                /// <code>
-                /// Cat_ID      Expense_ID      Date                    Description                 Cost
-                /// 10          1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
-                /// 9           2               16/10/2018 12:00:00 AM   Credit Card hat             -10
-                /// 10          3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
-                /// 9           4               1/6/2020 12:00:00 AM   Credit Card scarf           -15
-                /// 14          5               1/6/2020 12:00:00 AM   Eating Out McDonalds        45
-                /// 14          7               1/4/2020 12:00:00 AM   Eating Out Wendys           25
-                /// 14          10              2/4/2020 12:00:00 AM    Eating Out Pizza            33.33
-                /// </code>
-            /// <h5>Get all items by month</h5>
-                /// <code>
-                /// <![CDATA[
-                /// HomeBudget hb = new HomeBudget();
-                /// hb.ReadFromFile("./budget.budget");
-                /// 
-                /// // Get all items sorted by month
-                /// List<BudgetItemsByMonth> itemsByMonth = hb.GetBudgetItemsByMonth(null, null, false, 0);
-                /// 
-                /// // Print the months and totals to the console
-                /// foreach(BudgetItemsByMonth monthBI in itemsByMonth)
-                ///     Console.WriteLine("Month: {0}\nTotal: {1}\n", monthBI.Month, monthBI.Total);
-                /// ]]>
-                /// </code>
-            /// Output:
-                /// <code>
-                /// Month: 2018/10
-                /// Total: 0
-                /// 
-                /// Month: 2019/10
-                /// Total: -15
-                /// 
-                /// Month: 2020/6
-                /// Total: -30
-                /// 
-                /// Month: 2020/4
-                /// Total: -58.33
-                /// </code>
-            /// </example>
+        /// <example>
+        /// For the example below, assume <i>budget.budget</i> is an existing file with the following contents:
+        /// <code>
+        /// Cat_ID      Expense_ID      Date                    Description                 Cost
+        /// 10          1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
+        /// 9           2               16/10/2018 12:00:00 AM   Credit Card hat             -10
+        /// 10          3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
+        /// 9           4               1/6/2020 12:00:00 AM   Credit Card scarf           -15
+        /// 14          5               1/6/2020 12:00:00 AM   Eating Out McDonalds        45
+        /// 14          7               1/4/2020 12:00:00 AM   Eating Out Wendys           25
+        /// 14          10              2/4/2020 12:00:00 AM    Eating Out Pizza            33.33
+        /// </code>
+        /// <h5>Get all items by month</h5>
+        /// <code>
+        /// <![CDATA[
+        /// HomeBudget hb = new HomeBudget();
+        /// hb.ReadFromFile("./budget.budget");
+        /// 
+        /// // Get all items sorted by month
+        /// List<BudgetItemsByMonth> itemsByMonth = hb.GetBudgetItemsByMonth(null, null, false, 0);
+        /// 
+        /// // Print the months and totals to the console
+        /// foreach(BudgetItemsByMonth monthBI in itemsByMonth)
+        ///     Console.WriteLine("Month: {0}\nTotal: {1}\n", monthBI.Month, monthBI.Total);
+        /// ]]>
+        /// </code>
+        /// Output:
+        /// <code>
+        /// Month: 2018/10
+        /// Total: 0
+        /// 
+        /// Month: 2019/10
+        /// Total: -15
+        /// 
+        /// Month: 2020/6
+        /// Total: -30
+        /// 
+        /// Month: 2020/4
+        /// Total: -58.33
+        /// </code>
+        /// </example>
         /// </para>
         /// </summary>
         /// <param name="Start">The start date and time of the budget timeframe. If null, it will be 1900/1/1 12:00:00 AM</param>
@@ -560,17 +560,23 @@ namespace Budget
                 var details = new List<BudgetItem>();
                 foreach (var item in MonthGroup)
                 {
-                    total = total + item.Amount;
-                    details.Add(item);
+                    if (item.CategoryID == CategoryID) // filter by category
+                    {
+                        total = total + item.Amount;
+                        details.Add(item);
+                    }
                 }
 
-                // Add new BudgetItemsByMonth to our list
-                summary.Add(new BudgetItemsByMonth
+                // Add new BudgetItemsByMonth to our list if there are details
+                if (details.Count > 0)
                 {
-                    Month = MonthGroup.Key,
-                    Details = details,
-                    Total = total
-                });
+                    summary.Add(new BudgetItemsByMonth
+                    {
+                        Month = MonthGroup.Key,
+                        Details = details,
+                        Total = total
+                    });
+                }
             }
 
             return summary;
@@ -584,44 +590,44 @@ namespace Budget
         /// <br/>See also: <b>GetBudgetItems()</b>
         /// 
         /// <para>
-            /// <example>
-            /// For the example below, assume the file <i>budget.budget</i> is an existing file with the following contents:
-            /// <code>
-                /// Cat_ID      Expense_ID      Date                     Description                 Cost
-                /// 10          1               1/10/2018 12:00:00 AM    Clothes hat (on credit)     10
-                /// 9           2               16/10/2018 12:00:00 AM   Credit Card hat             -10
-                /// 10          3               1/10/2019 12:00:00 AM    Clothes scarf(on credit)    15
-                /// 9           4               1/6/2020 12:00:00 AM     Credit Card scarf           -15
-                /// 14          5               1/6/2020 12:00:00 AM     Eating Out McDonalds        45
-                /// 14          7               1/4/2020 12:00:00 AM     Eating Out Wendys           25
-                /// 14          10              2/4/2020 12:00:00 AM     Eating Out Pizza            33.33
-            /// </code>
-            /// <h5>Get all items by category</h5>
-                /// <code>
-                /// <![CDATA[
-                /// HomeBudget hb = new HomeBudget();
-                /// hb.ReadFromFile("./budget.budget");
-                /// 
-                /// // Get all items sorted by month
-                /// List<GetBudgetItemsByCategory> itemsByCategory = hb.GetBudgetItemsByCategory(null, null, false, 0);
-                /// 
-                /// // Print the categories and totals to the console
-                /// foreach(BudgetItemsByCategory catBI in itemsByCategory)
-                ///     Console.WriteLine("Category: {0}\nTotal: {1}\n", catBI.Category, catBI.Total);
-                /// ]]>
-                /// </code>
-            /// Output:
-                /// <code>
-                /// Category: Clothes
-                /// Total: 25
-                /// 
-                /// Category: Credit Card
-                /// Total: -25
-                /// 
-                /// Category: Eating Out
-                /// Total: -103.33
-                /// </code>
-            /// </example>
+        /// <example>
+        /// For the example below, assume the file <i>budget.budget</i> is an existing file with the following contents:
+        /// <code>
+        /// Cat_ID      Expense_ID      Date                     Description                 Cost
+        /// 10          1               1/10/2018 12:00:00 AM    Clothes hat (on credit)     10
+        /// 9           2               16/10/2018 12:00:00 AM   Credit Card hat             -10
+        /// 10          3               1/10/2019 12:00:00 AM    Clothes scarf(on credit)    15
+        /// 9           4               1/6/2020 12:00:00 AM     Credit Card scarf           -15
+        /// 14          5               1/6/2020 12:00:00 AM     Eating Out McDonalds        45
+        /// 14          7               1/4/2020 12:00:00 AM     Eating Out Wendys           25
+        /// 14          10              2/4/2020 12:00:00 AM     Eating Out Pizza            33.33
+        /// </code>
+        /// <h5>Get all items by category</h5>
+        /// <code>
+        /// <![CDATA[
+        /// HomeBudget hb = new HomeBudget();
+        /// hb.ReadFromFile("./budget.budget");
+        /// 
+        /// // Get all items sorted by month
+        /// List<GetBudgetItemsByCategory> itemsByCategory = hb.GetBudgetItemsByCategory(null, null, false, 0);
+        /// 
+        /// // Print the categories and totals to the console
+        /// foreach(BudgetItemsByCategory catBI in itemsByCategory)
+        ///     Console.WriteLine("Category: {0}\nTotal: {1}\n", catBI.Category, catBI.Total);
+        /// ]]>
+        /// </code>
+        /// Output:
+        /// <code>
+        /// Category: Clothes
+        /// Total: 25
+        /// 
+        /// Category: Credit Card
+        /// Total: -25
+        /// 
+        /// Category: Eating Out
+        /// Total: -103.33
+        /// </code>
+        /// </example>
         /// </para>
         /// </summary>
         /// <param name="Start">The start date and time of the budget timeframe. If null, it will be 1900/1/1 12:00:00 AM</param>

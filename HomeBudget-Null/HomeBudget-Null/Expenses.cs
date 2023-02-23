@@ -136,10 +136,14 @@ namespace Budget
                 filepath = DirName + "\\" + FileName;
             }
             // ---------------------------------------------------------------
-            // just in case filepath doesn't exist, reset path info
+            // reset path info if filepath is null
             // ---------------------------------------------------------------
-            _DirName = null;
-            _FileName = null;
+            if (filepath == null)
+            {
+                _DirName = null;
+                _FileName = null;
+                throw new ArgumentNullException(nameof(filepath));
+            }
 
             // ---------------------------------------------------------------
             // create the output directory if it doesn't exist
@@ -173,6 +177,8 @@ namespace Budget
             // ----------------------------------------------------------------
             _DirName = Path.GetDirectoryName(filepath);
             _FileName = Path.GetFileName(filepath);
+
+
         }
 
 
