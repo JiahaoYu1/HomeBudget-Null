@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 using System.Data.SQLite;
+using System.Drawing.Printing;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -92,18 +93,6 @@ namespace Budget
                     //        cmd.ExecuteNonQuery();
                     //    }
                     //}
-                }
-                else
-                {
-
-                    cmd.CommandText = "SELECT * FROM categories";
-                    using SQLiteDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Console.WriteLine(reader.GetString(0));
-                    }
-
                 }
             }
             
@@ -358,11 +347,19 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
+            Category.CategoryType[] types = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
             List<Category> newList = new List<Category>();
-            foreach (Category category in _Cats)
+
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = "SELECT * FROM categories";
+            using SQLiteDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                newList.Add(new Category(category));
+                newList.Add(new Category(reader.GetInt32(0), reader.GetString(1), types[reader.GetInt32(2) - 1]));
             }
+
+            
             return newList;
         }
 
