@@ -32,6 +32,7 @@ namespace Budget
         private List<Category> _Cats = new List<Category>();
         private string _FileName;
         private string _DirName;
+        SQLiteConnection _connection;
 
         // ====================================================================
         // Properties
@@ -40,12 +41,12 @@ namespace Budget
         /// <summary>
         /// Readonly property where returns the name of the file from backing field where the datatype is string
         /// </summary>
-        public String FileName { get { return _FileName; } }
+        //public String FileName { get { return _FileName; } }
 
-        /// <summary>
-        /// Readonly property where returns the name of the directory from backing field where the datatype is string
-        /// </summary>
-        public String DirName { get { return _DirName; } }
+        ///// <summary>
+        ///// Readonly property where returns the name of the directory from backing field where the datatype is string
+        ///// </summary>
+        //public String DirName { get { return _DirName; } }
 
         // ====================================================================
         // Constructor
@@ -71,34 +72,31 @@ namespace Budget
             {
                 using var cmd = new SQLiteCommand(connection);
                 Category.CategoryType[] types = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
-
+                _connection = connection;
 
                 if (newDB)
                 {
                     SetCategoriesToDefaults();
+                    //foreach (Category category in _Cats)
+                    //{
+                    //    int typeId = -1;
 
-
-                    foreach (Category category in _Cats)
-                    {
-                        int typeId = -1;
-
-                        for (int i = 0; i < types.Length; i++)
-                        {
-                            if (types[i] == category.Type)
-                                typeId = i + 1;
-                        }
-                        if (typeId != -1)
-                        {
-                            cmd.CommandText = $"INSERT INTO categories (Description, typeId) VALUES ('{category.Description}', {typeId})";
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
+                    //    for (int i = 0; i < types.Length; i++)
+                    //    {
+                    //        if (types[i] == category.Type)
+                    //            typeId = i + 1;
+                    //    }
+                    //    if (typeId != -1)
+                    //    {
+                    //        cmd.CommandText = $"INSERT INTO categories (Description, typeId) VALUES ('{category.Description}', {typeId})";
+                    //        cmd.ExecuteNonQuery();
+                    //    }
+                    //}
                 }
                 else
                 {
 
-                    string stm = "SELECT * FROM categories";
-                    using var cmd = new SQLiteCommand(stm, connection);
+                    cmd.CommandText = "SELECT * FROM categories";
                     using SQLiteDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -108,6 +106,7 @@ namespace Budget
 
                 }
             }
+            
 
         }
 
@@ -209,35 +208,6 @@ namespace Budget
         /// </example>
         public void SaveToFile(String filepath = null)
         {
-            // ---------------------------------------------------------------
-            // if file path not specified, set to last read file
-            // ---------------------------------------------------------------
-            if (filepath == null && DirName != null && FileName != null)
-            {
-                filepath = DirName + "\\" + FileName;
-            }
-
-            // ---------------------------------------------------------------
-            // just in case filepath doesn't exist, reset path info
-            // ---------------------------------------------------------------
-            _DirName = null;
-            _FileName = null;
-
-            // ---------------------------------------------------------------
-            // get filepath name (throws exception if it doesn't exist)
-            // ---------------------------------------------------------------
-            filepath = BudgetFiles.VerifyWriteToFileName(filepath, DefaultFileName);
-
-            // ---------------------------------------------------------------
-            // save as XML
-            // ---------------------------------------------------------------
-            _WriteXMLFile(filepath);
-
-            // ----------------------------------------------------------------
-            // save filename info for later use
-            // ----------------------------------------------------------------
-            _DirName = Path.GetDirectoryName(filepath);
-            _FileName = Path.GetFileName(filepath);
         }
 
         // ====================================================================
@@ -259,8 +229,9 @@ namespace Budget
             // ---------------------------------------------------------------
             // reset any current categories,
             // ---------------------------------------------------------------
-            _Cats.Clear();
-
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = $"DELETE FROM Categories";
+            cmd.ExecuteNonQuery();
             // ---------------------------------------------------------------
             // Add Defaults
             // ---------------------------------------------------------------
@@ -292,11 +263,7 @@ namespace Budget
         /// <param name="cat">A datatype of Category that represents the category</param>
         private void Add(Category cat)
         {
-            _Cats.Add(cat);
-
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{cat.Description}', {_GetCategoryTypeId(cat.Type)})";
-            cmd.ExecuteNonQuery();
+            Add(cat.Description, cat.Type);
         }
 
         /// <summary>
@@ -315,19 +282,19 @@ namespace Budget
         /// </example>
         public void Add(String desc, Category.CategoryType type)
         {
-            Category newCategory;
+            //Category newCategory;
 
-            int new_num = 1;
-            if (_Cats.Count > 0)
-            {
-                new_num = (from c in _Cats select c.Id).Max();
-                new_num++;
-            }
-            newCategory = new Category(new_num, desc, type);
-            _Cats.Add(newCategory);
+            //int new_num = 1;
+            //if (_Cats.Count > 0)
+            //{
+            //    new_num = (from c in _Cats select c.Id).Max();
+            //    new_num++;
+            //}
+            //newCategory = new Category(new_num, desc, type);
+            //_Cats.Add(newCategory);
 
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{newCategory.Description}', {_GetCategoryTypeId(newCategory.Type)})";
+            cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{desc}', {_GetCategoryTypeId(type)})";
             cmd.ExecuteNonQuery();
         }
 
@@ -349,23 +316,21 @@ namespace Budget
         /// </example>
         public void Delete(int Id)
         {
-            if (_Cats.Exists(x => x.Id == Id))
-            {
-                int i = _Cats.FindIndex(x => x.Id == Id);
-                _Cats.RemoveAt(i);
-            }
-
+            //if (_Cats.Exists(x => x.Id == Id))
+            //{
+            //    int i = _Cats.FindIndex(x => x.Id == Id);
+            //    _Cats.RemoveAt(i);
+            //}
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = $"DELETE FROM categories WHERE Id = {Id}";
+            cmd.ExecuteNonQuery();
         }
 
         public void UpdateProperties(int id, string newDesc, Category.CategoryType newType)
         {
-            Category c = _Cats.Find(x => x.Id == id);
-            if (c != null)
-            {
-                //       c.Description = newDesc;
-                //      c.Type = newType;
-            }
-
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = $"UPDATE categories SET Description = ${newDesc}, Type = {newType} WHERE Id = {id}";
+            cmd.ExecuteNonQuery();
         }
 
         // ====================================================================
