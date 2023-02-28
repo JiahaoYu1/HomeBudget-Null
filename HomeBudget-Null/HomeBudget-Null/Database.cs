@@ -64,21 +64,23 @@ namespace Budget
                 cmd.ExecuteNonQuery();
 
                 // create new tables
-                cmd.CommandText = "CREATE TABLE categoryTypes (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL)";
+                cmd.CommandText = "CREATE TAB" +
+                    "LE categoryTypes (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL)";
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "CREATE TABLE categories (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL, TypeId INTEGER NOT NULL, FOREIGN KEY (TypeId) REFERENCES categoryTypes(Id))";
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "CREATE TABLE expenses (Id INTEGER PRIMARY KEY, CategoryId INTEGER NOT NULL, Date TEXT NOT NULL, Description TEXT NOT NULL, Amount DOUBLE NOT NULL, FOREIGN KEY(CategoryId) REFERENCES categories(Id))";
                 cmd.ExecuteNonQuery();
 
-                // insert default category types
-                cmd.CommandText = "DELETE FROM categoryTypes";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = "DELETE FROM categories";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = "DELETE FROM expenses";
-                cmd.ExecuteNonQuery();
 
+                //cmd.CommandText = "DELETE FROM categoryTypes";
+                //cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM categories";
+                //cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM expenses";
+                //cmd.ExecuteNonQuery();
+
+                //// insert default category types
                 foreach (Category.CategoryType categoryType in categoryTypes)
                 {
                     cmd.CommandText = $"INSERT INTO categoryTypes (Description) VALUES ('{categoryType.ToString()}')";
