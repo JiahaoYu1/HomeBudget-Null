@@ -121,13 +121,31 @@ namespace Budget
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            Category c = _Cats.Find(x => x.Id == i);
-            if (c == null)
+            Category.CategoryType[] types = _GetCategoryTypeArray();
+            Category categoryGot = null;
+
+            using var cmd = new SQLiteCommand(_connection);
+            cmd.CommandText = $"SELECT Id, Description, TypeId FROM categories WHERE Id = {i}";
+            SQLiteDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                throw new Exception("Cannot find category with id " + i.ToString());
+                int id = reader.GetInt32(0);
+
+                if (id == i)
+                {
+                    categoryGot = new Category(id, reader.GetString(1), types[reader.GetInt32(2)]);
+                }
+                reader.NextResult();
             }
-            return c;
+            reader.Close();
+
+            if (categoryGot is null)
+                throw new Exception("Cannot find category with id " + i.ToString());
+            
+            return categoryGot;
         }
+
 
         // ====================================================================
         // populate categories from a file
@@ -347,7 +365,7 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
-            Category.CategoryType[] types = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
+            Category.CategoryType[] types = _GetCategoryTypeArray();
             List<Category> newList = new List<Category>();
 
             using var cmd = new SQLiteCommand(_connection);
@@ -358,9 +376,17 @@ namespace Budget
             {
                 newList.Add(new Category(reader.GetInt32(0), reader.GetString(1), types[reader.GetInt32(2) - 1]));
             }
-
+            reader.Close();
             
             return newList;
+        }
+
+        // ====================================================================
+        // Get the categoryType enum values as an array
+        // ====================================================================
+        public Category.CategoryType[] _GetCategoryTypeArray()
+        {
+            return (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
         }
 
         // ====================================================================
