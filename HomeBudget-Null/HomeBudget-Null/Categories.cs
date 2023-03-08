@@ -134,9 +134,8 @@ namespace Budget
 
                 if (id == i)
                 {
-                    categoryGot = new Category(id, reader.GetString(1), types[reader.GetInt32(2)]);
+                    categoryGot = new Category(id, reader.GetString(1), types[reader.GetInt32(2) - 1]);
                 }
-                reader.NextResult();
             }
             reader.Close();
 
@@ -335,8 +334,9 @@ namespace Budget
 
         public void UpdateProperties(int id, string newDesc, Category.CategoryType newType)
         {
+            int typeId = (int)newType + 1;
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"UPDATE categories SET Description = ${newDesc}, Type = {newType} WHERE Id = {id}";
+            cmd.CommandText = $"UPDATE categories SET Description = '{newDesc}', TypeId = {typeId} WHERE Id = {id}";
             cmd.ExecuteNonQuery();
         }
 
