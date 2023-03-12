@@ -298,14 +298,8 @@ namespace Budget
             //}
             //newCategory = new Category(new_num, desc, type);
             //_Cats.Add(newCategory);
-
-            using var queryCmd = new SQLiteCommand($"SELECT id FROM categoryTypes WHERE Id={_GetCategoryTypeId(type)}", Database.dbConnection);
-            using SQLiteDataReader rdr = queryCmd.ExecuteReader();
-            if (!rdr.HasRows)
-            {
-                using var insertCmd = new SQLiteCommand($"INSERT INTO categoryTypes (Id, Description) VALUES ({_GetCategoryTypeId(type)}, '{type}')", Database.dbConnection);
-                insertCmd.ExecuteNonQuery();
-            }
+            _FillCategoryTypesTable();
+            
             using var cmd = new SQLiteCommand(_connection);
             cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{desc}', {_GetCategoryTypeId(type)})";
             cmd.ExecuteNonQuery();
@@ -389,9 +383,33 @@ namespace Budget
         }
 
         // ====================================================================
+        // Fill the category types table if it's empty
+        // ====================================================================
+        private void _FillCategoryTypesTable()
+        {
+            Category.CategoryType[] types = _GetCategoryTypeArray();
+
+            using var queryCmd = new SQLiteCommand(_connection);
+            queryCmd.CommandText = $"SELECT id FROM categoryTypes";
+            using SQLiteDataReader reader = queryCmd.ExecuteReader();
+
+
+            if (!reader.HasRows)
+            {
+                using var insertCmd = new SQLiteCommand(_connection);
+
+                foreach (Category.CategoryType type in types)
+                {
+                    insertCmd.CommandText = $"INSERT INTO categoryTypes (Id, Description) VALUES ({_GetCategoryTypeId(type)}, '{type}')";
+                    insertCmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // ====================================================================
         // Get the categoryType enum values as an array
         // ====================================================================
-        public Category.CategoryType[] _GetCategoryTypeArray()
+        private Category.CategoryType[] _GetCategoryTypeArray()
         {
             return (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
         }
