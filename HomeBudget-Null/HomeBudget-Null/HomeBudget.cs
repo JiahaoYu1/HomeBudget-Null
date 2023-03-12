@@ -132,14 +132,14 @@ namespace Budget
         {
             _categories = new Categories();
             _expenses = new Expenses();
-            ReadFromFile(budgetFileName);
+            //ReadFromFile(budgetFileName);
         }
 
         public HomeBudget(string dbFile, string budgetFile, bool dbExists)
         {
             _categories = new Categories();
             _expenses = new Expenses();
-            ReadFromFile(budgetFile);
+            //ReadFromFile(budgetFile);
         }
 
         #region OpenNewAndSave
@@ -151,87 +151,87 @@ namespace Budget
         /// Reads from a budget file, extracts expenses and categories from it, and saves the file path
         /// 
         /// <para>
-            /// <example>
-            /// For the example below, assume the budget file contains the
-            /// following elements:
-                /// <code>
-                /// Category ID     Expense ID      Date                    Description                 Cost
-                /// 10              1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
-                /// 9               2               1/11/2018 12:00:00 AM   Credit Card hat             -10
-                /// 10              3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
-                /// 9               4               1/10/2020 12:00:00 AM   Credit Card scarf           -15
-                /// </code>
-                /// Getting a list of ALL budget items:
-                    /// <code>
-                    /// <![CDATA[
-                    /// HomeBudget budget = new HomeBudget();
-                    /// budget.ReadFromFile(filename);
-                    ///
-                    /// // Get a list of all budget items
-                    /// var budgetItems = budget.GetBudgetItems(null, null, false, 0);
-                    ///
-                    /// // print important information
-                    /// foreach (var bi in budgetItems)
-                    /// {
-                    ///     Console.WriteLine (
-                    ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
-                    ///             bi.Date.ToString("yyyy/MMM/dd"),
-                    ///             bi.ShortDescription,
-                    ///             bi.Amount, bi.Balance)
-                    ///      );
-                    /// }
-                    /// ]]>
-                    /// </code>
-            /// Output:
-                /// <code>
-                /// 2018/Jan/10 hat (on credit)         ($10.00) ($10.00)
-                /// 2018/Jan/11 hat                     $10.00 $0.00
-                /// 2019/Jan/10 scarf(on credit)        ($15.00) ($15.00)
-                /// 2020/Jan/10 scarf                   $15.00 $0.00
-                /// </code>
-            /// </example>
+        /// <example>
+        /// For the example below, assume the budget file contains the
+        /// following elements:
+        /// <code>
+        /// Category ID     Expense ID      Date                    Description                 Cost
+        /// 10              1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
+        /// 9               2               1/11/2018 12:00:00 AM   Credit Card hat             -10
+        /// 10              3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
+        /// 9               4               1/10/2020 12:00:00 AM   Credit Card scarf           -15
+        /// </code>
+        /// Getting a list of ALL budget items:
+        /// <code>
+        /// <![CDATA[
+        /// HomeBudget budget = new HomeBudget();
+        /// budget.ReadFromFile(filename);
+        ///
+        /// // Get a list of all budget items
+        /// var budgetItems = budget.GetBudgetItems(null, null, false, 0);
+        ///
+        /// // print important information
+        /// foreach (var bi in budgetItems)
+        /// {
+        ///     Console.WriteLine (
+        ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
+        ///             bi.Date.ToString("yyyy/MMM/dd"),
+        ///             bi.ShortDescription,
+        ///             bi.Amount, bi.Balance)
+        ///      );
+        /// }
+        /// ]]>
+        /// </code>
+        /// Output:
+        /// <code>
+        /// 2018/Jan/10 hat (on credit)         ($10.00) ($10.00)
+        /// 2018/Jan/11 hat                     $10.00 $0.00
+        /// 2019/Jan/10 scarf(on credit)        ($15.00) ($15.00)
+        /// 2020/Jan/10 scarf                   $15.00 $0.00
+        /// </code>
+        /// </example>
         /// </para>
         /// </summary>
         /// <param name="budgetFileName">The name of the budget file to read from</param>
         /// <exception cref="Exception">Throws when any error with the reading process occurs</exception>
-        public void ReadFromFile(String budgetFileName)
-        {
-            // ---------------------------------------------------------------
-            // read the budget file and process
-            // ---------------------------------------------------------------
-            try
-            {
-                // get filepath name (throws exception if it doesn't exist)
-                budgetFileName = BudgetFiles.VerifyReadFromFileName(budgetFileName, "");
+        //public void ReadFromFile(String budgetFileName)
+        //{
+        //    // ---------------------------------------------------------------
+        //    // read the budget file and process
+        //    // ---------------------------------------------------------------
+        //    try
+        //    {
+        //        // get filepath name (throws exception if it doesn't exist)
+        //        budgetFileName = BudgetFiles.VerifyReadFromFileName(budgetFileName, "");
 
-                // If file exists, read it
-                string[] filenames = System.IO.File.ReadAllLines(budgetFileName);
+        //        // If file exists, read it
+        //        string[] filenames = System.IO.File.ReadAllLines(budgetFileName);
 
-                // ----------------------------------------------------------------
-                // Save information about budget file
-                // ----------------------------------------------------------------
-                string folder = Path.GetDirectoryName(budgetFileName);
-                _FileName = Path.GetFileName(budgetFileName);
+        //        // ----------------------------------------------------------------
+        //        // Save information about budget file
+        //        // ----------------------------------------------------------------
+        //        string folder = Path.GetDirectoryName(budgetFileName);
+        //        _FileName = Path.GetFileName(budgetFileName);
 
-                // read the expenses and categories from their respective files
-                _categories.ReadFromFile(folder + "\\" + filenames[0]);
-                _expenses.ReadFromFile(folder + "\\" + filenames[1]);
+        //        // read the expenses and categories from their respective files
+        //        _categories.ReadFromFile(folder + "\\" + filenames[0]);
+        //        _expenses.ReadFromFile(folder + "\\" + filenames[1]);
 
-                // Save information about budget file
-                _DirName = Path.GetDirectoryName(budgetFileName);
-                _FileName = Path.GetFileName(budgetFileName);
+        //        // Save information about budget file
+        //        _DirName = Path.GetDirectoryName(budgetFileName);
+        //        _FileName = Path.GetFileName(budgetFileName);
 
-            }
+        //    }
 
-            // ----------------------------------------------------------------
-            // throw new exception if we cannot get the info that we need
-            // ----------------------------------------------------------------
-            catch (Exception e)
-            {
-                throw new Exception("Could not read budget info: \n" + e.Message);
-            }
+        //    // ----------------------------------------------------------------
+        //    // throw new exception if we cannot get the info that we need
+        //    // ----------------------------------------------------------------
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("Could not read budget info: \n" + e.Message);
+        //    }
 
-        }
+        //}
 
         // ====================================================================
         // save to a file
@@ -244,26 +244,26 @@ namespace Budget
         /// <summary>
         /// Saves all categories and expenses to files
         /// <para> 
-            /// <example>
-            /// For the example below, assume <i>homebudget</i> is an existing HomeBudget object with the following budget items:
-                /// <code>
-                /// Category ID     Expense ID      Date                    Description                 Cost
-                /// 10              1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
-                /// 9               2               1/11/2018 12:00:00 AM   Credit Card hat             -10
-                /// 10              3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
-                /// 9               4               1/10/2020 12:00:00 AM   Credit Card scarf           -15
-                /// </code>
-            /// <h5>Save all the budget files to an XML file</h5>
-                /// <code>
-                /// string filePath = "./filename";
-                /// homebudget.SaveToFile();
-                /// </code>
-            /// After the code is ran, these files will appear in the path you specified (assume /path/ is an existing path):
-                /// <code>
-                /// expenses file: /path/filename_expenses.exps
-                /// categories file: /path/filename_categories.cats
-                /// </code>
-            /// </example>
+        /// <example>
+        /// For the example below, assume <i>homebudget</i> is an existing HomeBudget object with the following budget items:
+        /// <code>
+        /// Category ID     Expense ID      Date                    Description                 Cost
+        /// 10              1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
+        /// 9               2               1/11/2018 12:00:00 AM   Credit Card hat             -10
+        /// 10              3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
+        /// 9               4               1/10/2020 12:00:00 AM   Credit Card scarf           -15
+        /// </code>
+        /// <h5>Save all the budget files to an XML file</h5>
+        /// <code>
+        /// string filePath = "./filename";
+        /// homebudget.SaveToFile();
+        /// </code>
+        /// After the code is ran, these files will appear in the path you specified (assume /path/ is an existing path):
+        /// <code>
+        /// expenses file: /path/filename_expenses.exps
+        /// categories file: /path/filename_categories.cats
+        /// </code>
+        /// </example>
         /// </para>
         /// </summary>
         /// <param name="filepath">The path of the file to be created</param>
@@ -325,98 +325,98 @@ namespace Budget
         /// <br/><u>Budget Amount is the negative of the expense amount;</u> an expense of $15 = -$15 from your bank acount
         /// 
         /// <para>
-            /// <example>
-            /// For all examples below, assume the budget file contains the
-            /// following elements:
-                /// <code>
-                /// Category ID     Expense ID      Date                    Description                 Cost
-                /// 10              1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
-                /// 9               2               1/11/2018 12:00:00 AM   Credit Card hat             -10
-                /// 10              3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
-                /// 9               4               1/10/2020 12:00:00 AM   Credit Card scarf           -15
-                /// </code>
-                /// <br/><h5>Getting a list of ALL budget items:</h5>
-                    /// <code>
-                    /// <![CDATA[
-                    /// HomeBudget budget = new HomeBudget();
-                    /// budget.ReadFromFile(filename);
-                    ///
-                    /// // Get a list of all budget items
-                    /// var budgetItems = budget.GetBudgetItems(null, null, false, 0);
-                    ///
-                    /// // print important information
-                    /// foreach (var bi in budgetItems)
-                    /// {
-                    ///     Console.WriteLine (
-                    ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
-                    ///             bi.Date.ToString("yyyy/MMM/dd"),
-                    ///             bi.ShortDescription,
-                    ///             bi.Amount, bi.Balance)
-                    ///      );
-                    /// }
-                    /// ]]>
-                    /// </code>
-            /// Output:
-                /// <code>
-                /// 2018/Jan/10 hat (on credit)         ($10.00) ($10.00)
-                /// 2018/Jan/11 hat                     $10.00 $0.00
-                /// 2019/Jan/10 scarf(on credit)        ($15.00) ($15.00)
-                /// 2020/Jan/10 scarf                   $15.00 $0.00
-                /// </code>
-            /// <br/><h5>Getting a list of only budget items with a category Id of 10:</h5>
-             /// <code>
-                    /// <![CDATA[
-                    /// /// HomeBudget budget = new HomeBudget();
-                    /// budget.ReadFromFile(filename);
-                    ///
-                    /// // Get a list of all budget items with a Category Id of 10
-                    /// var budgetItems = budget.GetBudgetItems(null, null, true, 10);
-                    ///
-                    /// // print important information
-                    /// foreach (var bi in budgetItems)
-                    /// {
-                    ///     Console.WriteLine (
-                    ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
-                    ///             bi.Date.ToString("yyyy/MMM/dd"),
-                    ///             bi.ShortDescription,
-                    ///             bi.Amount, bi.Balance)
-                    ///      );
-                    /// }
-                    /// ]]>
-                    /// </code>
-            /// Output: 
-                /// <code>
-                /// 2018/Jan/10 hat (on credit)         ($10.00) ($10.00)
-                /// 2019/Jan/10 scarf(on credit)        ($15.00) ($15.00)
-                /// </code>
-            /// <br/><h5>Getting a list of only budget items between the years 2018 and 2019:</h5>
-                    /// <code>
-                    /// <![CDATA[
-                    /// /// HomeBudget budget = new HomeBudget();
-                    /// budget.ReadFromFile(filename);
-                    ///
-                    /// // Get a list of all budget items between the years 2018 and 2019
-                    /// var budgetItems = budget.GetBudgetItems(new DateTime(2018, 1, 1), new DateTime(2019, 12, 31), false, 0);
-                    ///
-                    /// // print important information
-                    /// foreach (var bi in budgetItems)
-                    /// {
-                    ///     Console.WriteLine (
-                    ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
-                    ///             bi.Date.ToString("yyyy/MMM/dd"),
-                    ///             bi.ShortDescription,
-                    ///             bi.Amount, bi.Balance)
-                    ///      );
-                    /// }
-                    /// ]]>
-                    /// </code>
-            /// Output:
-                /// <code>
-                /// 2018/Jan/10 hat (on credit) ($10.00) ($10.00)
-                /// 2018/Jan/11 hat $10.00 $0.00
-                /// 2019/Jan/10 scarf(on credit) ($15.00) ($15.00)
-                /// </code>
-            /// </example>
+        /// <example>
+        /// For all examples below, assume the budget file contains the
+        /// following elements:
+        /// <code>
+        /// Category ID     Expense ID      Date                    Description                 Cost
+        /// 10              1               1/10/2018 12:00:00 AM   Clothes hat (on credit)     10
+        /// 9               2               1/11/2018 12:00:00 AM   Credit Card hat             -10
+        /// 10              3               1/10/2019 12:00:00 AM   Clothes scarf(on credit)    15
+        /// 9               4               1/10/2020 12:00:00 AM   Credit Card scarf           -15
+        /// </code>
+        /// <br/><h5>Getting a list of ALL budget items:</h5>
+        /// <code>
+        /// <![CDATA[
+        /// HomeBudget budget = new HomeBudget();
+        /// budget.ReadFromFile(filename);
+        ///
+        /// // Get a list of all budget items
+        /// var budgetItems = budget.GetBudgetItems(null, null, false, 0);
+        ///
+        /// // print important information
+        /// foreach (var bi in budgetItems)
+        /// {
+        ///     Console.WriteLine (
+        ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
+        ///             bi.Date.ToString("yyyy/MMM/dd"),
+        ///             bi.ShortDescription,
+        ///             bi.Amount, bi.Balance)
+        ///      );
+        /// }
+        /// ]]>
+        /// </code>
+        /// Output:
+        /// <code>
+        /// 2018/Jan/10 hat (on credit)         ($10.00) ($10.00)
+        /// 2018/Jan/11 hat                     $10.00 $0.00
+        /// 2019/Jan/10 scarf(on credit)        ($15.00) ($15.00)
+        /// 2020/Jan/10 scarf                   $15.00 $0.00
+        /// </code>
+        /// <br/><h5>Getting a list of only budget items with a category Id of 10:</h5>
+        /// <code>
+        /// <![CDATA[
+        /// /// HomeBudget budget = new HomeBudget();
+        /// budget.ReadFromFile(filename);
+        ///
+        /// // Get a list of all budget items with a Category Id of 10
+        /// var budgetItems = budget.GetBudgetItems(null, null, true, 10);
+        ///
+        /// // print important information
+        /// foreach (var bi in budgetItems)
+        /// {
+        ///     Console.WriteLine (
+        ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
+        ///             bi.Date.ToString("yyyy/MMM/dd"),
+        ///             bi.ShortDescription,
+        ///             bi.Amount, bi.Balance)
+        ///      );
+        /// }
+        /// ]]>
+        /// </code>
+        /// Output: 
+        /// <code>
+        /// 2018/Jan/10 hat (on credit)         ($10.00) ($10.00)
+        /// 2019/Jan/10 scarf(on credit)        ($15.00) ($15.00)
+        /// </code>
+        /// <br/><h5>Getting a list of only budget items between the years 2018 and 2019:</h5>
+        /// <code>
+        /// <![CDATA[
+        /// /// HomeBudget budget = new HomeBudget();
+        /// budget.ReadFromFile(filename);
+        ///
+        /// // Get a list of all budget items between the years 2018 and 2019
+        /// var budgetItems = budget.GetBudgetItems(new DateTime(2018, 1, 1), new DateTime(2019, 12, 31), false, 0);
+        ///
+        /// // print important information
+        /// foreach (var bi in budgetItems)
+        /// {
+        ///     Console.WriteLine (
+        ///         String.Format("{0} {1,-20} {2,8:C} {3,12:C}",
+        ///             bi.Date.ToString("yyyy/MMM/dd"),
+        ///             bi.ShortDescription,
+        ///             bi.Amount, bi.Balance)
+        ///      );
+        /// }
+        /// ]]>
+        /// </code>
+        /// Output:
+        /// <code>
+        /// 2018/Jan/10 hat (on credit) ($10.00) ($10.00)
+        /// 2018/Jan/11 hat $10.00 $0.00
+        /// 2019/Jan/10 scarf(on credit) ($15.00) ($15.00)
+        /// </code>
+        /// </example>
         /// </para>
         /// </summary>
         /// <param name="Start">The start date and time of the budget timeframe. If null, it will be 1900/1/1 12:00:00 AM</param>
