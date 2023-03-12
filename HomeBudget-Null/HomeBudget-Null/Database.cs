@@ -79,13 +79,6 @@ namespace Budget
                 //cmd.ExecuteNonQuery();
                 //cmd.CommandText = "DELETE FROM expenses";
                 //cmd.ExecuteNonQuery();
-
-                //// insert default category types
-                foreach (Category.CategoryType categoryType in categoryTypes)
-                {
-                    cmd.CommandText = $"INSERT INTO categoryTypes (Description) VALUES ('{categoryType.ToString()}')";
-                    //cmd.ExecuteNonQuery();
-                }
             }
         }
 
