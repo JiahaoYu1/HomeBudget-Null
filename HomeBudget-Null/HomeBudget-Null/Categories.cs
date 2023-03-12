@@ -299,6 +299,13 @@ namespace Budget
             //newCategory = new Category(new_num, desc, type);
             //_Cats.Add(newCategory);
 
+            using var queryCmd = new SQLiteCommand($"SELECT id FROM categoryTypes WHERE Id={_GetCategoryTypeId(type)}", Database.dbConnection);
+            using SQLiteDataReader rdr = queryCmd.ExecuteReader();
+            if (!rdr.HasRows)
+            {
+                using var insertCmd = new SQLiteCommand($"INSERT INTO categoryTypes (Id, Description) VALUES ({_GetCategoryTypeId(type)}, '{type}')", Database.dbConnection);
+                insertCmd.ExecuteNonQuery();
+            }
             using var cmd = new SQLiteCommand(_connection);
             cmd.CommandText = $"INSERT INTO categories (Description, TypeId) VALUES ('{desc}', {_GetCategoryTypeId(type)})";
             cmd.ExecuteNonQuery();

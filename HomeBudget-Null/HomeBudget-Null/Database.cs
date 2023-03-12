@@ -84,7 +84,7 @@ namespace Budget
                 foreach (Category.CategoryType categoryType in categoryTypes)
                 {
                     cmd.CommandText = $"INSERT INTO categoryTypes (Description) VALUES ('{categoryType.ToString()}')";
-                    cmd.ExecuteNonQuery();
+                    //cmd.ExecuteNonQuery();
                 }
             }
         }
