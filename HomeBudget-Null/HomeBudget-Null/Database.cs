@@ -73,12 +73,12 @@ namespace Budget
                 cmd.ExecuteNonQuery();
 
 
-                cmd.CommandText = "DELETE FROM categoryTypes";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = "DELETE FROM categories";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = "DELETE FROM expenses";
-                cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM categoryTypes";
+                //cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM categories";
+                //cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM expenses";
+                //cmd.ExecuteNonQuery();
 
                 //// insert default category types
                 foreach (Category.CategoryType categoryType in categoryTypes)
