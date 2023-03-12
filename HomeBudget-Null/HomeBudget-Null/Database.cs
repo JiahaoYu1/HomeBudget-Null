@@ -42,8 +42,6 @@ namespace Budget
         // ===================================================================
         public static void newDatabase(string filename)
         {
-            Category.CategoryType[] categoryTypes = (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
-
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
@@ -64,8 +62,7 @@ namespace Budget
                 cmd.ExecuteNonQuery();
 
                 // create new tables
-                cmd.CommandText = "CREATE TAB" +
-                    "LE categoryTypes (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL)";
+                cmd.CommandText = "CREATE TABLE categoryTypes (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL)";
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "CREATE TABLE categories (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL, TypeId INTEGER NOT NULL, FOREIGN KEY (TypeId) REFERENCES categoryTypes(Id))";
                 cmd.ExecuteNonQuery();

@@ -26,23 +26,11 @@ namespace Budget
     /// </summary>
     public class Categories
     {
-        /// <summary>
-        /// Backing field
-        /// </summary>
-        private static String DefaultFileName = "budgetCategories.txt";
         SQLiteConnection _connection;
 
         // ====================================================================
         // Properties
         // ====================================================================
-
-        /// <summary>
-        /// Readonly property where returns the name of the file from backing field where the datatype is string
-        /// </summary>
-
-        ///// <summary>
-        ///// Readonly property where returns the name of the directory from backing field where the datatype is string
-        ///// </summary>
 
         // ====================================================================
         // Constructor
@@ -101,7 +89,7 @@ namespace Budget
         /// </example>
         public Category GetCategoryFromId(int i)
         {
-            Category.CategoryType[] types = _GetCategoryTypeArray();
+            Category.CategoryType[] types = GetCategoryTypeArray();
             Category categoryGot = null;
 
             using var cmd = new SQLiteCommand(_connection);
@@ -133,6 +121,48 @@ namespace Budget
         // Throws System.Exception if cannot read the file correctly (parsing XML)
         // ====================================================================
 
+        /// <summary>
+        /// Fill categories from a file, if no filepath is supplied, read/save in the AppData file.
+        /// If the file does not exist, a System.IO.FileNotFoundException is thrown.
+        /// If the file cannot be read correctly, a System.Exception will be thrown
+        /// </summary>
+        /// <param name="filepath">Represents the path of the file</param>
+        /// <example>
+        /// <b>To read categories from the respective files: </b>
+        /// <code>
+        /// <![CDATA[
+        ///  _categories.ReadFromFile(folder + "\\" + filenames[0]);
+        /// ]]>
+        /// </code>
+        /// </example>
+        //public void ReadFromFile(String filepath = null)
+        //{
+
+        //    // ---------------------------------------------------------------
+        //    // reading from file resets all the current categories,
+        //    // ---------------------------------------------------------------
+        //    _Cats.Clear();
+
+        //    // ---------------------------------------------------------------
+        //    // reset default dir/filename to null 
+        //    // ... filepath may not be valid, 
+        //    // ---------------------------------------------------------------
+        //    _DirName = null;
+        //    _FileName = null;
+
+        //    // ---------------------------------------------------------------
+        //    // get filepath name (throws exception if it doesn't exist)
+        //    // ---------------------------------------------------------------
+        //    filepath = BudgetFiles.VerifyReadFromFileName(filepath, DefaultFileName);
+
+        //    // ---------------------------------------------------------------
+        //    // If file exists, read it
+        //    // ---------------------------------------------------------------
+        //    _ReadXMLFile(filepath);
+        //    _DirName = Path.GetDirectoryName(filepath);
+        //    _FileName = Path.GetFileName(filepath);
+        //}
+
         // ====================================================================
         // save to a file
         // if filepath is not specified, read/save in AppData file
@@ -150,9 +180,9 @@ namespace Budget
         /// ]]>
         /// </code>
         /// </example>
-        public void SaveToFile(String filepath = null)
-        {
-        }
+        //public void SaveToFile(String filepath = null)
+        //{
+        //}
 
         // ====================================================================
         // set categories to default
@@ -289,7 +319,7 @@ namespace Budget
         /// </example>
         public List<Category> List()
         {
-            Category.CategoryType[] types = _GetCategoryTypeArray();
+            Category.CategoryType[] types = GetCategoryTypeArray();
             List<Category> newList = new List<Category>();
 
             using var cmd = new SQLiteCommand(_connection);
@@ -306,11 +336,19 @@ namespace Budget
         }
 
         // ====================================================================
+        // Get the categoryType enum values as an array
+        // ====================================================================
+        public static Category.CategoryType[] GetCategoryTypeArray()
+        {
+            return (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
+        }
+
+        // ====================================================================
         // Fill the category types table if it's empty
         // ====================================================================
         private void _FillCategoryTypesTable()
         {
-            Category.CategoryType[] types = _GetCategoryTypeArray();
+            Category.CategoryType[] types = GetCategoryTypeArray();
 
             using var queryCmd = new SQLiteCommand(_connection);
             queryCmd.CommandText = $"SELECT id FROM categoryTypes";
@@ -327,14 +365,6 @@ namespace Budget
                     insertCmd.ExecuteNonQuery();
                 }
             }
-        }
-
-        // ====================================================================
-        // Get the categoryType enum values as an array
-        // ====================================================================
-        private Category.CategoryType[] _GetCategoryTypeArray()
-        {
-            return (Category.CategoryType[])Enum.GetValues(typeof(Category.CategoryType));
         }
 
         // ====================================================================
@@ -356,48 +386,90 @@ namespace Budget
         // ====================================================================
         // read from an XML file and add categories to our categories list
         // ====================================================================
-        private void _ReadXMLFile(String filepath)
-        {
+        //private void _ReadXMLFile(String filepath)
+        //{
 
-            // ---------------------------------------------------------------
-            // read the categories from the xml file, and add to this instance
-            // ---------------------------------------------------------------
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(filepath);
+        //    // ---------------------------------------------------------------
+        //    // read the categories from the xml file, and add to this instance
+        //    // ---------------------------------------------------------------
+        //    try
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(filepath);
 
-                foreach (XmlNode category in doc.DocumentElement.ChildNodes)
-                {
-                    String id = (((XmlElement)category).GetAttributeNode("ID")).InnerText;
-                    String typestring = (((XmlElement)category).GetAttributeNode("type")).InnerText;
-                    String desc = ((XmlElement)category).InnerText;
+        //        foreach (XmlNode category in doc.DocumentElement.ChildNodes)
+        //        {
+        //            String id = (((XmlElement)category).GetAttributeNode("ID")).InnerText;
+        //            String typestring = (((XmlElement)category).GetAttributeNode("type")).InnerText;
+        //            String desc = ((XmlElement)category).InnerText;
 
-                    Category.CategoryType type;
-                    switch (typestring.ToLower())
-                    {
-                        case "income":
-                            type = Category.CategoryType.Income;
-                            break;
-                        case "expense":
-                            type = Category.CategoryType.Expense;
-                            break;
-                        case "credit":
-                            type = Category.CategoryType.Credit;
-                            break;
-                        default:
-                            type = Category.CategoryType.Expense;
-                            break;
-                    }
-                    this.Add(new Category(int.Parse(id), desc, type));
-                }
+        //            Category.CategoryType type;
+        //            switch (typestring.ToLower())
+        //            {
+        //                case "income":
+        //                    type = Category.CategoryType.Income;
+        //                    break;
+        //                case "expense":
+        //                    type = Category.CategoryType.Expense;
+        //                    break;
+        //                case "credit":
+        //                    type = Category.CategoryType.Credit;
+        //                    break;
+        //                default:
+        //                    type = Category.CategoryType.Expense;
+        //                    break;
+        //            }
+        //            this.Add(new Category(int.Parse(id), desc, type));
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception("ReadXMLFile: Reading XML " + e.Message);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("ReadXMLFile: Reading XML " + e.Message);
+        //    }
+
+        //}
+
+
+        // ====================================================================
+        // write all categories in our list to XML file
+        // ====================================================================
+        //private void _WriteXMLFile(String filepath)
+        //{
+        //    try
+        //    {
+        //        // create top level element of categories
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.LoadXml("<Categories></Categories>");
+
+        //        // foreach Category, create an new xml element
+        //        foreach (Category cat in _Cats)
+        //        {
+        //            XmlElement ele = doc.CreateElement("Category");
+        //            XmlAttribute attr = doc.CreateAttribute("ID");
+        //            attr.Value = cat.Id.ToString();
+        //            ele.SetAttributeNode(attr);
+        //            XmlAttribute type = doc.CreateAttribute("type");
+        //            type.Value = cat.Type.ToString();
+        //            ele.SetAttributeNode(type);
+
+        //            XmlText text = doc.CreateTextNode(cat.Description);
+        //            doc.DocumentElement.AppendChild(ele);
+        //            doc.DocumentElement.LastChild.AppendChild(text);
+
+        //        }
+
+        //        // write the xml to FilePath
+        //        doc.Save(filepath);
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("_WriteXMLFile: Reading XML " + e.Message);
+        //    }
+
+        //}
+
     }
 }
 

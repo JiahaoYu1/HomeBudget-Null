@@ -376,118 +376,118 @@ namespace Budget
             return DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
-        // ====================================================================
-        // read from an XML file and add categories to our categories list
-        // ====================================================================
-        private void _ReadXMLFile(String filepath)
-        {
+        //// ====================================================================
+        //// read from an XML file and add categories to our categories list
+        //// ====================================================================
+        //private void _ReadXMLFile(String filepath)
+        //{
 
 
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(filepath);
+        //    try
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(filepath);
 
-                // Loop over each Expense
-                foreach (XmlNode expense in doc.DocumentElement.ChildNodes)
-                {
-                    // set default expense parameters
-                    int id = int.Parse((((XmlElement)expense).GetAttributeNode("ID")).InnerText);
-                    String description = "";
-                    DateTime date = DateTime.Parse("2000-01-01");
-                    int category = 0;
-                    Double amount = 0.0;
+        //        // Loop over each Expense
+        //        foreach (XmlNode expense in doc.DocumentElement.ChildNodes)
+        //        {
+        //            // set default expense parameters
+        //            int id = int.Parse((((XmlElement)expense).GetAttributeNode("ID")).InnerText);
+        //            String description = "";
+        //            DateTime date = DateTime.Parse("2000-01-01");
+        //            int category = 0;
+        //            Double amount = 0.0;
 
-                    // get expense parameters
-                    foreach (XmlNode info in expense.ChildNodes)
-                    {
-                        switch (info.Name)
-                        {
-                            case "Date":
-                                date = DateTime.Parse(info.InnerText);
-                                break;
-                            case "Amount":
-                                amount = Double.Parse(info.InnerText);
-                                break;
-                            case "Description":
-                                description = info.InnerText;
-                                break;
-                            case "Category":
-                                category = int.Parse(info.InnerText);
-                                break;
-                        }
-                    }
+        //            // get expense parameters
+        //            foreach (XmlNode info in expense.ChildNodes)
+        //            {
+        //                switch (info.Name)
+        //                {
+        //                    case "Date":
+        //                        date = DateTime.Parse(info.InnerText);
+        //                        break;
+        //                    case "Amount":
+        //                        amount = Double.Parse(info.InnerText);
+        //                        break;
+        //                    case "Description":
+        //                        description = info.InnerText;
+        //                        break;
+        //                    case "Category":
+        //                        category = int.Parse(info.InnerText);
+        //                        break;
+        //                }
+        //            }
 
-                    // have all info for expense, so create new one
-                    this.Add(new Expense(id, date, category, amount, description));
+        //            // have all info for expense, so create new one
+        //            this.Add(new Expense(id, date, category, amount, description));
 
-                }
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception("ReadFromFileException: Reading XML " + e.Message);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("ReadFromFileException: Reading XML " + e.Message);
+        //    }
+        //}
 
 
-        // ====================================================================
-        // write to an XML file
-        // if filepath is not specified, read/save in AppData file
-        // ====================================================================
-        private void _WriteXMLFile(String filepath)
-        {
-            // ---------------------------------------------------------------
-            // loop over all categories and write them out as XML
-            // ---------------------------------------------------------------
-            try
-            {
-                // create top level element of expenses
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml("<Expenses></Expenses>");
+        //// ====================================================================
+        //// write to an XML file
+        //// if filepath is not specified, read/save in AppData file
+        //// ====================================================================
+        //private void _WriteXMLFile(String filepath)
+        //{
+        //    // ---------------------------------------------------------------
+        //    // loop over all categories and write them out as XML
+        //    // ---------------------------------------------------------------
+        //    try
+        //    {
+        //        // create top level element of expenses
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.LoadXml("<Expenses></Expenses>");
 
-                // foreach Category, create an new xml element
-                foreach (Expense exp in _Expenses)
-                {
-                    // main element 'Expense' with attribute ID
-                    XmlElement ele = doc.CreateElement("Expense");
-                    XmlAttribute attr = doc.CreateAttribute("ID");
-                    attr.Value = exp.Id.ToString();
-                    ele.SetAttributeNode(attr);
-                    doc.DocumentElement.AppendChild(ele);
+        //        // foreach Category, create an new xml element
+        //        foreach (Expense exp in _Expenses)
+        //        {
+        //            // main element 'Expense' with attribute ID
+        //            XmlElement ele = doc.CreateElement("Expense");
+        //            XmlAttribute attr = doc.CreateAttribute("ID");
+        //            attr.Value = exp.Id.ToString();
+        //            ele.SetAttributeNode(attr);
+        //            doc.DocumentElement.AppendChild(ele);
 
-                    // child attributes (date, description, amount, category)
-                    XmlElement d = doc.CreateElement("Date");
-                    XmlText dText = doc.CreateTextNode(exp.Date.ToString("yyyy-MM-dd"));
-                    ele.AppendChild(d);
-                    d.AppendChild(dText);
+        //            // child attributes (date, description, amount, category)
+        //            XmlElement d = doc.CreateElement("Date");
+        //            XmlText dText = doc.CreateTextNode(exp.Date.ToString("yyyy-MM-dd"));
+        //            ele.AppendChild(d);
+        //            d.AppendChild(dText);
 
-                    XmlElement de = doc.CreateElement("Description");
-                    XmlText deText = doc.CreateTextNode(exp.Description);
-                    ele.AppendChild(de);
-                    de.AppendChild(deText);
+        //            XmlElement de = doc.CreateElement("Description");
+        //            XmlText deText = doc.CreateTextNode(exp.Description);
+        //            ele.AppendChild(de);
+        //            de.AppendChild(deText);
 
-                    XmlElement a = doc.CreateElement("Amount");
-                    XmlText aText = doc.CreateTextNode(exp.Amount.ToString());
-                    ele.AppendChild(a);
-                    a.AppendChild(aText);
+        //            XmlElement a = doc.CreateElement("Amount");
+        //            XmlText aText = doc.CreateTextNode(exp.Amount.ToString());
+        //            ele.AppendChild(a);
+        //            a.AppendChild(aText);
 
-                    XmlElement c = doc.CreateElement("Category");
-                    XmlText cText = doc.CreateTextNode(exp.Category.ToString());
-                    ele.AppendChild(c);
-                    c.AppendChild(cText);
+        //            XmlElement c = doc.CreateElement("Category");
+        //            XmlText cText = doc.CreateTextNode(exp.Category.ToString());
+        //            ele.AppendChild(c);
+        //            c.AppendChild(cText);
 
-                }
+        //        }
 
-                // write the xml to FilePath
-                doc.Save(filepath);
+        //        // write the xml to FilePath
+        //        doc.Save(filepath);
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception("SaveToFileException: Reading XML " + e.Message);
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception("SaveToFileException: Reading XML " + e.Message);
+        //    }
+        //}
 
     }
 }

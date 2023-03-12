@@ -44,10 +44,11 @@ namespace Budget
     /// </summary>
     public class HomeBudget
     {
-        private string _FileName;
-        private string _DirName;
+        //private string _FileName;
+        //private string _DirName;
         private Categories _categories;
         private Expenses _expenses;
+
 
         // ====================================================================
         // Properties
@@ -57,28 +58,28 @@ namespace Budget
         /// <summary>
         /// The name of the file to read/write to. Is <b>"budgetCategories.txt"</b> by default
         /// </summary>
-        public String FileName { get { return _FileName; } }
-        /// <summary>
-        /// The name of the directory that holds the file to read/write to
-        /// </summary>
-        public String DirName { get { return _DirName; } }
+        //public String FileName { get { return _FileName; } }
+        ///// <summary>
+        ///// The name of the directory that holds the file to read/write to
+        ///// </summary>
+        //public String DirName { get { return _DirName; } }
         /// <summary>
         /// The full path of the file to read/write to
         /// </summary>
-        public String PathName
-        {
-            get
-            {
-                if (_FileName != null && _DirName != null)
-                {
-                    return Path.GetFullPath(_DirName + "\\" + _FileName);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        //public String PathName
+        //{
+        //    get
+        //    {
+        //        if (_FileName != null && _DirName != null)
+        //        {
+        //            return Path.GetFullPath(_DirName + "\\" + _FileName);
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //}
 
         // Properties (categories and expenses object)
         /// <summary>
@@ -267,48 +268,48 @@ namespace Budget
         /// </para>
         /// </summary>
         /// <param name="filepath">The path of the file to be created</param>
-        public void SaveToFile(String filepath)
-        {
+        //public void SaveToFile(String filepath)
+        //{
 
-            // ---------------------------------------------------------------
-            // just in case filepath doesn't exist, reset path info
-            // ---------------------------------------------------------------
-            _DirName = null;
-            _FileName = null;
+        //    // ---------------------------------------------------------------
+        //    // just in case filepath doesn't exist, reset path info
+        //    // ---------------------------------------------------------------
+        //    //_DirName = null;
+        //    //_FileName = null;
 
-            // ---------------------------------------------------------------
-            // get filepath name (throws exception if we can't write to the file)
-            // ---------------------------------------------------------------
-            filepath = BudgetFiles.VerifyWriteToFileName(filepath, "");
+        //    // ---------------------------------------------------------------
+        //    // get filepath name (throws exception if we can't write to the file)
+        //    // ---------------------------------------------------------------
+        //    filepath = BudgetFiles.VerifyWriteToFileName(filepath, "");
 
-            String path = Path.GetDirectoryName(Path.GetFullPath(filepath));
-            String file = Path.GetFileNameWithoutExtension(filepath);
-            String ext = Path.GetExtension(filepath);
+        //    String path = Path.GetDirectoryName(Path.GetFullPath(filepath));
+        //    String file = Path.GetFileNameWithoutExtension(filepath);
+        //    String ext = Path.GetExtension(filepath);
 
-            // ---------------------------------------------------------------
-            // construct file names for expenses and categories
-            // ---------------------------------------------------------------
-            String expensepath = path + "\\" + file + "_expenses" + ".exps";
-            String categorypath = path + "\\" + file + "_categories" + ".cats";
+        //    // ---------------------------------------------------------------
+        //    // construct file names for expenses and categories
+        //    // ---------------------------------------------------------------
+        //    String expensepath = path + "\\" + file + "_expenses" + ".exps";
+        //    String categorypath = path + "\\" + file + "_categories" + ".cats";
 
-            // ---------------------------------------------------------------
-            // save the expenses and categories into their own files
-            // ---------------------------------------------------------------
-            _expenses.SaveToFile(expensepath);
-            _categories.SaveToFile(categorypath);
+        //    // ---------------------------------------------------------------
+        //    // save the expenses and categories into their own files
+        //    // ---------------------------------------------------------------
+        //    _expenses.SaveToFile(expensepath);
+        //    _categories.SaveToFile(categorypath);
 
-            // ---------------------------------------------------------------
-            // save filenames of expenses and categories to budget file
-            // ---------------------------------------------------------------
-            string[] files = { Path.GetFileName(categorypath), Path.GetFileName(expensepath) };
-            System.IO.File.WriteAllLines(filepath, files);
+        //    // ---------------------------------------------------------------
+        //    // save filenames of expenses and categories to budget file
+        //    // ---------------------------------------------------------------
+        //    string[] files = { Path.GetFileName(categorypath), Path.GetFileName(expensepath) };
+        //    System.IO.File.WriteAllLines(filepath, files);
 
-            // ----------------------------------------------------------------
-            // save filename info for later use
-            // ----------------------------------------------------------------
-            _DirName = path;
-            _FileName = Path.GetFileName(filepath);
-        }
+        //    // ----------------------------------------------------------------
+        //    // save filename info for later use
+        //    // ----------------------------------------------------------------
+        //    //_DirName = path;
+        //    //_FileName = Path.GetFileName(filepath);
+        //}
         #endregion OpenNewAndSave
 
         #region GetList
