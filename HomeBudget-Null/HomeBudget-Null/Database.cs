@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Threading;
 using System.Data.SqlClient;
+using System.Globalization;
 
 // ===================================================================
 // Very important notes:
@@ -34,34 +35,61 @@ namespace Budget
     public class Database
     {
 
-        public static SQLiteConnection dbConnection { get { return _connection; } }
         private static SQLiteConnection _connection;
+        public static SQLiteConnection dbConnection { get { return _connection; } }
 
         // ===================================================================
         // create and open a new database
         // ===================================================================
         public static void newDatabase(string filename)
         {
-
             // If there was a database open before, close it and release the lock
             CloseDatabaseAndReleaseFile();
 
+            SQLiteConnection.CreateFile(filename);
 
-            using var cmd = new SQLiteConnection("./" + filename);
-            cmd.Open();
+            _connection = new SQLiteConnection($"Data Source={filename};Version=3;Foreign Keys=1");
+            _connection.Open();
 
+            using (var cmd = new SQLiteCommand(_connection))
+            {
+
+                // drop any existing tables
+                cmd.CommandText = "DROP TABLE IF EXISTS expenses";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "DROP TABLE IF EXISTS categories";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "DROP TABLE IF EXISTS categoryTypes";
+                cmd.ExecuteNonQuery();
+
+                // create new tables
+                cmd.CommandText = "CREATE TABLE categoryTypes (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL)";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "CREATE TABLE categories (Id INTEGER PRIMARY KEY, Description TEXT NOT NULL, TypeId INTEGER NOT NULL, FOREIGN KEY (TypeId) REFERENCES categoryTypes(Id))";
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "CREATE TABLE expenses (Id INTEGER PRIMARY KEY, CategoryId INTEGER NOT NULL, Date TEXT NOT NULL, Description TEXT NOT NULL, Amount DOUBLE NOT NULL, FOREIGN KEY(CategoryId) REFERENCES categories(Id))";
+                cmd.ExecuteNonQuery();
+
+
+                //cmd.CommandText = "DELETE FROM categoryTypes";
+                //cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM categories";
+                //cmd.ExecuteNonQuery();
+                //cmd.CommandText = "DELETE FROM expenses";
+                //cmd.ExecuteNonQuery();
+            }
         }
 
-       // ===================================================================
-       // open an existing database
-       // ===================================================================
-       public static void existingDatabase(string filename)
+        // ===================================================================
+        // open an existing database
+        // ===================================================================
+        public static void existingDatabase(string filename)
         {
 
-            CloseDatabaseAndReleaseFile();
+            //CloseDatabaseAndReleaseFile();
 
-            SQLiteConnection connection = new SQLiteConnection("./" + filename);
-            connection.Open();
+            _connection = new SQLiteConnection($"Data Source={filename};Foreign Keys=1;");
+            _connection.Open();
         }
 
        // ===================================================================
@@ -81,6 +109,11 @@ namespace Budget
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
+        }
+
+        public static string ParseDateToSQLite(DateTime date)
+        {
+            return $"{date.Year}-{date.Month}-{date.Day}";
         }
     }
 
