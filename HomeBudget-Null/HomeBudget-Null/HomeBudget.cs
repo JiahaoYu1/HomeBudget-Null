@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Dynamic;
 using System.Data.SQLite;
+using System.Globalization;
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -48,38 +49,7 @@ namespace Budget
         //private string _DirName;
         private Categories _categories;
         private Expenses _expenses;
-
-
-        // ====================================================================
-        // Properties
-        // ===================================================================
-
-        // Properties (location of files etc)
-        /// <summary>
-        /// The name of the file to read/write to. Is <b>"budgetCategories.txt"</b> by default
-        /// </summary>
-        //public String FileName { get { return _FileName; } }
-        ///// <summary>
-        ///// The name of the directory that holds the file to read/write to
-        ///// </summary>
-        //public String DirName { get { return _DirName; } }
-        /// <summary>
-        /// The full path of the file to read/write to
-        /// </summary>
-        //public String PathName
-        //{
-        //    get
-        //    {
-        //        if (_FileName != null && _DirName != null)
-        //        {
-        //            return Path.GetFullPath(_DirName + "\\" + _FileName);
-        //        }
-        //        else
-        //        {
-        //            return null;
-        //        }
-        //    }
-        //}
+        private SQLiteConnection _connection;
 
         // Properties (categories and expenses object)
         /// <summary>
@@ -138,9 +108,14 @@ namespace Budget
 
         public HomeBudget(string dbFile, string budgetFile, bool dbExists)
         {
-            _categories = new Categories();
+            if (dbExists)
+                Database.existingDatabase(dbFile);
+            else
+                Database.newDatabase(dbFile);
+            _connection = Database.dbConnection;
+
+            _categories= new Categories();
             _expenses = new Expenses();
-            //ReadFromFile(budgetFile);
         }
 
         #region OpenNewAndSave
@@ -442,10 +417,12 @@ namespace Budget
              *      - Expense Description
              *      - Expense Amount
              */
-            var query =  from c in _categories.List()
-                        join e in _expenses.List() on c.Id equals e.Category
-                        where e.Date >= Start && e.Date <= End
-                        select new { CatId = c.Id, ExpId = e.Id, e.Date, Category = c.Description, e.Description, e.Amount };
+            var cmd = new SQLiteCommand(Database.dbConnection);
+            cmd.CommandText = $@"SELECT c.Id, e.Id, e.Description, e.Date, e.Amount, c.Description FROM categories c, expenses e WHERE e.CategoryId = c.Id AND date(e.Date) <= date(@End) AND date(e.Date) >= date(@Start)";
+            cmd.Parameters.AddWithValue("@Start", Start.Value.ToString("yyyy-MM-dd"));
+            cmd.Parameters.AddWithValue("@End", End.Value.Date.ToString("yyyy-MM-dd"));
+            using SQLiteDataReader reader = cmd.ExecuteReader();
+
 
             // ------------------------------------------------------------------------
             // create a BudgetItem list with totals,
@@ -453,27 +430,32 @@ namespace Budget
             List<BudgetItem> items = new List<BudgetItem>();
             Double total = 0;
 
-            foreach (var queryResult in query.OrderBy(q => q.Date))
+            while (reader.Read())
             {
-                // filter out unwanted categories if filter flag is on
-                if (FilterFlag && CategoryID != queryResult.CatId)
-                {
-                    continue;
-                }
+                int catId = reader.GetInt32(0);
+                int expId = reader.GetInt32(1);
+                string expDate = reader.GetString(2);
+                string catDesc = reader.GetString(3);
+                string expDesc = reader.GetString(4);
+                double expAmount = reader.GetDouble(5);
 
-                // keep track of running totals
-                // The total (balance) is all that was spent
-                total = total - queryResult.Amount;
-                items.Add(new BudgetItem
+
+                if (FilterFlag && CategoryID != catId)
                 {
-                    CategoryID = queryResult.CatId,
-                    ExpenseID = queryResult.ExpId,
-                    ShortDescription = queryResult.Description,
-                    Date = queryResult.Date,
-                    Amount = -queryResult.Amount,
-                    Category = queryResult.Category,
-                    Balance = total
-                });
+                    // keep track of running totals
+                    // The total (balance) is all that was spent
+                    total = total - expAmount;
+                    items.Add(new BudgetItem
+                    {
+                        CategoryID = catId,
+                        ExpenseID = expId,
+                        ShortDescription = expDesc,
+                        Date = DateTime.ParseExact(expDate.ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                        Amount = -expAmount,
+                        Category = catDesc,
+                        Balance = total
+                    });
+                }
             }
 
             return items;
@@ -825,7 +807,7 @@ namespace Budget
                 {
                     totalsRecord.Add(cat.Description, totalsPerCategory[cat.Description]);
                 }
-                catch { }
+                catch {}
             }
             summary.Add(totalsRecord);
 
@@ -837,6 +819,5 @@ namespace Budget
 
 
         #endregion GetList
-
     }
 }

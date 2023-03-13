@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Threading;
 using System.Data.SqlClient;
+using System.Globalization;
 
 // ===================================================================
 // Very important notes:
@@ -34,8 +35,8 @@ namespace Budget
     public class Database
     {
 
-        public static SQLiteConnection dbConnection { get { return _connection; } }
         private static SQLiteConnection _connection;
+        public static SQLiteConnection dbConnection { get { return _connection; } }
 
         // ===================================================================
         // create and open a new database
@@ -108,6 +109,11 @@ namespace Budget
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
+        }
+
+        public static string ParseDateToSQLite(DateTime date)
+        {
+            return $"{date.Year}-{date.Month}-{date.Day}";
         }
     }
 
