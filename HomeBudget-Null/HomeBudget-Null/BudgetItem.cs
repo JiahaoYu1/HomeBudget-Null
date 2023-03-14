@@ -49,7 +49,9 @@ namespace Budget
         /// </summary>
         public Double Balance { get; set; }
 
+        internal BudgetItem() { }
     }
+
 
     /// <summary>
     /// <h4>Represents a list of all BudgetItems created within a specific month</h4>
@@ -69,6 +71,8 @@ namespace Budget
         /// The total amount of money from each budget item
         /// </summary>
         public Double Total { get; set; }
+
+        internal BudgetItemsByMonth() { }
     }
 
     /// <summary>
@@ -89,6 +93,7 @@ namespace Budget
         /// </summary>
         public Double Total { get; set; }
 
+        internal BudgetItemsByCategory() { }
     }
 
 

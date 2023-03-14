@@ -30,11 +30,11 @@ namespace Budget
     {
         SQLiteConnection _connection;
 
-        public Expenses()
+        internal Expenses()
         {
             _connection = Database.dbConnection;
         }
-        public Expenses(SQLiteConnection connection_)
+        internal Expenses(SQLiteConnection connection_)
         {
             _connection = connection_;
         }

@@ -32,7 +32,7 @@ using System.Globalization;
 
 namespace Budget
 {
-    public class Database
+    internal class Database
     {
 
         private static SQLiteConnection _connection;

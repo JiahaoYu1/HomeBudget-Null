@@ -85,7 +85,7 @@ namespace Budget
         /// <param name="category">The category number of the expense</param>
         /// <param name="amount">The amount of money the expense uses</param>
         /// <param name="description">The description of the expense</param>
-        public Expense(int id, DateTime date, int category, Double amount, String description)
+        internal Expense(int id, DateTime date, int category, Double amount, String description)
         {
             this.Id = id;
             this.Date = date;
@@ -129,7 +129,7 @@ namespace Budget
         /// </para>
         /// </summary>
         /// <param name="obj">The Expense object to clone</param>
-        public Expense (Expense obj)
+        internal Expense (Expense obj)
         {
             this.Id = obj.Id;
             this.Date = obj.Date;

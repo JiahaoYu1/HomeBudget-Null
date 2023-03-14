@@ -83,7 +83,7 @@ namespace Budget
         /// <param name="description">String datatype, a description to the budget</param>
         /// <param name="type">CategoryType datatype, which stores valid category types(Income, Expense, Credit and Savings), 
         /// if no type provided, will be expense by default </param>
-        public Category(int id, String description, CategoryType type = CategoryType.Expense)
+        internal Category(int id, String description, CategoryType type = CategoryType.Expense)
         {
             Id = id;
             Description = description;
@@ -97,7 +97,7 @@ namespace Budget
         /// Copy Constructor: Constructor that takes in one parameter, where we set id, description and type as the object under the parameter "category"
         /// </summary>
         /// <param name="category">datatype of Category, which is used to set id, description and type</param>
-        public Category(Category category)
+        internal Category(Category category)
         {
             this.Id = category.Id;;
             this.Description = category.Description;

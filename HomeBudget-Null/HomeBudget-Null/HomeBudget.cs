@@ -7,6 +7,8 @@ using System.IO;
 using System.Dynamic;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleToAttribute("HomeBudgetTest")]
 
 // ============================================================================
 // (c) Sandy Bultena 2018
@@ -43,7 +45,7 @@ namespace Budget
             /// </code>
         /// </example>
     /// </summary>
-    public class HomeBudget
+    internal class HomeBudget
     {
         //private string _FileName;
         //private string _DirName;

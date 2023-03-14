@@ -16,7 +16,7 @@ namespace Budget
     /// <summary>
     /// <h4>BudgetFiles class is used to manage the files used in the Budget project</h4>
     /// </summary>
-    public class BudgetFiles
+    internal class BudgetFiles
     {
         private static String DefaultSavePath = @"Budget\";
         private static String DefaultAppData = @"%USERPROFILE%\AppData\Local\";

@@ -36,7 +36,7 @@ namespace Budget
         /// Creates a new instance of Categories and sets all category objects to a default value (see method 
         /// SetCategoriesToDefaults for more information)
         /// </summary>
-        public Categories()
+        internal Categories()
         {
             _connection = Database.dbConnection;
             _FillCategoryTypesTable();
@@ -48,7 +48,7 @@ namespace Budget
         /// </summary>
         /// <param name="connection">An existing SQLite connection</param>
         /// <param name="newDB">Represents whether the Categories tables are going to use new (default) values or not</param>
-        public Categories(SQLiteConnection connection, bool newDB)
+        internal Categories(SQLiteConnection connection, bool newDB)
         {
             
             if (connection is not null)
