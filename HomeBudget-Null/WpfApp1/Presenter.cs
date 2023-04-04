@@ -9,21 +9,23 @@ namespace WpfApp1
 {
     public class Presenter
     {
+        private ViewInterface view;
         private HomeBudget budget;
 
-        public Presenter()
+        public Presenter(string dbFile, ViewInterface newView)
         {
-            budget = new HomeBudget();
+            view = newView;
+            budget = new HomeBudget(dbFile);
         }
 
-        public void AddExpense(Expense expense)
+        public void AddExpense(DateTime date, int categoryId, double amount, string desc)
         {
-            budget.AddExpense(expense);
+            budget.expenses.Add(date, categoryId, amount, desc);
         }
 
-        public double GetBudget()
-        {
-            return budget.GetBudget();
-        }
+        //public double GetBudget()
+        //{
+        //    return budget.GetBudget();
+        //}
     }
 }
