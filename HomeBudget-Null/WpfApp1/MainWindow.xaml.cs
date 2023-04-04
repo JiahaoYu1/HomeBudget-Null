@@ -74,5 +74,16 @@ namespace WpfApp1
         {
             this.Close();
         }
+
+        private void addCategoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            string newCategory = Microsoft.VisualBasic.Interaction.InputBox("Enter a new category name:", "Add Category", "");
+
+            ComboBoxItem newItem = new ComboBoxItem();
+            newItem.Content = newCategory;
+            categoryComboBox.Items.Add(newItem);
+
+            categoryComboBox.SelectedItem = newItem;
+        }
     }
 }
