@@ -8,7 +8,7 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ViewInterface
     {
         private Presenter presenter;
         public MainWindow()
@@ -17,6 +17,53 @@ namespace WpfApp1
             /*this.presenter = new Presenter(this);*/
 
         }
+
+        public void AddCategory()
+        {
+            string newCategory = Microsoft.VisualBasic.Interaction.InputBox("Enter a new category name:", "Add Category", "");
+            Budget.Category.CategoryType newType;
+
+            if (string.IsNullOrEmpty(newCategory))
+            {
+                MessageBox.Show("The new category cannot be empty.", "Error");
+                return;
+            }
+            else if (newCategory == null)
+            {
+                // Handle the case where user closed the InputBox dialog without clicking any button
+                MessageBox.Show("The operation was canceled.", "Information");
+                return;
+            }
+
+            ComboBoxItem newItem = new ComboBoxItem();
+            newItem.Content = newCategory;
+            categoryComboBox.Items.Add(newItem);
+
+            categoryComboBox.SelectedItem = newItem;
+            //presenter.AddCategory();
+        }
+
+        public void GetFile()
+        {
+            string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
+
+            if (!Directory.Exists(defaultDir))
+            {
+                Directory.CreateDirectory(defaultDir);
+            }
+
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog.Title = "Select a File";
+            openFileDialog.InitialDirectory = defaultDir;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFile = openFileDialog.FileName;
+                selectedFileLabel.Content = "Selected File: " + selectedFile;
+            }
+        }
+
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
@@ -38,51 +85,17 @@ namespace WpfApp1
 
         private void chooseFile_Click(object sender, RoutedEventArgs e)
         {
-            string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
-
-            if (!Directory.Exists(defaultDir))
-            {
-                Directory.CreateDirectory(defaultDir);
-            }
-
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            openFileDialog.Title = "Select a File";
-            openFileDialog.InitialDirectory = defaultDir;
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string selectedFile = openFileDialog.FileName;
-                selectedFileLabel.Content = "Selected File: " + selectedFile;
-            }
+            GetFile();
         }
 
         private void closeFile_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
         {
-            string newCategory = Microsoft.VisualBasic.Interaction.InputBox("Enter a new category name:", "Add Category", "");
-
-            if (string.IsNullOrEmpty(newCategory))
-            {
-                MessageBox.Show("The new category cannot be empty.", "Error");
-                return;
-            }
-            else if (newCategory == null)
-            {
-                // Handle the case where user closed the InputBox dialog without clicking any button
-                MessageBox.Show("The operation was canceled.", "Information");
-                return;
-            }
-
-            ComboBoxItem newItem = new ComboBoxItem();
-            newItem.Content = newCategory;
-            categoryComboBox.Items.Add(newItem);
-
-            categoryComboBox.SelectedItem = newItem;
+            AddCategory();
         }
 
         private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
