@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp1
 {
-    internal interface ViewInterface
+    public interface ViewInterface
     {
     }
 }
