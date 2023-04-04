@@ -1,20 +1,7 @@
-﻿using Budget;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Budget;
-using System.IO;
 
 namespace WpfApp1
 {
@@ -28,16 +15,16 @@ namespace WpfApp1
         {
             InitializeComponent();
             /*this.presenter = new Presenter(this);*/
-            
+
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-           /* Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
+            /* Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
 
-            presenter.AddExpense(expense);
+             presenter.AddExpense(expense);
 
-            budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");*/
+             budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");*/
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -53,7 +40,7 @@ namespace WpfApp1
         {
             string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
 
-            if(!Directory.Exists(defaultDir))
+            if (!Directory.Exists(defaultDir))
             {
                 Directory.CreateDirectory(defaultDir);
             }
@@ -84,6 +71,21 @@ namespace WpfApp1
             categoryComboBox.Items.Add(newItem);
 
             categoryComboBox.SelectedItem = newItem;
+        }
+
+        private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+            TextBox tb = (TextBox)sender;
+            if (decimal.TryParse(tb.Text, out decimal value) && tb.Text != null)
+            {
+                budgetLabel.Content = "Budget: $" + tb.Text;
+            }
+            else
+            {
+                tb.Text = string.Empty;
+                budgetLabel.Content = "Budget: $0.00";
+            }
         }
     }
 }
