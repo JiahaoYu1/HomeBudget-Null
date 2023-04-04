@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Budget;
@@ -9,21 +10,35 @@ namespace WpfApp1
 {
     public class Presenter
     {
-        /*private HomeBudget budget;
+        private ViewInterface view;
+        private HomeBudget budget;
+        private string dbFileName;
 
-        public Presenter()
+        public Presenter(string dbFile, ViewInterface newView)
         {
-            budget = new HomeBudget();
+            view = newView;
+            dbFileName = dbFile;
+            budget = new HomeBudget(dbFileName);
         }
 
-        public void AddExpense(Expense expense)
+        public void AddExpense(DateTime date, int categoryId, double amount, string desc)
         {
-            budget.AddExpense(expense);
+            budget.expenses.Add(date, categoryId, amount, desc);
         }
 
-        public double GetBudget()
+        public void AddCategory(string name, Budget.Category.CategoryType type = Budget.Category.CategoryType.Expense)
         {
-            return budget.GetBudget();
-        } */
+            budget.categories.Add(name, type);
+        }
+
+        public void SaveToFile()
+        {
+            budget.SaveToFile(dbFileName);
+        }
+
+        //public double GetBudget()
+        //{
+        //    return budget.GetBudget();
+        //}
     }
 }
