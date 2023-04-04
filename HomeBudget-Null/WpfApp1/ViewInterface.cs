@@ -8,5 +8,7 @@ namespace WpfApp1
 {
     public interface ViewInterface
     {
+        public void AddCategory();
+        public void GetFile();
     }
 }
