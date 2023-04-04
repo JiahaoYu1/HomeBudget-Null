@@ -28,16 +28,16 @@ namespace WpfApp1
         {
             InitializeComponent();
             /*this.presenter = new Presenter(this);*/
-            
+
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-           /* Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
+            /* Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
 
-            presenter.AddExpense(expense);
+             presenter.AddExpense(expense);
 
-            budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");*/
+             budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");*/
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace WpfApp1
         {
             string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
 
-            if(!Directory.Exists(defaultDir))
+            if (!Directory.Exists(defaultDir))
             {
                 Directory.CreateDirectory(defaultDir);
             }
@@ -78,6 +78,18 @@ namespace WpfApp1
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
         {
             string newCategory = Microsoft.VisualBasic.Interaction.InputBox("Enter a new category name:", "Add Category", "");
+
+            if (string.IsNullOrEmpty(newCategory) && newCategory == null)
+            {
+                MessageBox.Show("The new category cannot be empty.", "Error");
+                return;
+            }
+            else if (newCategory == null)
+            {
+                // Handle the case where user closed the InputBox dialog without clicking any button
+                MessageBox.Show("The operation was canceled.", "Information");
+                return;
+            }
 
             ComboBoxItem newItem = new ComboBoxItem();
             newItem.Content = newCategory;
