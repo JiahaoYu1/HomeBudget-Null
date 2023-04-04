@@ -11,4 +11,10 @@
     <Folder Include="DLL\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="HomeBudget">
+      <HintPath>DLL\HomeBudget.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

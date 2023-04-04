@@ -30,6 +30,8 @@
             <Label Content="Date:" Grid.Row="2"/>
             <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="1"/>
 
+
+
             <Label Content="Category:" Grid.Row="3"/>
             <ComboBox x:Name="categoryComboBox" Grid.Row="3" Grid.Column="1">
                 <ComboBoxItem Content="Income"/>
@@ -38,10 +40,17 @@
                 <ComboBoxItem Content="Savings"/>
             </ComboBox>
 
-            <Button x:Name="addButton" Content="Cancel" Grid.Row="4" Click="cancelButton_Click" Grid.ColumnSpan="2" Height="20" Margin="0,0,369,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
-            <Button x:Name="cancelButton" Content="Add" Grid.Row="4" Grid.Column="1" Click="addButton_Click"/>
+            <Label Content="Description" Grid.Row="4"/>
+            <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1"/>
 
-            <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
+            <Button x:Name="addButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.ColumnSpan="2" Height="26" Margin="0,0,369,0" VerticalAlignment="Center"/>
+            <Button x:Name="cancelButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click"/>
+
+            <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
+
+            <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Margin="0,26,369,-26" Grid.Row="5" Grid.ColumnSpan="2"/>
+
+
         </Grid>
     </Grid>
 </Window>
