@@ -79,7 +79,7 @@ namespace WpfApp1
         {
             string newCategory = Microsoft.VisualBasic.Interaction.InputBox("Enter a new category name:", "Add Category", "");
 
-            if (string.IsNullOrEmpty(newCategory) && newCategory == null)
+            if (string.IsNullOrEmpty(newCategory))
             {
                 MessageBox.Show("The new category cannot be empty.", "Error");
                 return;
