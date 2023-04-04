@@ -2,7 +2,7 @@
 
 namespace HomeBudgetTest_Sequel
 {
-    public class TestHomeBudget
+    public class TestPresenter
     {
         [Fact]
         public void Test()
