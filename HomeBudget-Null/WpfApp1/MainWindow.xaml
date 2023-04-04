@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Add Expense" Height="350" Width="500">
     <Grid>
-        <Grid Margin="20">
+        <Grid Margin="30,20,10,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -50,7 +50,9 @@
 
             <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Margin="0,26,369,-26" Grid.Row="5" Grid.ColumnSpan="2"/>
 
+            <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="5" Grid.Column="1" Margin="0,26,10,-26"/>
 
+            <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="94,88,185,-88" Grid.Row="5"/>
         </Grid>
     </Grid>
 </Window>

@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Budget;
-
+using System.IO;
 
 namespace WpfApp1
 {
@@ -27,17 +27,17 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            this.presenter = new Presenter(this);
+            /*this.presenter = new Presenter(this);*/
             
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
+           /* Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
 
             presenter.AddExpense(expense);
 
-            budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");
+            budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");*/
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -51,14 +51,28 @@ namespace WpfApp1
 
         private void chooseFile_Click(object sender, RoutedEventArgs e)
         {
+            string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
+
+            if(!Directory.Exists(defaultDir))
+            {
+                Directory.CreateDirectory(defaultDir);
+            }
+
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
             openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
             openFileDialog.Title = "Select a File";
+            openFileDialog.InitialDirectory = defaultDir;
 
             if (openFileDialog.ShowDialog() == true)
             {
-                // TODO: Process the selected file
+                string selectedFile = openFileDialog.FileName;
+                selectedFileLabel.Content = "Selected File: " + selectedFile;
             }
+        }
+
+        private void closeFile_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
