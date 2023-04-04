@@ -9,7 +9,7 @@ namespace WpfApp1
 {
     public class Presenter
     {
-        private HomeBudget budget;
+        /*private HomeBudget budget;
 
         public Presenter()
         {
@@ -24,6 +24,6 @@ namespace WpfApp1
         public double GetBudget()
         {
             return budget.GetBudget();
-        }
+        } */
     }
 }
