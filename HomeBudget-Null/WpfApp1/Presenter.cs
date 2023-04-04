@@ -23,6 +23,11 @@ namespace WpfApp1
             budget.expenses.Add(date, categoryId, amount, desc);
         }
 
+        public void AddCategory(string name, Budget.Category.CategoryType type = Budget.Category.CategoryType.Expense)
+        {
+            budget.categories.Add(name, type);
+        }
+
         //public double GetBudget()
         //{
         //    return budget.GetBudget();
