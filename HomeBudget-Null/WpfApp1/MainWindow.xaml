@@ -30,15 +30,17 @@
             <Label Content="Date:" Grid.Row="2"/>
             <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="1"/>
 
-
-
             <Label Content="Category:" Grid.Row="3"/>
-            <ComboBox x:Name="categoryComboBox" Grid.Row="3" Grid.Column="1">
-                <ComboBoxItem Content="Income"/>
-                <ComboBoxItem Content="Expense"/>
-                <ComboBoxItem Content="Credit"/>
-                <ComboBoxItem Content="Savings"/>
-            </ComboBox>
+            <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                <ComboBox x:Name="categoryComboBox" Width="150">
+                    <ComboBoxItem Content="Income"/>
+                    <ComboBoxItem Content="Expense"/>
+                    <ComboBoxItem Content="Credit"/>
+                    <ComboBoxItem Content="Savings"/>
+                </ComboBox>
+                <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
+                <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="5" HorizontalAlignment="Right"/>
+            </StackPanel>
 
             <Label Content="Description" Grid.Row="4"/>
             <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1"/>
