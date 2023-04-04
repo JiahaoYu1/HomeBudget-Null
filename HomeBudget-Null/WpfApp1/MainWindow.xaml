@@ -38,8 +38,8 @@
                 <ComboBoxItem Content="Savings"/>
             </ComboBox>
 
-            <Button x:Name="addButton" Content="Add" Grid.Row="4" Click="addButton_Click"/>
-            <Button x:Name="cancelButton" Content="Cancel" Grid.Row="4" Grid.Column="1" Click="cancelButton_Click"/>
+            <Button x:Name="addButton" Content="Cancel" Grid.Row="4" Click="cancelButton_Click" Grid.ColumnSpan="2" Height="20" Margin="0,0,369,0" Grid.RowSpan="2" VerticalAlignment="Top"/>
+            <Button x:Name="cancelButton" Content="Add" Grid.Row="4" Grid.Column="1" Click="addButton_Click"/>
 
             <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
         </Grid>
