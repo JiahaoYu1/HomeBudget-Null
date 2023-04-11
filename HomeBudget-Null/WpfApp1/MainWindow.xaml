@@ -16,23 +16,29 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                
+                <TextBlock x:Name="GeneralMargin" Visibility="Hidden">
+                    2
+                </TextBlock>
+                
 
-                <Label Content="Expense Name:"/>
-                <TextBox x:Name="nameTextBox" Grid.Column="1"/>
+                <Label Content="Expense Name:" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <TextBox x:Name="nameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Label Content="Amount:" Grid.Row="1"/>
-                <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="1"/>
+                <Label Content="Amount:" Grid.Row="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Label Content="Date:" Grid.Row="2"/>
-                <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="1"/>
+                <Label Content="Date:" Grid.Row="2" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Label Content="Category:" Grid.Row="3"/>
-                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                <Label Content="Category:" Grid.Row="3" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="{Binding ElementName=GeneralMargin,Path=Text}">
                     <ComboBox x:Name="categoryComboBox" Width="150">
                         <ComboBoxItem Content="Rent"/>
                         <ComboBoxItem Content="Groceries"/>
@@ -40,20 +46,20 @@
                         <ComboBoxItem Content="Utilties"/>
                     </ComboBox>
                     <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
-                    <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="5" HorizontalAlignment="Right"/>
+                    <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right"/>
                 </StackPanel>
 
-                <Label Content="Description" Grid.Row="4"/>
-                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1"/>
+                <Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Button x:Name="addButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.ColumnSpan="2" Height="26" Margin="0,0,369,0" VerticalAlignment="Center"/>
-                <Button x:Name="cancelButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click"/>
+                <Button x:Name="addButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.Column="0"  Height="26" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
+                <Button x:Name="cancelButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
                 <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
 
-                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Margin="0,26,377,-26" Grid.Row="5" Grid.ColumnSpan="2"/>
+                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="5" Grid.Column="1" Margin="0,26,10,-26"/>
+                <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
                 <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="94,88,185,-88" Grid.Row="5"/>
             </Grid>
