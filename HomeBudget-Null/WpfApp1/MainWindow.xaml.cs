@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace WpfApp1
 {
@@ -95,7 +96,28 @@ namespace WpfApp1
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
         {
-            AddCategory();
+            // Create a new instance of the AddCategoryWindow
+            AddCategoryWindow addCategoryWindow = new AddCategoryWindow();
+
+            // Show the window as a modal dialog
+            bool? result = addCategoryWindow.ShowDialog();
+
+            if (result == true)
+            {
+                // User clicked the confirm button, so update the categoryComboBox
+                string categoryName = addCategoryWindow.CategoryName;
+                string categoryType = addCategoryWindow.CategoryType;
+                // Add the new category to the categoryComboBox
+                ComboBoxItem newItem = new ComboBoxItem();
+                newItem.Content = categoryName + " - " + categoryType;
+                categoryComboBox.Items.Add(newItem);
+                // Select the newly added category
+                categoryComboBox.SelectedItem = newItem;
+            }
+            else
+            {
+                // User clicked the cancel button or closed the window, so do nothing
+            }
         }
 
         private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -112,5 +134,11 @@ namespace WpfApp1
                 budgetLabel.Content = "Budget: $0.00";
             }
         }
+
+        private void categoryTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
     }
 }

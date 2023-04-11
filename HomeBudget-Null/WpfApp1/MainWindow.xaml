@@ -34,10 +34,10 @@
                 <Label Content="Category:" Grid.Row="3"/>
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                     <ComboBox x:Name="categoryComboBox" Width="150">
-                        <ComboBoxItem Content="Income"/>
-                        <ComboBoxItem Content="Expense"/>
-                        <ComboBoxItem Content="Credit"/>
-                        <ComboBoxItem Content="Savings"/>
+                        <ComboBoxItem Content="Rent"/>
+                        <ComboBoxItem Content="Groceries"/>
+                        <ComboBoxItem Content="Transportation"/>
+                        <ComboBoxItem Content="Utilties"/>
                     </ComboBox>
                     <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
                     <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="5" HorizontalAlignment="Right"/>
@@ -51,13 +51,13 @@
 
                 <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
 
-                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Margin="0,26,369,-26" Grid.Row="5" Grid.ColumnSpan="2"/>
+                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Margin="0,26,377,-26" Grid.Row="5" Grid.ColumnSpan="2"/>
 
                 <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="5" Grid.Column="1" Margin="0,26,10,-26"/>
 
                 <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="94,88,185,-88" Grid.Row="5"/>
             </Grid>
         </GroupBox>
-        
+
     </Grid>
 </Window>
