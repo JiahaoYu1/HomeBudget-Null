@@ -1,8 +1,8 @@
 ﻿<Window x:Class="WpfApp1.AddCategoryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add Category" Height="150" Width="300">
-    <Grid>
+        Title="Add Category" Height="135" Width="300">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -13,20 +13,27 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Category Name:"/>
-        <TextBox x:Name="categoryNameTextBox" Grid.Column="1"/>
+        <TextBlock x:Name="GeneralMargin" Visibility="Hidden">4</TextBlock>
 
-        <Label Content="Category Type:" Grid.Row="1"/>
-        <ComboBox x:Name="categoryTypeComboBox" Grid.Row="1" Grid.Column="1">
+        <Label Content="Category Name:" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
+        <TextBox x:Name="categoryNameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
+
+        <Label Content="Category Type:" Grid.Row="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
+        <ComboBox x:Name="categoryTypeComboBox" Grid.Row="1" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}">
             <ComboBoxItem Content="Income"/>
             <ComboBoxItem Content="Expense"/>
             <ComboBoxItem Content="Credit"/>
             <ComboBoxItem Content="Savings"/>
         </ComboBox>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right">
-            <Button x:Name="confirmButton" Content="Confirm" Click="confirmButton_Click"/>
-            <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Margin="5,0,0,0"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button x:Name="confirmButton" Content="Confirm" Click="confirmButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
+            <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
+        </Grid>
     </Grid>
 </Window>
