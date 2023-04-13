@@ -81,7 +81,7 @@ namespace WpfApp1
             amountTextBox.Text = "";
             dateDatePicker.Text = "";
             categoryComboBox.SelectedIndex = -1;
-            descriptionTextBox.Text = "";
+            //descriptionTextBox.Text = "";
         }
 
         private void chooseFile_Click(object sender, RoutedEventArgs e)
