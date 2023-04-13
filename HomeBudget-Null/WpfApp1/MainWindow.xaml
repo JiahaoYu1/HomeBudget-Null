@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Add Expense" Height="350" Width="500">
-    <Grid>
+        Title="Add Expense" Height="385" Width="500" ResizeMode="NoResize">
+    <StackPanel>
+        <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
+        <Grid x:Name="MenuBar" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27.5" Width="500" Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button Content="Theme" Grid.Column="0" Grid.Row="0"/>
+        </Grid>
+        
         <GroupBox Header="Main Details" Margin="10,20,10,20">
             <Grid>
                 <Grid.RowDefinitions>
@@ -52,8 +64,8 @@
                 <Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
                 <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Button x:Name="addButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.Column="0"  Height="26" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
-                <Button x:Name="cancelButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.Column="0"  Height="26" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
+                <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
                 <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
 
@@ -65,5 +77,5 @@
             </Grid>
         </GroupBox>
 
-    </Grid>
+    </StackPanel>
 </Window>
