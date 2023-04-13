@@ -61,10 +61,10 @@
                     <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right"/>
                 </StackPanel>
 
-                <Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <!--<Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>-->
 
-                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.Column="0"  Height="26" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
+                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="6" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
                 <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
                 <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
