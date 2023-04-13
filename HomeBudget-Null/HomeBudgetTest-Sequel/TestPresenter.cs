@@ -1,12 +1,26 @@
-
+using WpfApp1;
 
 namespace HomeBudgetTest_Sequel
 {
-    public class TestPresenter
+    public class TestPresenter: ViewInterface
     {
-        [Fact]
-        public void Test()
+        private Presenter presenter;
+
+        public void AddCategory()
         {
+            throw new NotImplementedException();
+        }
+
+        public void GetFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TestAddCategory()
+        {
+            presenter = new Presenter();
+
 
         }
     }
