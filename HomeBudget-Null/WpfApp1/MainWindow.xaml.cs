@@ -15,7 +15,7 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            /*this.presenter = new Presenter(this);*/
+            this.presenter = new Presenter(this);
 
         }
 
