@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Add Expense" Height="385" Width="500" ResizeMode="NoResize">
+        Title="Add Expense" Height="350" Width="500" ResizeMode="NoResize">
     <StackPanel>
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
         <Grid x:Name="MenuBar" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27.5" Width="500" Background="LightGray">
