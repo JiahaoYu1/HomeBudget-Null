@@ -26,4 +26,10 @@
     <ProjectReference Include="..\WpfApp1\WpfApp1.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="HomeBudget">
+      <HintPath>..\WpfApp1\DLL\HomeBudget.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
