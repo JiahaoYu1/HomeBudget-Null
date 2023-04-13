@@ -12,10 +12,12 @@ namespace WpfApp1
     public partial class MainWindow : Window, ViewInterface
     {
         private Presenter presenter;
+        private const string dbFile = "../../../testDBInput.db";
+
         public MainWindow()
         {
             InitializeComponent();
-            this.presenter = new Presenter(this);
+            this.presenter = new Presenter(dbFile, this);
 
         }
 
