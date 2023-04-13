@@ -21,27 +21,31 @@ namespace WpfApp1
 
         public void AddCategory()
         {
-            string newCategory = Microsoft.VisualBasic.Interaction.InputBox("Enter a new category name:", "Add Category", "");
-            Budget.Category.CategoryType newType;
+            // Create a new instance of the AddCategoryWindow
+            AddCategoryWindow addCategoryWindow = new AddCategoryWindow();
 
-            if (string.IsNullOrEmpty(newCategory))
+            // Show the window as a modal dialog
+            bool? userCreatedCategory = addCategoryWindow.ShowDialog();
+
+            if (userCreatedCategory == true)
             {
-                MessageBox.Show("The new category cannot be empty.", "Error");
-                return;
+                // User clicked the confirm button, so update the categoryComboBox
+                string categoryName = addCategoryWindow.CategoryName;
+                string categoryType = addCategoryWindow.CategoryType;
+
+                //presenter.AddCategory(categoryName, categoryType);
+
+                // Add the new category to the categoryComboBox
+                ComboBoxItem newItem = new ComboBoxItem();
+                newItem.Content = categoryName + " - " + categoryType;
+                categoryComboBox.Items.Add(newItem);
+                // Select the newly added category
+                categoryComboBox.SelectedItem = newItem;
             }
-            else if (newCategory == null)
+            else
             {
-                // Handle the case where user closed the InputBox dialog without clicking any button
-                MessageBox.Show("The operation was canceled.", "Information");
-                return;
+                // User clicked the cancel button or closed the window, so do nothing
             }
-
-            ComboBoxItem newItem = new ComboBoxItem();
-            newItem.Content = newCategory;
-            categoryComboBox.Items.Add(newItem);
-
-            categoryComboBox.SelectedItem = newItem;
-            //presenter.AddCategory();
         }
 
         public void GetFile()
@@ -96,28 +100,7 @@ namespace WpfApp1
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
         {
-            // Create a new instance of the AddCategoryWindow
-            AddCategoryWindow addCategoryWindow = new AddCategoryWindow();
-
-            // Show the window as a modal dialog
-            bool? result = addCategoryWindow.ShowDialog();
-
-            if (result == true)
-            {
-                // User clicked the confirm button, so update the categoryComboBox
-                string categoryName = addCategoryWindow.CategoryName;
-                string categoryType = addCategoryWindow.CategoryType;
-                // Add the new category to the categoryComboBox
-                ComboBoxItem newItem = new ComboBoxItem();
-                newItem.Content = categoryName + " - " + categoryType;
-                categoryComboBox.Items.Add(newItem);
-                // Select the newly added category
-                categoryComboBox.SelectedItem = newItem;
-            }
-            else
-            {
-                // User clicked the cancel button or closed the window, so do nothing
-            }
+            AddCategory();
         }
 
         private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
