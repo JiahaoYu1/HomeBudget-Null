@@ -13,6 +13,7 @@ namespace WpfApp1
     {
         private Presenter presenter;
         private const string dbFile = "../../../testDBInput.db";
+        private bool unsavedChanges = false;
 
         public MainWindow()
         {
@@ -74,6 +75,7 @@ namespace WpfApp1
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
+            unsavedChanges = false;
             /* Expense expense = new Expense(nameTextBox.Text, dateDatePicker.Text, categoryComboBox.SelectedItem.ToString(), double.Parse(amountTextBox.Text), descriptionTextBox.Text);
 
              presenter.AddExpense(expense);
@@ -83,6 +85,7 @@ namespace WpfApp1
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
+            unsavedChanges = false;
             nameTextBox.Text = "";
             amountTextBox.Text = "";
             dateDatePicker.Text = "";
@@ -107,7 +110,7 @@ namespace WpfApp1
 
         private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            unsavedChanges = true;
             TextBox tb = (TextBox)sender;
             if (decimal.TryParse(tb.Text, out decimal value) && tb.Text != null)
             {
@@ -120,10 +123,24 @@ namespace WpfApp1
             }
         }
 
-        private void categoryTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void nameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            unsavedChanges = true;
         }
 
+        private void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            unsavedChanges = true;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (unsavedChanges)
+            {
+                MessageBoxResult result = MessageBox.Show("There are unsaved changes. Are you sure you want to close the application? ", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                    e.Cancel = true;
+            }
+        }
     }
 }

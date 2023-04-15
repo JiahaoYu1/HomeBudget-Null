@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Add Expense" Height="350" Width="500" ResizeMode="NoResize">
+        Title="Add Expense" Height="350" Width="500" ResizeMode="NoResize" Closing="MainWindow_Closing">
     <StackPanel>
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
         <Grid x:Name="MenuBar" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27.5" Width="500" Background="LightGray">
@@ -41,7 +41,7 @@
                 
 
                 <Label Content="Expense Name:" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="nameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <TextBox x:Name="nameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="nameTextBox_TextChanged"/>
 
                 <Label Content="Amount:" Grid.Row="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
                 <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
@@ -51,7 +51,7 @@
 
                 <Label Content="Category:" Grid.Row="3" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="{Binding ElementName=GeneralMargin,Path=Text}">
-                    <ComboBox x:Name="categoryComboBox" Width="150">
+                    <ComboBox x:Name="categoryComboBox" Width="150" SelectionChanged="categoryComboBox_SelectionChanged">
                         <ComboBoxItem Content="Rent"/>
                         <ComboBoxItem Content="Groceries"/>
                         <ComboBoxItem Content="Transportation"/>
