@@ -160,6 +160,7 @@ namespace WpfApp1
             unsavedChanges = true;
         }
 
+
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (unsavedChanges)

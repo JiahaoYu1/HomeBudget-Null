@@ -56,6 +56,11 @@
                         <ComboBoxItem Content="Groceries"/>
                         <ComboBoxItem Content="Transportation"/>
                         <ComboBoxItem Content="Utilties"/>
+                        <ComboBoxItem Content="Entertainment"/>
+                        <ComboBoxItem Content="Clothing"/>
+                        <ComboBoxItem Content="Education"/>
+                        <ComboBoxItem Content="Gifts"/>
+                        <ComboBoxItem Content="Travel"/>
                     </ComboBox>
                     <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
                     <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right"/>
