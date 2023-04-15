@@ -16,7 +16,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Content="Theme" Grid.Column="0" Grid.Row="0"/>
+            <Button Content="Theme" Grid.Column="0" Grid.Row="0" Click="ThemeButton_Click"/>
         </Grid>
         
         <GroupBox Header="Main Details" Margin="10,20,10,20">
@@ -61,8 +61,8 @@
                     <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right"/>
                 </StackPanel>
 
-                <!--<Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>-->
+                <Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="descriptionTextBox_TextChanged"/>
 
                 <Button x:Name="cancelButton" Content="Cancel" Grid.Row="6" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
                 <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
