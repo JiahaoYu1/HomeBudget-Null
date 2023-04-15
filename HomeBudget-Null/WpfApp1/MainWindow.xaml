@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Add Expense" Height="350" Width="500" ResizeMode="NoResize" Closing="MainWindow_Closing">
-    <StackPanel>
+    <StackPanel Margin="0,0,0,-86">
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
         <Grid x:Name="MenuBar" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27.5" Width="500" Background="LightGray">
             <Grid.ColumnDefinitions>
@@ -18,7 +18,7 @@
 
             <Button Content="Theme" Grid.Column="0" Grid.Row="0" Click="ThemeButton_Click"/>
         </Grid>
-        
+
         <GroupBox Header="Main Details" Margin="10,20,10,20">
             <Grid>
                 <Grid.RowDefinitions>
@@ -34,11 +34,11 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <TextBlock x:Name="GeneralMargin" Visibility="Hidden">
                     2
                 </TextBlock>
-                
+
 
                 <Label Content="Expense Name:" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
                 <TextBox x:Name="nameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="nameTextBox_TextChanged"/>
@@ -78,7 +78,7 @@
 
                 <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="94,88,185,-88" Grid.Row="5"/>
+                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="6"/>
             </Grid>
         </GroupBox>
 
