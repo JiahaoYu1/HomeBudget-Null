@@ -7,10 +7,12 @@ namespace HomeBudgetTest_Sequel
     {
         private string DBFILE = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\HomeBudgetTest-Sequel\\testDBInput.db"));
         private Presenter presenter;
+        private bool beforeAllActivated = false;
+        private int categoriesAdded = 0;
 
-        public void AddCategory()
+        public void AddCategory(string categoryName, string categoryType)
         {
-            throw new NotImplementedException();
+            categoriesAdded++;
         }
 
         public void GetFile()
@@ -18,6 +20,8 @@ namespace HomeBudgetTest_Sequel
             throw new NotImplementedException();
         }
 
+
+        #region Public Test Methods
         [Fact]
         public void TestAddCategory()
         {
@@ -29,6 +33,17 @@ namespace HomeBudgetTest_Sequel
 
             // Assert
             
+        }
+        #endregion
+
+        private void BeforeAll()
+        {
+            beforeAllActivated = true;
+        }
+
+        private void BeforeEach()
+        {
+            BeforeAll();
         }
     }
 }
