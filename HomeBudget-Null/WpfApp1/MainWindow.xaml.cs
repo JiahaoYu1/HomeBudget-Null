@@ -38,33 +38,17 @@ namespace WpfApp1
             Green
         }
 
-        public void AddCategory()
+        public void AddCategory(string categoryName)
         {
-            // Create a new instance of the AddCategoryWindow
-            AddCategoryWindow addCategoryWindow = new AddCategoryWindow();
-
-            // Show the window as a modal dialog
-            bool? userCreatedCategory = addCategoryWindow.ShowDialog();
-
-            if (userCreatedCategory == true)
-            {
                 // User clicked the confirm button, so update the categoryComboBox
-                string categoryName = addCategoryWindow.CategoryName;
-                string categoryType = addCategoryWindow.CategoryType;
-
                 //presenter.AddCategory(categoryName, categoryType);
 
                 // Add the new category to the categoryComboBox
                 ComboBoxItem newItem = new ComboBoxItem();
-                newItem.Content = categoryName + " - " + categoryType;
+                newItem.Content = categoryName; // + " - " + categoryType;
                 categoryComboBox.Items.Add(newItem);
                 // Select the newly added category
                 categoryComboBox.SelectedItem = newItem;
-            }
-            else
-            {
-                // User clicked the cancel button or closed the window, so do nothing
-            }
         }
 
         public void GetFile()
@@ -136,7 +120,19 @@ namespace WpfApp1
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
         {
-            AddCategory();
+            // Create a new instance of the AddCategoryWindow
+            AddCategoryWindow addCategoryWindow = new AddCategoryWindow();
+
+            // Show the window as a modal dialog
+            bool? userCreatedCategory = addCategoryWindow.ShowDialog();
+
+            if (userCreatedCategory == true)
+            {
+                string categoryName = addCategoryWindow.CategoryName;
+                string categoryType = addCategoryWindow.CategoryType;
+
+                presenter.AddCategory(categoryName, Enum.Parse(Category.CategoryType, categoryType));
+            }
         }
 
         private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
