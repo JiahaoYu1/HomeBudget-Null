@@ -8,18 +8,8 @@
         Title="Add Expense" Height="350" Width="500" ResizeMode="NoResize" Closing="MainWindow_Closing">
     <StackPanel Margin="0,0,0,-86">
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
-        <Grid x:Name="MenuBar" HorizontalAlignment="Left" VerticalAlignment="Center" Height="27.5" Width="500" Background="LightGray">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
 
-            <Button Content="Theme" Grid.Column="0" Grid.Row="0" Click="ThemeButton_Click"/>
-        </Grid>
-
-        <GroupBox Header="Main Details" Margin="10,20,10,20">
+        <GroupBox Header="Home Budget" Margin="10,20,10,20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -51,7 +41,7 @@
 
                 <Label Content="Category:" Grid.Row="3" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="{Binding ElementName=GeneralMargin,Path=Text}">
-                    <ComboBox x:Name="categoryComboBox" Width="150" SelectionChanged="categoryComboBox_SelectionChanged">
+                    <ComboBox x:Name="categoryComboBox" Width="150" SelectionChanged="categoryComboBox_SelectionChanged" Background="Silver">
                         <ComboBoxItem Content="Rent"/>
                         <ComboBoxItem Content="Groceries"/>
                         <ComboBoxItem Content="Transportation"/>
@@ -63,22 +53,22 @@
                         <ComboBoxItem Content="Travel"/>
                     </ComboBox>
                     <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
-                    <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right"/>
+                    <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right" Background="Silver" Foreground="DarkBlue"/>
                 </StackPanel>
 
                 <Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
                 <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="descriptionTextBox_TextChanged"/>
 
-                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="6" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center"/>
-                <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="6" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
+                <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
 
                 <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
 
-                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
 
                 <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="6"/>
+                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="6" Background="Red" Foreground="White"/>
             </Grid>
         </GroupBox>
 

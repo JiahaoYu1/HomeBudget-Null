@@ -6,6 +6,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using MahApps.Metro;
+using ControlzEx.Theming;
 
 namespace WpfApp1
 {
@@ -17,6 +20,7 @@ namespace WpfApp1
         private Presenter presenter;
         private const string dbFile = "../../../testDBInput.db";
         private bool unsavedChanges = false;
+        private bool isDarkTheme = false;
 
         public MainWindow()
         {
@@ -174,52 +178,6 @@ namespace WpfApp1
         private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             unsavedChanges = true;
-        }
-
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
-        {
-           /* // Check if the IsDarkMode key exists in the resources dictionary
-            if (Application.Current.Resources.Contains("IsDarkMode"))
-            {
-                // Check the current theme mode
-                bool isDarkMode = false;
-                if (Application.Current.Resources["IsDarkMode"] is bool value)
-                {
-                    isDarkMode = value;
-                }
-
-                // Toggle the theme mode
-                isDarkMode = !isDarkMode;
-
-                // Set the new theme mode
-                Application.Current.Resources["IsDarkMode"] = isDarkMode;
-
-                // Force a refresh of the UI
-                var window = Application.Current.MainWindow;
-                window.InvalidateMeasure();
-                window.InvalidateArrange();
-                window.UpdateLayout();
-
-                // Set the UI element colors and styles based on the theme mode
-                if (isDarkMode)
-                {
-                    Application.Current.Resources["BackgroundColor"] = Brushes.Black;
-                    Application.Current.Resources["ForegroundColor"] = Brushes.White;
-                    Application.Current.Resources["GroupBoxBackground"] = Brushes.DarkGray;
-                    Application.Current.Resources["GroupBoxForeground"] = Brushes.White;
-                    Application.Current.Resources["ButtonBackground"] = Brushes.DarkGray;
-                    Application.Current.Resources["ButtonForeground"] = Brushes.White;
-                }
-                else
-                {
-                    Application.Current.Resources["BackgroundColor"] = Brushes.White;
-                    Application.Current.Resources["ForegroundColor"] = Brushes.Black;
-                    Application.Current.Resources["GroupBoxBackground"] = Brushes.LightGray;
-                    Application.Current.Resources["GroupBoxForeground"] = Brushes.Black;
-                    Application.Current.Resources["ButtonBackground"] = Brushes.LightGray;
-                    Application.Current.Resources["ButtonForeground"] = Brushes.Black;
-                }
-            }*/
         }
     }
 }
