@@ -19,8 +19,19 @@ namespace WpfApp1
     /// </summary>
     public partial class AddCategoryWindow : Window
     {
-        public string CategoryName { get; set; }
-        public string CategoryType { get; set; }
+        private string _categoryName;
+        private string _categoryType;
+
+        public string CategoryName { 
+            get { return _categoryName; }
+            private set { _categoryName = value; }
+        }
+        public string CategoryType
+        {
+            get { return _categoryType; }
+            private set { _categoryType = value; }
+        }
+
         public AddCategoryWindow()
         {
             InitializeComponent();
