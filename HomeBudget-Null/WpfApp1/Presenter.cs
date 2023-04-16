@@ -43,9 +43,12 @@ namespace WpfApp1
         /// </summary>
         /// <param name="name">The name of the category</param>
         /// <param name="type">The type of category (Expense, Savings, Income, Credit)</param>
-        public void AddCategory(string name, Budget.Category.CategoryType type = Budget.Category.CategoryType.Expense)
+        public void AddCategory(string name, string type = "Expense")
         {
+            string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length).ToLower());
+
             budget.categories.Add(name, type);
+            view.AddCategory();
         }
 
         /// <summary>
