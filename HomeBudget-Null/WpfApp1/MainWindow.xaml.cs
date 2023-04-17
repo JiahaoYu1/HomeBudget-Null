@@ -26,7 +26,7 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            this.presenter = new Presenter(dbFile, this);
+            this.presenter = new Presenter(this);
             dateDatePicker.SelectedDate = DateTime.Today;
         }
 
@@ -46,7 +46,7 @@ namespace WpfApp1
 
             // Add the new category to the categoryComboBox
             ComboBoxItem newItem = new ComboBoxItem();
-            newItem.Content = categoryName; // + " - " + categoryType;
+            newItem.Content = categoryName + " - " + categoryType;
             categoryComboBox.Items.Add(newItem);
             // Select the newly added category
             categoryComboBox.SelectedItem = newItem;
@@ -62,7 +62,6 @@ namespace WpfApp1
             amountTextBox.Text = "";
             dateDatePicker.SelectedDate = null;
             categoryComboBox.SelectedIndex = -1;
-            descriptionTextBox.Text = "";
             selectedFileLabel.Content = "Selected File: ";
 
             // Set unsavedChanges to true
@@ -99,45 +98,52 @@ namespace WpfApp1
 
         public void DisplayError(Exception errorToDisplay)
         {
-            MessageBox.Show(errorToDisplay.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            DisplayError(errorToDisplay.Message);
         }
+
+        private void DisplayError(string errorToDisplay)
+        {
+            MessageBox.Show(errorToDisplay, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
 
         private bool AreInputsFilledOut()
         {
 
             if (string.IsNullOrEmpty(nameTextBox.Text))
             {
-                MessageBox.Show("Please provide a name for the Expense.", "Expense Name");
+                DisplayError("Please provide a name for the Expense.");
                 return false;
             }
             if (string.IsNullOrEmpty(amountTextBox.Text))
             {
-                MessageBox.Show("Please provide an amount for the Expense", "Expense Amount");
-                return false;
-            }
-            if(string.IsNullOrEmpty(descriptionTextBox.Text))
-            {
-                MessageBox.Show("Please provide a description for the Expense", "Expense Descripton");
+                DisplayError("Please provide an amount for the Expense");
                 return false;
             }
 
-            DateTime date;
-            if (!DateTime.TryParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            DateTime? date = dateDatePicker.SelectedDate;
+            if (date is null)
             {
-                MessageBox.Show("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd", "Expense Date");
+                DisplayError("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd");
                 return false;
             }
 
-            if(categoryComboBox.SelectedIndex == -1) 
+            //if (!DateTime.TryParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            //{
+            //    MessageBox.Show("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd", "Expense Date");
+            //    return false;
+            //}
+
+            if (categoryComboBox.SelectedIndex == -1) 
             {
-                MessageBox.Show("Please select a Category in which the Expense falls under.", "Expense Category");
+                DisplayError("Please select a Category in which the Expense falls under.");
                 return false;
             }
-            if(selectedFileLabel.Content.ToString() == "Selected File: ")
+            /*if(selectedFileLabel.Content.ToString() == "Selected File: ")
             {
                 MessageBox.Show("Please select a file for the Expense to be stored in.", "Expense File");
                 return false;
-            }
+            }*/
 
             return true;
         }
@@ -151,10 +157,10 @@ namespace WpfApp1
                 return;
 
             // Add the expense to the budget using the presenter
-            DateTime date = DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime? date = dateDatePicker.SelectedDate;//DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             int amount = int.Parse(amountTextBox.Text.ToString());
             int index = categoryComboBox.SelectedIndex;
-            presenter.AddExpense(date,index+1, amount, descriptionTextBox.Text);
+            presenter.AddExpense((DateTime)date,index+1, amount, nameTextBox.Text);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -234,5 +240,10 @@ namespace WpfApp1
             unsavedChanges = true;
         }
         #endregion
+
+        private void createFile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
