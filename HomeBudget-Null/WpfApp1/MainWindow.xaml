@@ -19,6 +19,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -56,19 +57,16 @@
                     <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right" Background="Silver" Foreground="DarkBlue"/>
                 </StackPanel>
 
-                <Label Content="Description" Grid.Row="4" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="descriptionTextBox" Grid.Row="4" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="descriptionTextBox_TextChanged"/>
+                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
+                <Button Content="Create File" Name="createFile" Click="createFile_Click" Grid.Row="6" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
+                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="7" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
 
-                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="6" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
                 <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
 
-                <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
-
-                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
-
+                <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
                 <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
-                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="6" Background="Red" Foreground="White"/>
+                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White"/>
             </Grid>
         </GroupBox>
 
