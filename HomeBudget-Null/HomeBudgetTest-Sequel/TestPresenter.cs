@@ -24,7 +24,7 @@ namespace HomeBudgetTest_Sequel
             expensesAdded++;
         }
 
-        public void GetFile()
+        public void GetFile(bool isCreatingNewFile)
         {
             throw new NotImplementedException();
         }
