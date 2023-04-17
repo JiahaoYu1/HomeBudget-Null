@@ -5,7 +5,7 @@ namespace HomeBudgetTest_Sequel
 {
     public class TestPresenter: ViewInterface
     {
-        private string DBFILE = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\HomeBudgetTest-Sequel\\testDBInput.db"));
+        private string DBFILE = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\testDBInput.db"));
         private Presenter presenter;
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
@@ -43,10 +43,11 @@ namespace HomeBudgetTest_Sequel
 
         #region Public Test Methods
         [Fact]
-        public void TestAddCategory_BestCase()
+        public void TestAddCategory_SuccessCase()
         {
             // Arrange
             presenter = new Presenter(DBFILE, this);
+            int currentCatsAdded = categoriesAdded;
             string[] category = GetRandomCategory();
 
             // Act
@@ -54,7 +55,23 @@ namespace HomeBudgetTest_Sequel
             presenter.AddCategory(category[0], category[1]);
 
             // Assert
-            Assert.StrictEqual(1, categoriesAdded);
+            Assert.Equal(currentCatsAdded + 1, categoriesAdded);
+        }
+
+        [Fact]
+        public void TestAddCategory_FailureCase()
+        {
+            // Arrange
+            presenter = new Presenter(DBFILE, this);
+            int currentCatsAdded = categoriesAdded;
+            string name = "TestFailure", type = "What type is this?";
+
+            // Act
+            BeforeAll();
+            try { presenter.AddCategory(name, type); } catch(Exception e) { }
+
+            // Assert
+            Assert.Equal(currentCatsAdded, categoriesAdded);
         }
 
         

@@ -50,7 +50,7 @@ namespace WpfApp1
             try
             {
                 // Just for safety, make the type string have a capital letter at the start, and everything else lowercase
-                string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length).ToLower());
+                string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length - 1).ToLower());
 
                 // Attempt to add the new category
                 budget.categories.Add(name, (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), parsableType));
