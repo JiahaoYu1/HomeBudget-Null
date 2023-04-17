@@ -18,6 +18,9 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window, ViewInterface
     {
+        private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
+        private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
         private Presenter presenter;
         private const string dbFile = "../../../testDBInput.db";
         private bool unsavedChanges = false;
@@ -72,8 +75,9 @@ namespace WpfApp1
 
         public void GetFile()
         {
-            string lastDirFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LastBudgetDirectory.txt");
-            string defaultDir = File.Exists(lastDirFile) ? File.ReadAllText(lastDirFile) : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
+            // Get the file that holds the path to the last directory used to save a file in this app
+            string lastDirFile = Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
+            string defaultDir = File.Exists(lastDirFile) ? File.ReadAllText(lastDirFile) : DEFAULT_DIRECTORY;
 
             if (!Directory.Exists(defaultDir))
             {
@@ -81,7 +85,7 @@ namespace WpfApp1
             }
 
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            openFileDialog.Filter = "Database Files (*.db)|*.db";//|All Files (*.*)|*.*";
             openFileDialog.Title = "Select a File";
             openFileDialog.InitialDirectory = defaultDir;
 
@@ -89,6 +93,8 @@ namespace WpfApp1
             {
                 string selectedFile = openFileDialog.FileName;
                 selectedFileLabel.Content = "Selected File: " + selectedFile;
+
+                presenter.LoadFile(selectedFile);
 
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, Path.GetDirectoryName(selectedFile));
@@ -158,9 +164,9 @@ namespace WpfApp1
 
             // Add the expense to the budget using the presenter
             DateTime? date = dateDatePicker.SelectedDate;//DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            int amount = int.Parse(amountTextBox.Text.ToString());
+            double amount = double.Parse(amountTextBox.Text.ToString());
             int index = categoryComboBox.SelectedIndex;
-            presenter.AddExpense((DateTime)date,index+1, amount, nameTextBox.Text);
+            presenter.AddExpense((DateTime)date, index+1, amount, nameTextBox.Text);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -180,6 +186,11 @@ namespace WpfApp1
         private void closeFile_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void createFile_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
@@ -240,10 +251,5 @@ namespace WpfApp1
             unsavedChanges = true;
         }
         #endregion
-
-        private void createFile_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
