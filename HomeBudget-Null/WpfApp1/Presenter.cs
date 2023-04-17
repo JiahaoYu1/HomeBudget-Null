@@ -28,15 +28,15 @@ namespace WpfApp1
         /// Returns all the category types as strings
         /// </summary>
         /// <returns>All the category types</returns>
-        //public static string[] GetCategoryTypes()
-        //{
-        //    List<string> types = new List<string>();
+        public static string[] GetCategoryTypes()
+        {
+            List<string> types = new List<string>();
 
-        //    foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
-        //        types.Add(categoryType.ToString());
+            foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
+                types.Add(categoryType.ToString());
 
-        //    return types.ToArray();
-        //}
+            return types.ToArray();
+        }
 
         /// <summary>
         /// Adds a new expense category to the budget
@@ -91,9 +91,9 @@ namespace WpfApp1
         /// Retrieves a database file and loads a HomeBudget object using it
         /// </summary>
         /// <param name="dbFile">The database file to load</param>
-        public void LoadFile(string dbFile)
+        public void LoadFile(string dbFile, bool isCreatingNewFile)
         {
-            budget = new HomeBudget(dbFile);
+            budget = new HomeBudget(dbFile, isCreatingNewFile);
         }
         /// <summary>
         /// Saves the budget to a database file
