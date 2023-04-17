@@ -39,16 +39,39 @@ namespace WpfApp1
         }
 
         /// <summary>
+        /// Returns all the category types as strings
+        /// </summary>
+        /// <returns>All the category types</returns>
+        public static string[] GetCategoryTypes()
+        {
+            List<string> types = new List<string>();
+
+            foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
+                types.Add(categoryType.ToString());
+
+            return types.ToArray();
+        }
+
+        /// <summary>
         /// Adds a new expense category to the budget
         /// </summary>
         /// <param name="name">The name of the category</param>
         /// <param name="type">The type of category (Expense, Savings, Income, Credit)</param>
         public void AddCategory(string name, string type = "Expense")
         {
-            string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length).ToLower());
+            try
+            {
+                // Just for safety, make the type string have a capital letter at the start, and everything else lowercase
+                string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length).ToLower());
 
-            budget.categories.Add(name, type);
-            view.AddCategory();
+                // Attempt to add the new category
+                budget.categories.Add(name, (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), parsableType));
+                view.AddCategory(name, parsableType);
+            }
+            catch(Exception e)
+            {
+                view.DisplayError(e);
+            }
         }
 
         /// <summary>
