@@ -10,17 +10,7 @@ namespace HomeBudgetTest_Sequel
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
         private int expensesAdded = 0;
-
-        private string[][] randomCategories = new string[][]
-        {
-            new string[] { "TestExpense", "Expense" },
-            new string[] { "TestSavings", "Savings" },
-            new string[] { "TestIncome", "Income" },
-            new string[] { "TestCredit", "Credit" },
-            new string[] { "TestGroceries", "Expense" },
-            new string[] { "TestTravel", "Expense" },
-        };
-        private int currentCategoryIndex = 0;
+        private int errorsDisplayed = 0;
 
 
         #region ViewInterface Methods
@@ -41,6 +31,7 @@ namespace HomeBudgetTest_Sequel
 
         public void DisplayError(Exception errorToDisplay)
         {
+            errorsDisplayed++;
             throw errorToDisplay;
         }
         #endregion
@@ -50,44 +41,105 @@ namespace HomeBudgetTest_Sequel
         [Fact]
         public void TestAddCategory_SuccessCase()
         {
-            // Arrange
+            ///// Arrange
             presenter = new Presenter(DBFILE, this);
             int currentCatsAdded = categoriesAdded;
-            string[] category = GetCategory();
 
-            // Act
+            // Category info
+            string name = "TestSavings", type = "Savings";
+
+
+            ///// Act
             BeforeAll();
-            presenter.AddCategory(category[0], category[1]);
+            presenter.AddCategory(name, type);
 
-            // Assert
+            ///// Assert
             Assert.Equal(currentCatsAdded + 1, categoriesAdded);
         }
 
         [Fact]
         public void TestAddCategory_FailureCase()
         {
-            // Arrange
+            ///// Arrange
             presenter = new Presenter(DBFILE, this);
             int currentCatsAdded = categoriesAdded;
+            int currentErrors = errorsDisplayed;
+
+            // Category info
             string name = "TestFailure", type = "What type is this?";
 
-            // Act
+
+            ///// Act
             BeforeAll();
             try { presenter.AddCategory(name, type); } catch(Exception e) { }
 
-            // Assert
+            ///// Assert
             Assert.Equal(currentCatsAdded, categoriesAdded);
+            Assert.Equal(currentErrors + 1, errorsDisplayed);
         }
 
-        
+
+        [Fact]
+        public void TestAddExpense_SuccessCase()
+        {
+            ///// Arrange
+            presenter = new Presenter(DBFILE, this);
+            int currentExpsAdded = expensesAdded;
+
+            // Expense info
+            string catName = "TestIncome", catType = "Income";
+            DateTime date = DateTime.Now;
+            double amount = 20;
+            string expenseName = catName;
+
+
+            ///// Act
+            BeforeAll();
+            presenter.AddCategory(catName, catType);
+            presenter.AddExpense(date, GetCategoryId(catName), amount, expenseName);
+
+            ///// Assert
+            Assert.Equal(currentExpsAdded + 1, expensesAdded);
+        }
+
+        [Fact]
+        public void TestAddExpense_FailureCase()
+        {
+            ///// Arrange
+            presenter = new Presenter(DBFILE, this);
+            int currentExpsAdded = expensesAdded;
+            int currentErrors = errorsDisplayed;
+
+            // Expense info (The category with the id of 50 should not exist in the database)
+            int categoryId = 50;
+            DateTime date = DateTime.Now;
+            double amount = 20;
+            string expenseName = "TestFailure";
+
+
+            ////// Act
+            BeforeAll();
+            try { presenter.AddExpense(date, categoryId, amount, expenseName); } catch (Exception e) { }
+
+            ////// Assert
+            Assert.Equal(currentExpsAdded, expensesAdded);
+            Assert.Equal(currentErrors + 1, errorsDisplayed);
+        }
         #endregion
 
-        private string[] GetCategory()
-        {
-            int index = currentCategoryIndex;
-            currentCategoryIndex++;
 
-            return randomCategories[index];
+
+        private int GetCategoryId(string categoryName)
+        {
+            List<Category> categories = presenter.GetCategoryList();
+
+            foreach(Category cat in categories)
+            {
+                if (cat.Description == categoryName)
+                    return cat.Id;
+            }
+
+            return -1;
         }
 
         private void BeforeAll()
