@@ -1,11 +1,11 @@
-﻿<Window x:Class="WpfApp1.MainWindow"
+﻿Added<Window x:Class="WpfApp1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Add Expense" Height="350" Width="500" ResizeMode="NoResize" Closing="MainWindow_Closing">
+        Title="Add Expense" Height="350" Width="600" ResizeMode="NoResize" Closing="MainWindow_Closing">
     <StackPanel Margin="0,0,0,-86">
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
 
@@ -58,6 +58,12 @@
                 <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
 
                 <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White"/>
+
+                <Label x:Name="BlockingLabel" Content="Select or Create a File" OpacityMask="Black" Foreground="White" Grid.Column="1" Grid.RowSpan="6" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36">
+                    <Label.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.4"/>
+                    </Label.Background>
+                </Label>
             </Grid>
         </GroupBox>
 
