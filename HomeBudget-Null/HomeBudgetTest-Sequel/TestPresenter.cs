@@ -10,13 +10,18 @@ namespace HomeBudgetTest_Sequel
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
         private int expensesAdded = 0;
+
         private string[][] randomCategories = new string[][]
         {
             new string[] { "TestExpense", "Expense" },
             new string[] { "TestSavings", "Savings" },
             new string[] { "TestIncome", "Income" },
             new string[] { "TestCredit", "Credit" },
+            new string[] { "TestGroceries", "Expense" },
+            new string[] { "TestTravel", "Expense" },
         };
+        private int currentCategoryIndex = 0;
+
 
         #region ViewInterface Methods
         public void AddCategory(string categoryName, string categoryType)
@@ -48,7 +53,7 @@ namespace HomeBudgetTest_Sequel
             // Arrange
             presenter = new Presenter(DBFILE, this);
             int currentCatsAdded = categoriesAdded;
-            string[] category = GetRandomCategory();
+            string[] category = GetCategory();
 
             // Act
             BeforeAll();
@@ -77,12 +82,12 @@ namespace HomeBudgetTest_Sequel
         
         #endregion
 
-        private string[] GetRandomCategory()
+        private string[] GetCategory()
         {
-            Random random = new Random();
-            int randomNum = random.Next(0, randomCategories.Length);
+            int index = currentCategoryIndex;
+            currentCategoryIndex++;
 
-            return randomCategories[randomNum];
+            return randomCategories[index];
         }
 
         private void BeforeAll()
