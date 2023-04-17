@@ -20,10 +20,6 @@
 
         <Label Content="Category Type:" Grid.Row="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
         <ComboBox x:Name="categoryTypeComboBox" Grid.Row="1" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}">
-            <ComboBoxItem Content="Income"/>
-            <ComboBoxItem Content="Expense"/>
-            <ComboBoxItem Content="Credit"/>
-            <ComboBoxItem Content="Savings"/>
         </ComboBox>
 
         <Grid Grid.Row="2" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}">
