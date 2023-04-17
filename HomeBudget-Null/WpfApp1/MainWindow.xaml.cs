@@ -38,17 +38,17 @@ namespace WpfApp1
             Green
         }
 
-        public void AddCategory(string categoryName)
+        public void AddCategory(string categoryName, string categoryType)
         {
-                // User clicked the confirm button, so update the categoryComboBox
-                //presenter.AddCategory(categoryName, categoryType);
+            // User clicked the confirm button, so update the categoryComboBox
+            //presenter.AddCategory(categoryName, categoryType);
 
-                // Add the new category to the categoryComboBox
-                ComboBoxItem newItem = new ComboBoxItem();
-                newItem.Content = categoryName; // + " - " + categoryType;
-                categoryComboBox.Items.Add(newItem);
-                // Select the newly added category
-                categoryComboBox.SelectedItem = newItem;
+            // Add the new category to the categoryComboBox
+            ComboBoxItem newItem = new ComboBoxItem();
+            newItem.Content = categoryName; // + " - " + categoryType;
+            categoryComboBox.Items.Add(newItem);
+            // Select the newly added category
+            categoryComboBox.SelectedItem = newItem;
         }
 
         public void GetFile()
@@ -72,6 +72,14 @@ namespace WpfApp1
             }
         }
 
+        public void DisplayError(Exception errorToDisplay)
+        {
+            MessageBox.Show(errorToDisplay.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+
+
+        #region Events
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             /*// Create a new Expense object using the values entered by the user
@@ -131,7 +139,7 @@ namespace WpfApp1
                 string categoryName = addCategoryWindow.CategoryName;
                 string categoryType = addCategoryWindow.CategoryType;
 
-                presenter.AddCategory(categoryName, Enum.Parse(Category.CategoryType, categoryType));
+                presenter.AddCategory(categoryName, categoryType);
             }
         }
 
@@ -175,5 +183,6 @@ namespace WpfApp1
         {
             unsavedChanges = true;
         }
+        #endregion
     }
 }
