@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Budget;
 
 namespace WpfApp1
 {
@@ -19,8 +20,10 @@ namespace WpfApp1
     /// </summary>
     public partial class AddCategoryWindow : Window
     {
+        private Presenter _presenter;
         private string _categoryName;
         private string _categoryType;
+        
 
         public string CategoryName { 
             get { return _categoryName; }
@@ -35,6 +38,7 @@ namespace WpfApp1
         public AddCategoryWindow()
         {
             InitializeComponent();
+            categoryTypeComboBox.ItemsSource = Presenter.GetCategoryTypes();
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
