@@ -10,8 +10,15 @@ namespace HomeBudgetTest_Sequel
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
         private int expensesAdded = 0;
-        
+        private string[,] randomCategories = new string[,]
+        {
+            { "TestGroceries", "Expense" },
+            { "TestSavings", "Savings" },
+            { "TestIncome", "Income" },
+            { "TestCredit", "Credit" },
+        };
 
+        #region ViewInterface Methods
         public void AddCategory(string categoryName, string categoryType)
         {
             categoriesAdded++;
@@ -31,12 +38,15 @@ namespace HomeBudgetTest_Sequel
         {
             throw errorToDisplay;
         }
+        #endregion
 
 
         #region Public Test Methods
         [Fact]
         public void TestAddCategory_BestCase()
         {
+            BeforeAll();
+
             // Arrange
             presenter = new Presenter(DBFILE, this);
 
@@ -49,5 +59,13 @@ namespace HomeBudgetTest_Sequel
 
         
         #endregion
+
+        public void BeforeAll()
+        {
+            if (!beforeAllActivated)
+            {
+                beforeAllActivated = true;
+            }
+        }
     }
 }
