@@ -9,8 +9,8 @@ namespace WpfApp1
     public interface ViewInterface
     {
         public void AddCategory(string categoryName, string categoryType);
+        public void AddExpense();
         public void GetFile();
-
         public void DisplayError(Exception errorToDisplay);
     }
 }
