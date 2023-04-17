@@ -85,10 +85,10 @@ namespace WpfApp1
         /// <summary>
         /// Saves the budget to a database file
         /// </summary>
-        public void SaveToFile()
-        {
-            budget.SaveToFile(dbFileName);
-        }
+        //public void SaveToFile()
+        //{
+        //    budget.SaveToFile(dbFileName);
+        //}
 
         #region Methods For Testing
         /// <summary>
@@ -127,11 +127,5 @@ namespace WpfApp1
             budget.expenses.Delete(id);
         }
         #endregion
-
-
-        //public double GetBudget()
-        //{
-        //    return budget.GetBudget();
-        //}
     }
 }
