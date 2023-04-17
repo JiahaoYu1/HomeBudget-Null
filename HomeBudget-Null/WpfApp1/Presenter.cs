@@ -27,6 +27,18 @@ namespace WpfApp1
         }
 
         /// <summary>
+        /// Adds a new expense to the budget
+        /// </summary>
+        /// <param name="date">The date of the expense</param>
+        /// <param name="categoryId">The ID number of the specific category associated with the expense</param>
+        /// <param name="amount">The amount of money expended or gained</param>
+        /// <param name="desc">The name of the expense</param>
+        public void AddExpense(DateTime date, int categoryId, double amount, string desc)
+        {
+            budget.expenses.Add(date, categoryId, amount, desc);
+        }
+
+        /// <summary>
         /// Returns all the category types as strings
         /// </summary>
         /// <returns>All the category types</returns>
@@ -63,52 +75,12 @@ namespace WpfApp1
         }
 
         /// <summary>
-        /// Adds a new expense to the budget
-        /// </summary>
-        /// <param name="date">The date of the expense</param>
-        /// <param name="categoryId">The ID number of the specific category associated with the expense</param>
-        /// <param name="amount">The amount of money expended or gained</param>
-        /// <param name="desc">The name of the expense</param>
-        public void AddExpense(DateTime date, int categoryId, double amount, string desc)
-        {
-            try
-            {
-                budget.expenses.Add(date, categoryId, amount, desc);
-                view.AddExpense();
-            }
-            catch(Exception e)
-            {
-                view.DisplayError(e);
-            }
-        }
-
-        /// <summary>
         /// Saves the budget to a database file
         /// </summary>
         public void SaveToFile()
         {
             budget.SaveToFile(dbFileName);
         }
-
-        /// <summary>
-        /// Returns a list of all expenses
-        /// </summary>
-        /// <returns>A list of all expenses</returns>
-        public List<Expense> GetExpenseList()
-        {
-            return budget.expenses.List();
-        }
-
-        /// <summary>
-        /// Returns a list of all categories
-        /// </summary>
-        /// <returns>A list of all categories</returns>
-        public List<Category> GetCategoryList()
-        {
-            return budget.categories.List();
-        }
-
-        
 
         //public double GetBudget()
         //{

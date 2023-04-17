@@ -9,17 +9,11 @@ namespace HomeBudgetTest_Sequel
         private Presenter presenter;
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
-        private int expensesAdded = 0;
         
 
         public void AddCategory(string categoryName, string categoryType)
         {
             categoriesAdded++;
-        }
-
-        public void AddExpense()
-        {
-            expensesAdded++;
         }
 
         public void GetFile()
@@ -35,7 +29,7 @@ namespace HomeBudgetTest_Sequel
 
         #region Public Test Methods
         [Fact]
-        public void TestAddCategory_BestCase()
+        public void TestAddCategory()
         {
             // Arrange
             presenter = new Presenter(DBFILE, this);
@@ -46,8 +40,6 @@ namespace HomeBudgetTest_Sequel
             // Assert
             Assert.StrictEqual(1, categoriesAdded);
         }
-
-        
         #endregion
     }
 }

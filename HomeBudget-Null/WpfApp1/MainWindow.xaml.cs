@@ -52,25 +52,6 @@ namespace WpfApp1
             categoryComboBox.SelectedItem = newItem;
         }
 
-        public void AddExpense()
-        {
-            // Update the budget label
-            budgetLabel.Content = "Budget: $0.00";
-
-            // Clear the form
-            nameTextBox.Text = "";
-            amountTextBox.Text = "";
-            dateDatePicker.SelectedDate = null;
-            categoryComboBox.SelectedIndex = -1;
-            descriptionTextBox.Text = "";
-            selectedFileLabel.Content = "Selected File: ";
-
-            // Set unsavedChanges to true
-            MessageBox.Show("Expense Added", "Expense Status");
-            unsavedChanges = true;
-        }
-
-
         public void GetFile()
         {
             string lastDirFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LastBudgetDirectory.txt");
@@ -102,7 +83,7 @@ namespace WpfApp1
             MessageBox.Show(errorToDisplay.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private bool AreInputsFilledOut()
+        private bool EmptyInputValidation()
         {
 
             if (string.IsNullOrEmpty(nameTextBox.Text))
@@ -142,19 +123,36 @@ namespace WpfApp1
             return true;
         }
 
-
         #region Events
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             //Validate that all fields are filled
-            if(!AreInputsFilledOut())
+
+            if(!EmptyInputValidation())
+            {
                 return;
+            }
 
             // Add the expense to the budget using the presenter
             DateTime date = DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             int amount = int.Parse(amountTextBox.Text.ToString());
             int index = categoryComboBox.SelectedIndex;
             presenter.AddExpense(date,index+1, amount, descriptionTextBox.Text);
+
+            // Update the budget label
+            budgetLabel.Content = "Budget: $0.00";
+
+            // Clear the form
+            nameTextBox.Text = "";
+            amountTextBox.Text = "";
+            dateDatePicker.SelectedDate = null;
+            categoryComboBox.SelectedIndex = -1;
+            descriptionTextBox.Text = "";
+            selectedFileLabel.Content = "Selected File: ";
+
+            // Set unsavedChanges to true
+            MessageBox.Show("Expense Added", "Expense Status");
+            unsavedChanges = true;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -164,6 +162,7 @@ namespace WpfApp1
             amountTextBox.Text = "";
             dateDatePicker.Text = "";
             categoryComboBox.SelectedIndex = -1;
+
         }
 
         private void chooseFile_Click(object sender, RoutedEventArgs e)
