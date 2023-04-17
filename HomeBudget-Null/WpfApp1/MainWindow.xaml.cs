@@ -109,7 +109,7 @@ namespace WpfApp1
                 MessageBox.Show("Please select a Category in which the Expense falls under.", "Expense Category");
                 return false;
             }
-            if(selectedFileLabel.Content == "Selected File: ")
+            if(selectedFileLabel.Content.ToString() == "Selected File: ")
             {
                 MessageBox.Show("Please select a file for the Expense to be stored in.", "Expense File");
                 return false;
@@ -144,7 +144,6 @@ namespace WpfApp1
             categoryComboBox.SelectedIndex = -1;
             descriptionTextBox.Text = "";
             selectedFileLabel.Content = "Selected File: ";
-            GetFile();
 
             // Set unsavedChanges to true
             MessageBox.Show("Expense Added", "Expense Status");
