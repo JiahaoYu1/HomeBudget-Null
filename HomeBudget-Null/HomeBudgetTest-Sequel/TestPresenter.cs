@@ -38,18 +38,8 @@ namespace HomeBudgetTest_Sequel
             presenter.AddCategory("TestCategory");
 
             // Assert
-            List<Category> categoryList;
+            Assert.StrictEqual(1, categoriesAdded);
         }
         #endregion
-
-        private void BeforeAll()
-        {
-            beforeAllActivated = true;
-        }
-
-        private void BeforeEach()
-        {
-            BeforeAll();
-        }
     }
 }
