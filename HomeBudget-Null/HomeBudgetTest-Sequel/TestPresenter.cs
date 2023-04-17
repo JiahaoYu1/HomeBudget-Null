@@ -10,12 +10,12 @@ namespace HomeBudgetTest_Sequel
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
         private int expensesAdded = 0;
-        private string[,] randomCategories = new string[,]
+        private string[][] randomCategories = new string[][]
         {
-            { "TestGroceries", "Expense" },
-            { "TestSavings", "Savings" },
-            { "TestIncome", "Income" },
-            { "TestCredit", "Credit" },
+            new string[] { "TestExpense", "Expense" },
+            new string[] { "TestSavings", "Savings" },
+            new string[] { "TestIncome", "Income" },
+            new string[] { "TestCredit", "Credit" },
         };
 
         #region ViewInterface Methods
@@ -45,13 +45,13 @@ namespace HomeBudgetTest_Sequel
         [Fact]
         public void TestAddCategory_BestCase()
         {
-            BeforeAll();
-
             // Arrange
             presenter = new Presenter(DBFILE, this);
+            string[] category = GetRandomCategory();
 
             // Act
-            presenter.AddCategory("TestCategory");
+            BeforeAll();
+            presenter.AddCategory(category[0], category[1]);
 
             // Assert
             Assert.StrictEqual(1, categoriesAdded);
@@ -60,11 +60,34 @@ namespace HomeBudgetTest_Sequel
         
         #endregion
 
-        public void BeforeAll()
+        private string[] GetRandomCategory()
+        {
+            Random random = new Random();
+            int randomNum = random.Next(0, randomCategories.Length);
+
+            return randomCategories[randomNum];
+        }
+
+        private void BeforeAll()
         {
             if (!beforeAllActivated)
             {
                 beforeAllActivated = true;
+                List<Expense> expenses = presenter.GetExpenseList();
+                List<Category> categories = presenter.GetCategoryList();
+
+
+                foreach(Expense expense in expenses)
+                {
+                    if (expense.Description.IndexOf("Test") != -1)
+                        presenter.DeleteExpense(expense.Id);
+                }
+
+                foreach (Category category in categories)
+                {
+                    if (category.Description.IndexOf("Test") != -1)
+                        presenter.DeleteCategory(category.Id);
+                }
             }
         }
     }
