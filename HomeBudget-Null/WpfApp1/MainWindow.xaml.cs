@@ -10,6 +10,8 @@ using System.Windows.Media.Imaging;
 using MahApps.Metro;
 using ControlzEx.Theming;
 using System.Globalization;
+using Budget;
+
 
 namespace WpfApp1
 {
@@ -20,6 +22,7 @@ namespace WpfApp1
     {
         private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
 
         private Presenter presenter;
         private const string dbFile = "../../../testDBInput.db";
@@ -47,12 +50,13 @@ namespace WpfApp1
             // User clicked the confirm button, so update the categoryComboBox
             //presenter.AddCategory(categoryName, categoryType);
 
+            categoryComboBox.ItemsSource = presenter.GetCategoryList();
             // Add the new category to the categoryComboBox
-            ComboBoxItem newItem = new ComboBoxItem();
-            newItem.Content = categoryName + " - " + categoryType;
-            categoryComboBox.Items.Add(newItem);
-            // Select the newly added category
-            categoryComboBox.SelectedItem = newItem;
+            //ComboBoxItem newItem = new ComboBoxItem();
+            //newItem.Content = categoryName + " - " + categoryType;
+            //categoryComboBox.Items.Add(newItem);
+            //// Select the newly added category
+            //categoryComboBox.SelectedItem = newItem;
         }
 
         public void AddExpense()
@@ -63,17 +67,16 @@ namespace WpfApp1
             // Clear the form
             nameTextBox.Text = "";
             amountTextBox.Text = "";
-            dateDatePicker.SelectedDate = null;
-            categoryComboBox.SelectedIndex = -1;
-            selectedFileLabel.Content = "Selected File: ";
+           // dateDatePicker.SelectedDate = null;
+            //categoryComboBox.SelectedIndex = -1;
 
             // Set unsavedChanges to true
-            MessageBox.Show("Expense Added", "Expense Status");
+            //MessageBox.Show("Expense Added", "Expense Status");
             unsavedChanges = true;
         }
 
 
-        public void GetFile()
+        public void GetFile(bool isCreatingNewFile)
         {
             // Get the file that holds the path to the last directory used to save a file in this app
             string lastDirFile = Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
@@ -84,20 +87,24 @@ namespace WpfApp1
                 Directory.CreateDirectory(defaultDir);
             }
 
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Filter = "Database Files (*.db)|*.db";//|All Files (*.*)|*.*";
-            openFileDialog.Title = "Select a File";
-            openFileDialog.InitialDirectory = defaultDir;
+            Microsoft.Win32.FileDialog fileDialog = isCreatingNewFile ? new Microsoft.Win32.SaveFileDialog() : new Microsoft.Win32.OpenFileDialog();
+            fileDialog.Title = isCreatingNewFile ? "Create a File" : "Select a File";
+            fileDialog.Filter = FILEDIALOG_FILTER;
+            fileDialog.InitialDirectory = defaultDir;
 
-            if (openFileDialog.ShowDialog() == true)
+
+            if (fileDialog.ShowDialog() == true)
             {
-                string selectedFile = openFileDialog.FileName;
+                string selectedFile = fileDialog.FileName;
                 selectedFileLabel.Content = "Selected File: " + selectedFile;
 
-                presenter.LoadFile(selectedFile);
+                BlockingLabel.Visibility = Visibility.Hidden;
+                presenter.LoadFile(selectedFile, isCreatingNewFile);
 
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, Path.GetDirectoryName(selectedFile));
+
+                categoryComboBox.ItemsSource = presenter.GetCategoryList();
             }
         }
 
@@ -174,13 +181,13 @@ namespace WpfApp1
             unsavedChanges = false;
             nameTextBox.Text = "";
             amountTextBox.Text = "";
-            dateDatePicker.Text = "";
+            dateDatePicker.SelectedDate = DateTime.Now;
             categoryComboBox.SelectedIndex = -1;
         }
 
         private void chooseFile_Click(object sender, RoutedEventArgs e)
         {
-            GetFile();
+            GetFile(false);
         }
 
         private void closeFile_Click(object sender, RoutedEventArgs e)
@@ -190,7 +197,7 @@ namespace WpfApp1
 
         private void createFile_Click(object sender, RoutedEventArgs e)
         {
-
+            GetFile(true);
         }
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
