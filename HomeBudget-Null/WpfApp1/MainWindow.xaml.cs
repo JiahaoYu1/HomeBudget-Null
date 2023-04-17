@@ -54,7 +54,8 @@ namespace WpfApp1
 
         public void GetFile()
         {
-            string defaultDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
+            string lastDirFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LastBudgetDirectory.txt");
+            string defaultDir = File.Exists(lastDirFile) ? File.ReadAllText(lastDirFile) : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
 
             if (!Directory.Exists(defaultDir))
             {
@@ -70,8 +71,12 @@ namespace WpfApp1
             {
                 string selectedFile = openFileDialog.FileName;
                 selectedFileLabel.Content = "Selected File: " + selectedFile;
+
+                // Save the last directory used for the budget file
+                File.WriteAllText(lastDirFile, Path.GetDirectoryName(selectedFile));
             }
         }
+
 
         public void DisplayError(Exception errorToDisplay)
         {
