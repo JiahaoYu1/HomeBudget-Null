@@ -11,7 +11,7 @@ namespace WpfApp1
     public class Presenter
     {
         private ViewInterface view;
-        private HomeBudget budget;
+        private HomeBudget budget = null;
         private string dbFileName;
 
         /// <summary>
@@ -19,26 +19,24 @@ namespace WpfApp1
         /// </summary>
         /// <param name="dbFile">The database file of the budget to use</param>
         /// <param name="newView">The view to use for displaying</param>
-        public Presenter(string dbFile, ViewInterface newView)
+        public Presenter(ViewInterface newView)
         {
             view = newView;
-            dbFileName = dbFile;
-            budget = new HomeBudget(dbFileName);
         }
 
         /// <summary>
         /// Returns all the category types as strings
         /// </summary>
         /// <returns>All the category types</returns>
-        public static string[] GetCategoryTypes()
-        {
-            List<string> types = new List<string>();
+        //public static string[] GetCategoryTypes()
+        //{
+        //    List<string> types = new List<string>();
 
-            foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
-                types.Add(categoryType.ToString());
+        //    foreach (Category.CategoryType categoryType in Enum.GetValues(typeof(Category.CategoryType)))
+        //        types.Add(categoryType.ToString());
 
-            return types.ToArray();
-        }
+        //    return types.ToArray();
+        //}
 
         /// <summary>
         /// Adds a new expense category to the budget
@@ -47,18 +45,21 @@ namespace WpfApp1
         /// <param name="type">The type of category (Expense, Savings, Income, Credit)</param>
         public void AddCategory(string name, string type = "Expense")
         {
-            try
+            if (isFileLoaded())
             {
-                // Just for safety, make the type string have a capital letter at the start, and everything else lowercase
-                string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length - 1).ToLower());
+                try
+                {
+                    // Just for safety, make the type string have a capital letter at the start, and everything else lowercase
+                    string parsableType = string.Format("{0}{1}", type.Substring(0, 1).ToUpper(), type.Substring(1, type.Length - 1).ToLower());
 
-                // Attempt to add the new category
-                budget.categories.Add(name, (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), parsableType));
-                view.AddCategory(name, parsableType);
-            }
-            catch(Exception e)
-            {
-                view.DisplayError(e);
+                    // Attempt to add the new category
+                    budget.categories.Add(name, (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), parsableType));
+                    view.AddCategory(name, parsableType);
+                }
+                catch (Exception e)
+                {
+                    view.DisplayError(e);
+                }
             }
         }
 
@@ -71,17 +72,29 @@ namespace WpfApp1
         /// <param name="desc">The name of the expense</param>
         public void AddExpense(DateTime date, int categoryId, double amount, string desc)
         {
-            try
+            if (isFileLoaded())
             {
-                budget.expenses.Add(date, categoryId, amount, desc);
-                view.AddExpense();
+                try
+                {
+                    budget.expenses.Add(date, categoryId, amount, desc);
+                    view.AddExpense();
+                }
+                catch (Exception e)
+                {
+                    view.DisplayError(e);
+                }
             }
-            catch(Exception e)
-            {
-                view.DisplayError(e);
-            }
+            
         }
 
+        /// <summary>
+        /// Retrieves a database file and loads a HomeBudget object using it
+        /// </summary>
+        /// <param name="dbFile">The database file to load</param>
+        public void LoadFile(string dbFile)
+        {
+            budget = new HomeBudget(dbFile);
+        }
         /// <summary>
         /// Saves the budget to a database file
         /// </summary>
@@ -89,6 +102,16 @@ namespace WpfApp1
         //{
         //    budget.SaveToFile(dbFileName);
         //}
+
+        private bool isFileLoaded()
+        {
+            bool isFileLoaded = budget is not null;
+
+            if (!isFileLoaded)
+                view.DisplayError(new Exception("A file must be created or loaded"));
+
+            return isFileLoaded;
+        }
 
         #region Methods For Testing
         /// <summary>
