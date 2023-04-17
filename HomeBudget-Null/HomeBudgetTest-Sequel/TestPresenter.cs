@@ -42,7 +42,7 @@ namespace HomeBudgetTest_Sequel
         public void TestAddCategory_SuccessCase()
         {
             ///// Arrange
-            presenter = new Presenter(DBFILE, this);
+            presenter = new Presenter(this);
             int currentCatsAdded = categoriesAdded;
 
             // Category info
@@ -61,7 +61,7 @@ namespace HomeBudgetTest_Sequel
         public void TestAddCategory_FailureCase()
         {
             ///// Arrange
-            presenter = new Presenter(DBFILE, this);
+            presenter = new Presenter(this);
             int currentCatsAdded = categoriesAdded;
             int currentErrors = errorsDisplayed;
 
@@ -83,7 +83,7 @@ namespace HomeBudgetTest_Sequel
         public void TestAddExpense_SuccessCase()
         {
             ///// Arrange
-            presenter = new Presenter(DBFILE, this);
+            presenter = new Presenter(this);
             int currentExpsAdded = expensesAdded;
 
             // Expense info
@@ -106,7 +106,7 @@ namespace HomeBudgetTest_Sequel
         public void TestAddExpense_FailureCase()
         {
             ///// Arrange
-            presenter = new Presenter(DBFILE, this);
+            presenter = new Presenter(this);
             int currentExpsAdded = expensesAdded;
             int currentErrors = errorsDisplayed;
 
@@ -150,7 +150,7 @@ namespace HomeBudgetTest_Sequel
                 List<Expense> expenses = presenter.GetExpenseList();
                 List<Category> categories = presenter.GetCategoryList();
 
-
+                
                 foreach(Expense expense in expenses)
                 {
                     if (expense.Description.IndexOf("Test") != -1)
