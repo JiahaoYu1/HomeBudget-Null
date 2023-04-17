@@ -90,6 +90,7 @@ namespace WpfApp1
             budget.SaveToFile(dbFileName);
         }
 
+        #region Methods For Testing
         /// <summary>
         /// Returns a list of all expenses
         /// </summary>
@@ -108,7 +109,25 @@ namespace WpfApp1
             return budget.categories.List();
         }
 
-        
+        /// <summary>
+        /// Deletes a category from the list
+        /// </summary>
+        /// <param name="id">The id of the category to delete</param>
+        public void DeleteCategory(int id)
+        {
+            budget.categories.Delete(id);
+        }
+
+        /// <summary>
+        /// Deletes an expense from the list
+        /// </summary>
+        /// <param name="id">The id of the expense to delete</param>
+        public void DeleteExpense(int id)
+        {
+            budget.expenses.Delete(id);
+        }
+        #endregion
+
 
         //public double GetBudget()
         //{
