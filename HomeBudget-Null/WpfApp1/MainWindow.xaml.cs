@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro;
 using ControlzEx.Theming;
+using System.Globalization;
 
 namespace WpfApp1
 {
@@ -77,32 +78,76 @@ namespace WpfApp1
             MessageBox.Show(errorToDisplay.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        private bool EmptyInputValidation()
+        {
 
+            if (string.IsNullOrEmpty(nameTextBox.Text))
+            {
+                MessageBox.Show("Please provide a name for the Expense.", "Expense Name");
+                return false;
+            }
+            if (string.IsNullOrEmpty(amountTextBox.Text))
+            {
+                MessageBox.Show("Please provide an amount for the Expense", "Expense Amount");
+                return false;
+            }
+            if(string.IsNullOrEmpty(descriptionTextBox.Text))
+            {
+                MessageBox.Show("Please provide a description for the Expense", "Expense Descripton");
+                return false;
+            }
+
+            DateTime date;
+            if (!DateTime.TryParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            {
+                MessageBox.Show("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd", "Expense Date");
+                return false;
+            }
+
+            if(categoryComboBox.SelectedIndex == -1) 
+            {
+                MessageBox.Show("Please select a Category in which the Expense falls under.", "Expense Category");
+                return false;
+            }
+            if(selectedFileLabel.Content == "Selected File: ")
+            {
+                MessageBox.Show("Please select a file for the Expense to be stored in.", "Expense File");
+                return false;
+            }
+
+            return true;
+        }
 
         #region Events
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            /*// Create a new Expense object using the values entered by the user
-            string name = nameTextBox.Text;
-            DateTime date = dateDatePicker.SelectedDate.Value;
-            string category = categoryComboBox.SelectedItem.ToString();
-            double amount = double.Parse(amountTextBox.Text);
-            string description = descriptionTextBox.Text;
-            Expense expense = new Expense(id, date, category, amount, description);
+            //Validate that all fields are filled
+
+            if(!EmptyInputValidation())
+            {
+                return;
+            }
 
             // Add the expense to the budget using the presenter
-            presenter.AddExpense(expense);
+            DateTime date = DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            int amount = int.Parse(amountTextBox.Text.ToString());
+            int index = categoryComboBox.SelectedIndex;
+            presenter.AddExpense(date,index+1, amount, descriptionTextBox.Text);
 
             // Update the budget label
-            budgetLabel.Content = "Budget: $" + presenter.GetBudget().ToString("F2");
+            budgetLabel.Content = "Budget: $0.00";
 
             // Clear the form
             nameTextBox.Text = "";
             amountTextBox.Text = "";
             dateDatePicker.SelectedDate = null;
-            categoryComboBox.SelectedIndex = -1;*/
+            categoryComboBox.SelectedIndex = -1;
+            descriptionTextBox.Text = "";
+            selectedFileLabel.Content = "Selected File: ";
+            GetFile();
 
             // Set unsavedChanges to true
+            MessageBox.Show("Expense Added", "Expense Status");
             unsavedChanges = true;
         }
 
