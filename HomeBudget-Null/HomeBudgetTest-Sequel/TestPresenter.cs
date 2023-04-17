@@ -9,6 +9,7 @@ namespace HomeBudgetTest_Sequel
         private Presenter presenter;
         private bool beforeAllActivated = false;
         private int categoriesAdded = 0;
+        
 
         public void AddCategory(string categoryName, string categoryType)
         {
@@ -18,6 +19,11 @@ namespace HomeBudgetTest_Sequel
         public void GetFile()
         {
             throw new NotImplementedException();
+        }
+
+        public void DisplayError(Exception errorToDisplay)
+        {
+            throw errorToDisplay;
         }
 
 
@@ -32,7 +38,7 @@ namespace HomeBudgetTest_Sequel
             presenter.AddCategory("TestCategory");
 
             // Assert
-            
+            List<Category> categoryList;
         }
         #endregion
 
