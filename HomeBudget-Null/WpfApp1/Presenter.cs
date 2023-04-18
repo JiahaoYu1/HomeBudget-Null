@@ -10,18 +10,27 @@ namespace WpfApp1
 {
     public class Presenter
     {
-        private ViewInterface view;
+        private IExpense expenseView = null;
+        private IHomeBudget homeBudgetView = null;
         private HomeBudget budget = null;
-        private string dbFileName;
+        private string dbFileName = null;
 
         /// <summary>
-        /// Initializes a new instance of the Presenter class
+        /// Initializes a new instance of the Presenter class that uses a view that uses the IExpense interface
         /// </summary>
-        /// <param name="dbFile">The database file of the budget to use</param>
-        /// <param name="newView">The view to use for displaying</param>
-        public Presenter(ViewInterface newView)
+        /// <param name="newView">The IExpense view to use for displaying</param>
+        public Presenter(IExpense newView)
         {
-            view = newView;
+            expenseView = newView;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Presenter class that uses a view that uses the IHomeBudget interface
+        /// </summary>
+        /// <param name="newView">The IHomeBudget view to use for displaying</param>
+        public Presenter(IHomeBudget newView)
+        {
+            homeBudgetView = newView;
         }
 
         /// <summary>
@@ -54,11 +63,11 @@ namespace WpfApp1
 
                     // Attempt to add the new category
                     budget.categories.Add(name, (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), parsableType));
-                    view.AddCategory(name, parsableType);
+                    expenseView.AddCategory(name, parsableType);
                 }
                 catch (Exception e)
                 {
-                    view.DisplayError(e);
+                    expenseView.DisplayError(e);
                 }
             }
         }
@@ -77,11 +86,11 @@ namespace WpfApp1
                 try
                 {
                     budget.expenses.Add(date, categoryId, amount, desc);
-                    view.AddExpense();
+                    expenseView.AddExpense();
                 }
                 catch (Exception e)
                 {
-                    view.DisplayError(e);
+                    expenseView.DisplayError(e);
                 }
             }
             
@@ -108,7 +117,7 @@ namespace WpfApp1
             bool isFileLoaded = budget is not null;
 
             if (!isFileLoaded)
-                view.DisplayError(new Exception("A file must be created or loaded"));
+                expenseView.DisplayError(new Exception("A file must be created or loaded"));
 
             return isFileLoaded;
         }
