@@ -3,7 +3,7 @@ using Budget;
 
 namespace HomeBudgetTest_Sequel
 {
-    public class TestPresenter: ViewInterface
+    public class TestPresenter: IExpense
     {
         private string DBFILE = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\testDBInput.db"));
         private Presenter presenter;
