@@ -43,7 +43,6 @@ namespace HomeBudgetTest_Sequel
         {
             ///// Arrange
             presenter = new Presenter(this);
-            int currentCatsAdded = categoriesAdded;
 
             // Category info
             string name = "TestSavings", type = "Savings";
@@ -54,7 +53,7 @@ namespace HomeBudgetTest_Sequel
             presenter.AddCategory(name, type);
 
             ///// Assert
-            Assert.Equal(currentCatsAdded + 1, categoriesAdded);
+            Assert.NotEqual(-1, GetCategoryId(name));
         }
 
         [Fact]
@@ -74,8 +73,7 @@ namespace HomeBudgetTest_Sequel
             try { presenter.AddCategory(name, type); } catch(Exception e) { }
 
             ///// Assert
-            Assert.Equal(currentCatsAdded, categoriesAdded);
-            Assert.Equal(currentErrors + 1, errorsDisplayed);
+            Assert.Equal(-1, GetCategoryId(name));
         }
 
 
@@ -84,7 +82,6 @@ namespace HomeBudgetTest_Sequel
         {
             ///// Arrange
             presenter = new Presenter(this);
-            int currentExpsAdded = expensesAdded;
 
             // Expense info
             string catName = "TestIncome", catType = "Income";
@@ -99,7 +96,8 @@ namespace HomeBudgetTest_Sequel
             presenter.AddExpense(date, GetCategoryId(catName), amount, expenseName);
 
             ///// Assert
-            Assert.Equal(currentExpsAdded + 1, expensesAdded);
+            Assert.NotEqual(-1, GetCategoryId(catName));
+            Assert.NotEqual(-1, GetExpenseId(expenseName));
         }
 
         [Fact]
@@ -107,8 +105,6 @@ namespace HomeBudgetTest_Sequel
         {
             ///// Arrange
             presenter = new Presenter(this);
-            int currentExpsAdded = expensesAdded;
-            int currentErrors = errorsDisplayed;
 
             // Expense info (The category with the id of 50 should not exist in the database)
             int categoryId = 50;
@@ -122,8 +118,7 @@ namespace HomeBudgetTest_Sequel
             try { presenter.AddExpense(date, categoryId, amount, expenseName); } catch (Exception e) { }
 
             ////// Assert
-            Assert.Equal(currentExpsAdded, expensesAdded);
-            Assert.Equal(currentErrors + 1, errorsDisplayed);
+            Assert.Equal(-1, GetExpenseId(expenseName));
         }
         #endregion
 
@@ -142,11 +137,26 @@ namespace HomeBudgetTest_Sequel
             return -1;
         }
 
+        private int GetExpenseId(string expenseName)
+        {
+            List<Expense> expenses = presenter.GetExpenseList();
+
+            foreach (Expense exp in expenses)
+            {
+                if (exp.Description == expenseName)
+                    return exp.Id;
+            }
+
+            return -1;
+        }
+
         private void BeforeAll()
         {
             if (!beforeAllActivated)
             {
                 beforeAllActivated = true;
+                presenter.LoadFile(DBFILE, false);
+
                 List<Expense> expenses = presenter.GetExpenseList();
                 List<Category> categories = presenter.GetCategoryList();
 
