@@ -26,7 +26,6 @@ namespace WpfApp1
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
 
         private Presenter presenter;
-        private const string dbFile = "../../../testDBInput.db";
         private bool unsavedChanges = false;
         private bool isDarkTheme = false;
 
