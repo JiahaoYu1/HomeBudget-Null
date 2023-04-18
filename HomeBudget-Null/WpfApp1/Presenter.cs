@@ -113,7 +113,6 @@ namespace WpfApp1
             return isFileLoaded;
         }
 
-        #region Methods For Testing
         /// <summary>
         /// Returns a list of all expenses
         /// </summary>
@@ -149,6 +148,5 @@ namespace WpfApp1
         {
             budget.expenses.Delete(id);
         }
-        #endregion
     }
 }
