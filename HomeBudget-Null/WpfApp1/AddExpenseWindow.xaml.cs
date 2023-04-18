@@ -19,7 +19,7 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for AddExpenseWindow.xaml
     /// </summary>
-    public partial class AddExpenseWindow : Window, ViewInterface
+    public partial class AddExpenseWindow : Window, IExpense
     {
         private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -80,7 +80,7 @@ namespace WpfApp1
         public void GetFile(bool isCreatingNewFile)
         {
             // Get the file that holds the path to the last directory used to save a file in this app
-            string lastDirFile = Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
+            string lastDirFile = System.IO.Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
             string defaultDir = File.Exists(lastDirFile) ? File.ReadAllText(lastDirFile) : DEFAULT_DIRECTORY;
 
             if (!Directory.Exists(defaultDir))
@@ -103,7 +103,7 @@ namespace WpfApp1
                 presenter.LoadFile(selectedFile, isCreatingNewFile);
 
                 // Save the last directory used for the budget file
-                File.WriteAllText(lastDirFile, Path.GetDirectoryName(selectedFile));
+                File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
 
                 categoryComboBox.ItemsSource = presenter.GetCategoryList();
             }
