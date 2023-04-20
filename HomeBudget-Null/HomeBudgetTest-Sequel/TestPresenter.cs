@@ -163,13 +163,81 @@ namespace HomeBudgetTest_Sequel
         {
             ///// Arrange
             string categoryName = "TestVacation", categoryType = "Expense";
+            int categoriesInList, categoryId;
             presenter = new Presenter(this);
 
             ///// Act
             BeforeAll();
+            presenter.AddCategory(categoryName, categoryType);
 
+            categoriesInList = presenter.GetCategoryList().Count;
+            categoryId = GetCategoryId(categoryName);
+
+            presenter.DeleteCategory(categoryId);
 
             ///// Assert
+            Assert.Equal(categoriesInList - 1, presenter.GetCategoryList().Count);
+            Assert.Equal(-1, GetCategoryId(categoryName));
+        }
+
+        [Fact]
+        public void DeleteCategory_FailureCase()
+        {
+            ///// Arrange
+            // The category Id of 50 should NOT exist in the database
+            string categoryName = "TestVacation", categoryType = "Expense";
+            int categoriesInList, categoryId = 50;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            categoriesInList = presenter.GetCategoryList().Count;
+            try { presenter.DeleteCategory(categoryId); } catch (Exception e) {};
+
+            ///// Assert
+            // Nothing should be deleted from the list
+            Assert.Equal(categoriesInList, presenter.GetCategoryList().Count);
+        }
+
+        [Fact]
+        public void DeleteExpense_SuccessCase()
+        {
+            ///// Arrange
+            string expenseName = "TestVacation", categoryType = "Expense";
+            int categoriesInList, categoryId;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            presenter.AddCategory(expenseName, categoryType);
+
+            categoriesInList = presenter.GetCategoryList().Count;
+            categoryId = GetCategoryId(expenseName);
+
+            presenter.DeleteCategory(categoryId);
+
+            ///// Assert
+            Assert.Equal(categoriesInList - 1, presenter.GetCategoryList().Count);
+            Assert.Equal(-1, GetCategoryId(expenseName));
+        }
+
+        [Fact]
+        public void DeleteExpense_FailureCase()
+        {
+            ///// Arrange
+            // The category Id of 50 should NOT exist in the database
+            string categoryName = "TestVacation", categoryType = "Expense";
+            int categoriesInList, categoryId = 50;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            categoriesInList = presenter.GetCategoryList().Count;
+            try { presenter.DeleteCategory(categoryId); } catch (Exception e) { };
+
+            ///// Assert
+            // Nothing should be deleted from the list
+            Assert.Equal(categoriesInList, presenter.GetCategoryList().Count);
         }
         #endregion
         #endregion
