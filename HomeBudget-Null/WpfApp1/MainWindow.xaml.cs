@@ -49,15 +49,13 @@ namespace WpfApp1
             if (fileDialog.ShowDialog() == true)
             {
                 string selectedFile = fileDialog.FileName;
-                selectedFileLabel.Content = "Selected File: " + selectedFile;
+                /*selectedFileLabel.Content = "Selected File: " + selectedFile;
 
                 BlockingLabel.Visibility = Visibility.Hidden;
-                presenter.LoadFile(selectedFile, isCreatingNewFile);
+                presenter.LoadFile(selectedFile, isCreatingNewFile);*/
 
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
-
-                categoryComboBox.ItemsSource = presenter.GetCategoryList();
             }
         }
 
