@@ -22,26 +22,27 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="4.374"/>
+                    <ColumnDefinition Width="90.276"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="GeneralMargin" Visibility="Hidden">
+                <TextBlock x:Name="GeneralMargin" Visibility="Hidden" Grid.ColumnSpan="3" Margin="0,0,473,30" Grid.RowSpan="2">
                     2
                 </TextBlock>
 
 
-                <Label Content="Expense Name:" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="nameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="nameTextBox_TextChanged"/>
+                <Label Content="Expense Name:" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="nameTextBox" Grid.Column="2" Margin="2,2,2,2" TextChanged="nameTextBox_TextChanged"/>
 
-                <Label Content="Amount:" Grid.Row="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <Label Content="Amount:" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="2" Margin="2,2,2,2"/>
 
-                <Label Content="Date:" Grid.Row="2" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <Label Content="Date:" Grid.Row="2" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="2" Margin="2,2,2,2"/>
 
-                <Label Content="Category:" Grid.Row="3" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="{Binding ElementName=GeneralMargin,Path=Text}">
+                <Label Content="Category:" Grid.Row="3" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" Margin="2,2,2,2">
                     <ComboBox x:Name="categoryComboBox" Width="150" SelectionChanged="categoryComboBox_SelectionChanged" Background="Silver">
                     </ComboBox>
                     <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
@@ -50,7 +51,7 @@
                 
                 <Button x:Name="cancelButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
 
-                <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
+                <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="2" Click="addButton_Click" Margin="2,2,2,2" Background="Silver" Foreground="DarkBlue"/>
 
                 <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
