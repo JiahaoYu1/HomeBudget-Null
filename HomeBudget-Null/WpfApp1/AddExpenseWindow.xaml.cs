@@ -49,7 +49,7 @@ namespace WpfApp1
         public void AddExpense()
         {
             // Update the budget label
-            budgetLabel.Content = "Budget: $0.00";
+            budgetLabel.Content = "Budget: $0";
 
             // Clear the form
             nameTextBox.Text = "";
