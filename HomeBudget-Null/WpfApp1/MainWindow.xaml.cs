@@ -63,5 +63,10 @@ namespace WpfApp1
         {
             throw new NotImplementedException();
         }
+
+        private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

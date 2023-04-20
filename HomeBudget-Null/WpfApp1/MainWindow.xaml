@@ -7,13 +7,26 @@
         mc:Ignorable="d"
         Title="AddExpenseWindow" Height="450" Width="800">
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="143"/>
+            <ColumnDefinition Width="Auto" MinWidth="1.078"/>
+            <ColumnDefinition Width="Auto" MinWidth="198.688"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto" MinWidth="50"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Header="Filter" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="3" Height="208" Width="200">
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,1,411">
+            <MenuItem Header="File">
+                <MenuItem Header="New" Click="New_Click"/>
+                <MenuItem Header="Open" Click="Open_Click"/>
+                <MenuItem Header="Save As" Click="SaveAs_Click"/>
+                <Separator/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <GroupBox Header="Filter" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
             <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
                 <StackPanel.RenderTransform>
                     <TransformGroup>
@@ -23,31 +36,31 @@
                         <TranslateTransform Y="0.495"/>
                     </TransformGroup>
                 </StackPanel.RenderTransform>
-                <TextBlock Text="Display Options"/>
+                <TextBlock Text="Display Options" FontSize="12"/>
                 <StackPanel Orientation="Horizontal" Margin="0,5" Width="178">
-                    <TextBlock Text="Start Date:" Margin="10"/>
+                    <TextBlock Text="Start Date:" Margin="10" FontSize="10" RenderTransformOrigin="0.022,0.861"/>
                     <DatePicker x:Name="StartDatePicker" Margin="5" Width="94"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="End Date:" Margin="10"/>
+                    <TextBlock Text="End Date:" Margin="10" FontSize="10"/>
                     <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
                 </StackPanel>
                 <StackPanel Margin="0,5">
-                    <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10"/>
+                    <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10" FontSize="11"/>
                     <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100">
                         <!-- Add categories here -->
                     </ComboBox>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Summary" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Grid.ColumnSpan="3" Width="200">
+        <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
             <StackPanel Margin="10">
-                <TextBlock Text="Summary Options"/>
-                <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10"/>
-                <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10"/>
+                <TextBlock Text="Summary Options" FontSize="12"/>
+                <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11"/>
+                <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Action" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="0,347,0,0" Width="200">
+        <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
             <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
         </GroupBox>
 
