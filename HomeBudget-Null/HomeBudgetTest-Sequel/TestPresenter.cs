@@ -38,6 +38,41 @@ namespace HomeBudgetTest_Sequel
 
 
         #region Public Test Methods
+        #region READ Tests
+        [Fact] 
+        // The database file must NOT be empty for this test to pass
+        public void GetCategoryList_SuccessCase()
+        {
+            ///// Arrange
+            List<Category> categoryList;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            categoryList = presenter.GetCategoryList();
+
+            ///// Assert
+            Assert.NotEmpty(categoryList);
+        }
+
+        [Fact]
+        // The database file must NOT be empty for this test to pass
+        public void GetExpenseList_SuccessCase()
+        {
+            ///// Arrange
+            List<Expense> expenseList;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            expenseList = presenter.GetExpenseList();
+
+            ///// Assert
+            Assert.NotEmpty(expenseList);
+        }
+        #endregion
+
+        #region CREATE Tests
         [Fact]
         public void TestAddCategory_SuccessCase()
         {
@@ -120,6 +155,23 @@ namespace HomeBudgetTest_Sequel
             ////// Assert
             Assert.Equal(-1, GetExpenseId(expenseName));
         }
+        #endregion
+
+        #region DELETE Tests
+        [Fact]
+        public void DeleteCategory_SuccessCase()
+        {
+            ///// Arrange
+            string categoryName = "TestVacation", categoryType = "Expense";
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+
+
+            ///// Assert
+        }
+        #endregion
         #endregion
 
 
