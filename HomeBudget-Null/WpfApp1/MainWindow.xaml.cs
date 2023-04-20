@@ -20,6 +20,10 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
+        private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
+
         public MainWindow()
         {
             InitializeComponent();
