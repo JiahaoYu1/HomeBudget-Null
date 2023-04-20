@@ -11,7 +11,8 @@ using MahApps.Metro;
 using ControlzEx.Theming;
 using System.Globalization;
 using Budget;
-
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace WpfApp1
 {
@@ -67,6 +68,58 @@ namespace WpfApp1
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void New_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Database files (*.db)|*.db";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                // Create a new file at the specified location
+                File.Create(filePath);
+
+                // Optionally, open the file for editing
+                Process.Start("notepad.exe", filePath);
+            }
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "DB files (*.db)|*.db";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+
+                // Open the selected file for editing
+                Process.Start("notepad.exe", filePath);
+            }
+        }
+
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Database files (*.db)|*.db";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // Code to save the file to the selected location goes here
+            }
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
