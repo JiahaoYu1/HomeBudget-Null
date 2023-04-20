@@ -9,7 +9,7 @@
     <StackPanel Margin="0,0,0,-86">
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
 
-        <GroupBox Header="Home Budget" Margin="10,20,10,20">
+        <GroupBox Header="Details" Margin="10,20,10,20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -47,23 +47,14 @@
                     <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
                     <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right" Background="Silver" Foreground="DarkBlue"/>
                 </StackPanel>
-
-                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
-                <Button Content="Create File" Name="createFile" Click="createFile_Click" Grid.Row="6" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
-                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="7" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
+                
+                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="5" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
 
                 <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
 
-                <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
-                <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
+                <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
                 <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White"/>
-
-                <Label x:Name="BlockingLabel" Content="Select or Create a File" OpacityMask="Black" Foreground="White" Grid.Column="1" Grid.RowSpan="6" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36">
-                    <Label.Background>
-                        <SolidColorBrush Color="Black" Opacity="0.4"/>
-                    </Label.Background>
-                </Label>
             </Grid>
         </GroupBox>
 

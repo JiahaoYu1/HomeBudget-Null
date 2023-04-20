@@ -21,28 +21,15 @@ namespace WpfApp1
     /// </summary>
     public partial class AddExpenseWindow : Window, IExpense
     {
-        private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
-        private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
-
         private Presenter presenter;
         private bool unsavedChanges = false;
         private bool isDarkTheme = false;
 
-        public AddExpenseWindow()
+        public AddExpenseWindow(Presenter presenter)
         {
             InitializeComponent();
-            this.presenter = new Presenter(this);
+            this.presenter = presenter;
             dateDatePicker.SelectedDate = DateTime.Today;
-        }
-
-        // Define color themes
-        public enum ColorTheme
-        {
-            Light,
-            Dark,
-            Blue,
-            Green
         }
 
         public void AddCategory(string categoryName, string categoryType)
@@ -73,39 +60,6 @@ namespace WpfApp1
             // Set unsavedChanges to true
             //MessageBox.Show("Expense Added", "Expense Status");
             unsavedChanges = true;
-        }
-
-
-        public void GetFile(bool isCreatingNewFile)
-        {
-            // Get the file that holds the path to the last directory used to save a file in this app
-            string lastDirFile = System.IO.Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
-            string defaultDir = File.Exists(lastDirFile) ? File.ReadAllText(lastDirFile) : DEFAULT_DIRECTORY;
-
-            if (!Directory.Exists(defaultDir))
-            {
-                Directory.CreateDirectory(defaultDir);
-            }
-
-            Microsoft.Win32.FileDialog fileDialog = isCreatingNewFile ? new Microsoft.Win32.SaveFileDialog() : new Microsoft.Win32.OpenFileDialog();
-            fileDialog.Title = isCreatingNewFile ? "Create a File" : "Select a File";
-            fileDialog.Filter = FILEDIALOG_FILTER;
-            fileDialog.InitialDirectory = defaultDir;
-
-
-            if (fileDialog.ShowDialog() == true)
-            {
-                string selectedFile = fileDialog.FileName;
-                selectedFileLabel.Content = "Selected File: " + selectedFile;
-
-                BlockingLabel.Visibility = Visibility.Hidden;
-                presenter.LoadFile(selectedFile, isCreatingNewFile);
-
-                // Save the last directory used for the budget file
-                File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
-
-                categoryComboBox.ItemsSource = presenter.GetCategoryList();
-            }
         }
 
 
@@ -185,19 +139,9 @@ namespace WpfApp1
             categoryComboBox.SelectedIndex = -1;
         }
 
-        private void chooseFile_Click(object sender, RoutedEventArgs e)
-        {
-            GetFile(false);
-        }
-
         private void closeFile_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void createFile_Click(object sender, RoutedEventArgs e)
-        {
-            GetFile(true);
         }
 
         private void addCategoryButton_Click(object sender, RoutedEventArgs e)
@@ -223,12 +167,12 @@ namespace WpfApp1
             TextBox tb = (TextBox)sender;
             if (decimal.TryParse(tb.Text, out decimal value) && tb.Text != null)
             {
-                budgetLabel.Content = "Budget: $" + tb.Text;
+                budgetLabel.Content = string.Format("{0:C}", tb.Text);//"Budget: $" + tb.Text;
             }
             else
             {
                 tb.Text = string.Empty;
-                budgetLabel.Content = "Budget: $0.00";
+                budgetLabel.Content = "Budget: $0";
             }
         }
 
