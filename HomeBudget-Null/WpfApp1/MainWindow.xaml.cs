@@ -63,5 +63,10 @@ namespace WpfApp1
         {
             throw new NotImplementedException();
         }
+
+        private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
