@@ -10,7 +10,6 @@ namespace WpfApp1
     {
         public void AddCategory(string categoryName, string categoryType);
         public void AddExpense();
-        public void GetFile(bool isCreatingNewFile);
         public void DisplayError(Exception errorToDisplay);
     }
 }
