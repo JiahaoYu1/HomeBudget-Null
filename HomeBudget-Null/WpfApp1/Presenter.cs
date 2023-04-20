@@ -198,5 +198,26 @@ namespace WpfApp1
 
             return budget.GetBudgetItemsByMonth(to, from, flag, categoryId);
         }
+
+        //Need documentation
+        public Category GetCatergoryById(int id)
+        {
+            return budget.categories.GetCategoryFromId(id);
+        }
+        //Need documentation
+
+        public BudgetItem GetExpenseById(int id)
+        {
+            List<BudgetItem> expenses= new List<BudgetItem>();
+            expenses = budget.GetBudgetItems(null,null,false,id);
+
+            foreach(BudgetItem item in expenses)
+            {
+                if(item.ExpenseID == id)
+                    return item;
+            }
+
+            throw new Exception("No Id found");
+        }
     }
 }
