@@ -38,6 +38,41 @@ namespace HomeBudgetTest_Sequel
 
 
         #region Public Test Methods
+        #region READ Tests
+        [Fact] 
+        // The database file must NOT be empty for this test to pass
+        public void GetCategoryList_SuccessCase()
+        {
+            ///// Arrange
+            List<Category> categoryList;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            categoryList = presenter.GetCategoryList();
+
+            ///// Assert
+            Assert.NotEmpty(categoryList);
+        }
+
+        [Fact]
+        // The database file must NOT be empty for this test to pass
+        public void GetExpenseList_SuccessCase()
+        {
+            ///// Arrange
+            List<Expense> expenseList;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            expenseList = presenter.GetExpenseList();
+
+            ///// Assert
+            Assert.NotEmpty(expenseList);
+        }
+        #endregion
+
+        #region CREATE Tests
         [Fact]
         public void TestAddCategory_SuccessCase()
         {
@@ -120,6 +155,125 @@ namespace HomeBudgetTest_Sequel
             ////// Assert
             Assert.Equal(-1, GetExpenseId(expenseName));
         }
+        #endregion
+
+        #region UPDATE Tests
+        [Fact]
+        public void UpdateCategory_SuccessCase()
+        {
+            ///// Arrange
+            presenter = new Presenter(this);
+            string categoryName = "TestPrivateYacht", categoryType = "Expense";
+            string newName = "TestPrivateHelicopter", newType = "Expense";
+
+            ///// Act
+            BeforeAll();
+            presenter.AddCategory(categoryName, categoryType);
+            
+
+
+            ///// Assert
+        }
+        #endregion
+
+        #region DELETE Tests
+        [Fact]
+        public void DeleteCategory_SuccessCase()
+        {
+            ///// Arrange
+            string categoryName = "TestVacation", categoryType = "Expense";
+            int categoriesInList, categoryId;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            presenter.AddCategory(categoryName, categoryType);
+
+            categoriesInList = presenter.GetCategoryList().Count;
+            categoryId = GetCategoryId(categoryName);
+
+            presenter.DeleteCategory(categoryId);
+
+            ///// Assert
+            Assert.Equal(categoriesInList - 1, presenter.GetCategoryList().Count);
+            Assert.Equal(-1, GetCategoryId(categoryName));
+        }
+
+        [Fact]
+        public void DeleteCategory_FailureCase()
+        {
+            ///// Arrange
+            // The category Id of 50 should NOT exist in the database
+            string categoryName = "TestVacation2", categoryType = "Expense";
+            int categoriesInList, categoryId = 50;
+            presenter = new Presenter(this);
+
+            ///// Act
+            BeforeAll();
+            categoriesInList = presenter.GetCategoryList().Count;
+            try { presenter.DeleteCategory(categoryId); } catch (Exception e) {};
+
+            ///// Assert
+            // Nothing should be deleted from the list
+            Assert.Equal(categoriesInList, presenter.GetCategoryList().Count);
+        }
+
+        [Fact]
+        public void DeleteExpense_SuccessCase()
+        {
+            ///// Arrange
+            presenter = new Presenter(this);
+
+            // Expense info
+            string catName = "TestImportantExpenses!!!", catType = "Expense";
+            DateTime date = DateTime.Now;
+            double amount = 100;
+            string expenseName = catName;
+            int expensesInList, expensesId;
+
+
+            ///// Act
+            BeforeAll();
+            presenter.AddCategory(catName, catType);
+            presenter.AddExpense(date, GetCategoryId(catName), amount, expenseName);
+
+            expensesInList = presenter.GetExpenseList().Count;
+            expensesId = GetExpenseId(expenseName);
+
+            presenter.DeleteExpense(expensesId);
+
+
+            ///// Assert
+            Assert.Equal(expensesInList - 1, presenter.GetExpenseList().Count);
+            Assert.Equal(-1, GetExpenseId(expenseName));
+        }
+
+        [Fact]
+        public void DeleteExpense_FailureCase()
+        {
+            ///// Arrange
+            presenter = new Presenter(this);
+
+            // Expense info
+            string catName = "TestVeryImportantExpenses", catType = "Expense";
+            DateTime date = DateTime.Now;
+            double amount = 99999;
+            string expenseName = catName;
+            int expensesInList, expensesId;
+
+
+            ///// Act
+            BeforeAll();
+            expensesInList = presenter.GetExpenseList().Count;
+            expensesId = GetExpenseId(expenseName);
+
+            presenter.DeleteExpense(expensesId);
+
+
+            ///// Assert
+            Assert.Equal(expensesInList, presenter.GetExpenseList().Count);
+        }
+        #endregion
         #endregion
 
 

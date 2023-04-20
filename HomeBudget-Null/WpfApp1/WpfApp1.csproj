@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DLL\" />
   </ItemGroup>
 
@@ -20,6 +24,10 @@
     <Reference Include="HomeBudget">
       <HintPath>DLL\HomeBudget.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.png" />
   </ItemGroup>
 
 </Project>

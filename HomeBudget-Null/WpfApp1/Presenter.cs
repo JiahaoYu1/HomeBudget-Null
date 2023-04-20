@@ -1,11 +1,6 @@
-﻿using System;
+﻿using Budget;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Xps.Serialization;
-using Budget;
 
 namespace WpfApp1
 {
@@ -94,7 +89,7 @@ namespace WpfApp1
                     expenseView.DisplayError(e);
                 }
             }
-            
+
         }
 
         /// <summary>
@@ -158,20 +153,50 @@ namespace WpfApp1
         {
             budget.expenses.Delete(id);
         }
+
         /// <summary>
-        /// Retrieves categories based on date and or category type
+        /// Updates an expenses details provided the new values
         /// </summary>
-        /// <param name="from">Categories from a starting date</param>
-        /// <param name="to">Categories to an ending date</param>
+        /// <param name="expenseId">Id of expense to be updated</param>
+        /// <param name="date">New date value</param>
+        /// <param name="categoryId">New category value</param>
+        /// <param name="amount">New amount for expense</param>
+        /// <param name="description">Updated description of expense</param>
+        public void UpdateExpense(int expenseId, DateTime date, int categoryId, double amount, string description)
+        {
+            budget.expenses.UpdateProperties(expenseId, date, categoryId, amount, description);
+        }
+
+        /// <summary>
+        /// Retrieves Expenses based on date and or category type
+        /// </summary>
+        /// <param name="from">Expenses from a starting date</param>
+        /// <param name="to">Expenses to an ending date</param>
         /// <param name="categoryId">The id of the category wanted</param>
-        /// <returns></returns>
-        public List<Categories> GetCategoriesDateFilter(DateTime from, DateTime to, int categoryId)
+        /// <returns>A list of BudgetItemsByCategory</returns>
+        public List<BudgetItemsByCategory> GetExpenseDateFilter(DateTime from, DateTime to, int categoryId)
         {
             bool flag = false;
             if (from != null && to != null)
                 flag = true;
 
-            throw new NotImplementedException();
+            return budget.GetBudgetItemsByCategory(from, to, flag, categoryId);
+        }
+
+        /// <summary>
+        /// Retrieves Expenses based on a month given
+        /// </summary>
+        /// <param name="from">Expenses from a starting date</param>
+        /// <param name="to">Expenses to an ending date</param>
+        /// <param name="categoryId">The id of the category wanted</param>
+        /// <returns>A list of BudgetItemsByMonth</returns>
+        public List<BudgetItemsByMonth> GetExpenseMonthFilter(DateTime from, DateTime to, int categoryId)
+        {
+            bool flag = false;
+            if (from != null && to != null)
+                flag = true;
+
+            return budget.GetBudgetItemsByMonth(to, from, flag, categoryId);
         }
     }
 }
