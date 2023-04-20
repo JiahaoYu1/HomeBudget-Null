@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Xps.Serialization;
 using Budget;
 
 namespace WpfApp1
@@ -156,6 +157,21 @@ namespace WpfApp1
         public void DeleteExpense(int id)
         {
             budget.expenses.Delete(id);
+        }
+        /// <summary>
+        /// Retrieves categories based on date and or category type
+        /// </summary>
+        /// <param name="from">Categories from a starting date</param>
+        /// <param name="to">Categories to an ending date</param>
+        /// <param name="categoryId">The id of the category wanted</param>
+        /// <returns></returns>
+        public List<Categories> GetCategoriesDateFilter(DateTime from, DateTime to, int categoryId)
+        {
+            bool flag = false;
+            if (from != null && to != null)
+                flag = true;
+
+            throw new NotImplementedException();
         }
     }
 }
