@@ -159,20 +159,28 @@ namespace HomeBudgetTest_Sequel
 
         #region UPDATE Tests
         [Fact]
-        public void UpdateCategory_SuccessCase()
+        public void UpdateExpense_SuccessCase()
         {
             ///// Arrange
             presenter = new Presenter(this);
-            string categoryName = "TestPrivateYacht", categoryType = "Expense";
-            string newName = "TestPrivateHelicopter", newType = "Expense";
+
+            // Expense info
+            string catName = "TestPrivateYacht", catType = "Expense";
+            DateTime date = new DateTime(1996, 6, 16), newDate = DateTime.Now;
+            double amount = 500000, newAmount = 100000;
+            string expenseName = "TestPrivateAttackHelicopter", newName = catName;
+
 
             ///// Act
             BeforeAll();
-            presenter.AddCategory(categoryName, categoryType);
-            
-
+            presenter.AddCategory(catName, catType);
+            presenter.AddExpense(date, GetCategoryId(catName), amount, expenseName);
+            presenter.UpdateExpense(GetExpenseId(expenseName), newDate, GetCategoryId(catName), newAmount, newName);
 
             ///// Assert
+            Assert.NotEqual(-1, GetCategoryId(catName));
+            Assert.NotEqual(-1, GetExpenseId(newName));
+            Assert.Equal(-1, GetExpenseId(expenseName));
         }
         #endregion
 
