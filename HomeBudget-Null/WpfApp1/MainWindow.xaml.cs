@@ -117,6 +117,11 @@ namespace WpfApp1
             }
         }
 
+        private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
