@@ -157,6 +157,8 @@ namespace HomeBudgetTest_Sequel
         }
         #endregion
 
+        
+
         #region DELETE Tests
         [Fact]
         public void DeleteCategory_SuccessCase()
@@ -203,41 +205,56 @@ namespace HomeBudgetTest_Sequel
         public void DeleteExpense_SuccessCase()
         {
             ///// Arrange
-            string expenseName = "TestVacation", categoryType = "Expense";
-            int categoriesInList, categoryId;
             presenter = new Presenter(this);
+
+            // Expense info
+            string catName = "TestImportantExpenses!!!", catType = "Expense";
+            DateTime date = DateTime.Now;
+            double amount = 100;
+            string expenseName = catName;
+            int expensesInList, expensesId;
+
 
             ///// Act
             BeforeAll();
-            presenter.AddCategory(expenseName, categoryType);
+            presenter.AddCategory(catName, catType);
+            presenter.AddExpense(date, GetCategoryId(catName), amount, expenseName);
 
-            categoriesInList = presenter.GetCategoryList().Count;
-            categoryId = GetCategoryId(expenseName);
+            expensesInList = presenter.GetExpenseList().Count;
+            expensesId = GetExpenseId(expenseName);
 
-            presenter.DeleteCategory(categoryId);
+            presenter.DeleteExpense(expensesId);
+
 
             ///// Assert
-            Assert.Equal(categoriesInList - 1, presenter.GetCategoryList().Count);
-            Assert.Equal(-1, GetCategoryId(expenseName));
+            Assert.Equal(expensesInList - 1, presenter.GetExpenseList().Count);
+            Assert.Equal(-1, GetExpenseId(expenseName));
         }
 
         [Fact]
         public void DeleteExpense_FailureCase()
         {
             ///// Arrange
-            // The category Id of 50 should NOT exist in the database
-            string categoryName = "TestVacation", categoryType = "Expense";
-            int categoriesInList, categoryId = 50;
             presenter = new Presenter(this);
+
+            // Expense info
+            string catName = "TestVeryImportantExpenses", catType = "Expense";
+            DateTime date = DateTime.Now;
+            double amount = 99999;
+            string expenseName = catName;
+            int expensesInList, expensesId;
+
 
             ///// Act
             BeforeAll();
-            categoriesInList = presenter.GetCategoryList().Count;
-            try { presenter.DeleteCategory(categoryId); } catch (Exception e) { };
+            expensesInList = presenter.GetExpenseList().Count;
+            expensesId = GetExpenseId(expenseName);
+
+            presenter.DeleteExpense(expensesId);
+
 
             ///// Assert
-            // Nothing should be deleted from the list
-            Assert.Equal(categoriesInList, presenter.GetCategoryList().Count);
+            Assert.Equal(expensesInList, presenter.GetExpenseList().Count);
         }
         #endregion
         #endregion
