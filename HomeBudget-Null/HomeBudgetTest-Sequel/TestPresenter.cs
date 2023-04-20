@@ -157,7 +157,24 @@ namespace HomeBudgetTest_Sequel
         }
         #endregion
 
-        
+        #region UPDATE Tests
+        [Fact]
+        public void UpdateCategory_SuccessCase()
+        {
+            ///// Arrange
+            presenter = new Presenter(this);
+            string categoryName = "TestPrivateYacht", categoryType = "Expense";
+            string newName = "TestPrivateHelicopter", newType = "Expense";
+
+            ///// Act
+            BeforeAll();
+            presenter.AddCategory(categoryName, categoryType);
+            
+
+
+            ///// Assert
+        }
+        #endregion
 
         #region DELETE Tests
         [Fact]
@@ -187,7 +204,7 @@ namespace HomeBudgetTest_Sequel
         {
             ///// Arrange
             // The category Id of 50 should NOT exist in the database
-            string categoryName = "TestVacation", categoryType = "Expense";
+            string categoryName = "TestVacation2", categoryType = "Expense";
             int categoriesInList, categoryId = 50;
             presenter = new Presenter(this);
 
