@@ -22,9 +22,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4.374"/>
-                    <ColumnDefinition Width="90.276"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4.5*"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock x:Name="GeneralMargin" Visibility="Hidden" Grid.ColumnSpan="3" Margin="0,0,473,30" Grid.RowSpan="2">
@@ -53,7 +52,7 @@
 
                 <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="2" Click="addButton_Click" Margin="2,2,2,2" Background="Silver" Foreground="DarkBlue"/>
 
-                <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
                 <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White"/>
             </Grid>
