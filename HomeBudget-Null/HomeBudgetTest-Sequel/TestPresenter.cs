@@ -1,9 +1,9 @@
-using WpfApp1;
 using Budget;
+using WpfApp1;
 
 namespace HomeBudgetTest_Sequel
 {
-    public class TestPresenter: IExpense
+    public class TestPresenter : IExpense
     {
         private string DBFILE = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\testDBInput.db"));
         private Presenter presenter;
@@ -39,7 +39,7 @@ namespace HomeBudgetTest_Sequel
 
         #region Public Test Methods
         #region READ Tests
-        [Fact] 
+        [Fact]
         // The database file must NOT be empty for this test to pass
         public void GetCategoryList_SuccessCase()
         {
@@ -70,6 +70,39 @@ namespace HomeBudgetTest_Sequel
             ///// Assert
             Assert.NotEmpty(expenseList);
         }
+
+        [Fact]
+        public void GetCategoryTypesTest()
+        {
+            ///// Arrange
+            int defaultCats = 4;
+
+            //// Act
+            string[] results = Presenter.GetCategoryTypes();
+
+            ///// Assert
+            Assert.NotEmpty(results);
+            Assert.Equal(defaultCats, results.Length);
+        }
+        [Fact]
+        public void GetCategoryByIdTest()
+        {
+            ///// Arrange
+            presenter = new Presenter(this);
+            DateTime date = new DateTime(2012, 2, 5);
+            DateTime from = new DateTime(2012, 1, 20);
+            DateTime to = new DateTime(2012, 2, 30);
+            presenter.AddExpense(date, 1, 2, "Random Expense");
+
+            ///// Act
+            List<BudgetItemsByCategory> result =  presenter.GetExpenseDateFilter(from, to, 2);
+            BudgetItemsByCategory e = result[0];
+
+            ///// Assert
+            Assert.NotEmpty(result);
+            Assert.Equal(e, result[0]);
+        }
+
         #endregion
 
         #region CREATE Tests
@@ -105,7 +138,7 @@ namespace HomeBudgetTest_Sequel
 
             ///// Act
             BeforeAll();
-            try { presenter.AddCategory(name, type); } catch(Exception e) { }
+            try { presenter.AddCategory(name, type); } catch (Exception e) { }
 
             ///// Assert
             Assert.Equal(-1, GetCategoryId(name));
@@ -219,7 +252,7 @@ namespace HomeBudgetTest_Sequel
             ///// Act
             BeforeAll();
             categoriesInList = presenter.GetCategoryList().Count;
-            try { presenter.DeleteCategory(categoryId); } catch (Exception e) {};
+            try { presenter.DeleteCategory(categoryId); } catch (Exception e) { };
 
             ///// Assert
             // Nothing should be deleted from the list
@@ -290,7 +323,7 @@ namespace HomeBudgetTest_Sequel
         {
             List<Category> categories = presenter.GetCategoryList();
 
-            foreach(Category cat in categories)
+            foreach (Category cat in categories)
             {
                 if (cat.Description == categoryName)
                     return cat.Id;
@@ -322,8 +355,8 @@ namespace HomeBudgetTest_Sequel
                 List<Expense> expenses = presenter.GetExpenseList();
                 List<Category> categories = presenter.GetCategoryList();
 
-                
-                foreach(Expense expense in expenses)
+
+                foreach (Expense expense in expenses)
                 {
                     if (expense.Description.IndexOf("Test") != -1)
                         presenter.DeleteExpense(expense.Id);

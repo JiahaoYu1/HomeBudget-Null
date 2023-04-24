@@ -139,7 +139,7 @@ namespace WpfApp1
 
         private void FilterExpenses(string searchedTerm)
         {
-            ICollectionView view
+            //ICollectionView view
         }
     }
 }
