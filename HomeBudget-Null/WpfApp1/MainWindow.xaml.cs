@@ -82,7 +82,12 @@ namespace WpfApp1
 
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+            CategoryComboBox.IsEnabled = true;
+        }
 
+        private void FilterByCategoryCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CategoryComboBox.IsEnabled = false;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -161,7 +166,18 @@ namespace WpfApp1
 
         private void AboutUs_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Team name: Null", "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Team name: Null\n Group members: Ryan Caden Kevin", "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ByMonthCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            // Set the group description for the ListView to group expenses by month
+            ExpensesListView.GroupStyle.Clear();
+            ExpensesListView.GroupStyle.Add(new GroupStyle
+            {
+                HeaderTemplate = (DataTemplate)this.Resources["MonthHeaderTemplate"],
+                ContainerStyle = (Style)this.Resources["MonthContainerStyle"]
+            });
         }
     }
 }

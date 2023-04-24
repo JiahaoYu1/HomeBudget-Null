@@ -7,6 +7,26 @@
         mc:Ignorable="d"
         Title="AddExpenseWindow" Height="450" Width="800"
         Icon="/icon.png">
+    <Window.Resources>
+        <DataTemplate x:Key="MonthHeaderTemplate">
+            <Border BorderThickness="1" BorderBrush="Gray" Background="#F0F0F0" Padding="5">
+                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+            </Border>
+        </DataTemplate>
+        <Style x:Key="MonthContainerStyle" TargetType="{x:Type GroupItem}">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <StackPanel>
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                            <ItemsPresenter Margin="15,0,0,0"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -25,11 +45,11 @@
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
-            
+
         </Menu>
         <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,23,1,0" VerticalAlignment="Top">
-    <MenuItem Header="About Us" Click="AboutUs_Click" Height="21" Width="59" />
-</Menu>
+            <MenuItem Header="About Us" Click="AboutUs_Click" Height="21" Width="59" />
+        </Menu>
 
         <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
             <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
@@ -51,8 +71,8 @@
                     <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
                 </StackPanel>
                 <StackPanel Margin="0,5">
-                    <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10" FontSize="11"/>
-                    <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100">
+                    <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
+                    <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100" IsEnabled="False">
                         <!-- Add categories here -->
                     </ComboBox>
                 </StackPanel>
@@ -61,7 +81,7 @@
         <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
             <StackPanel Margin="10">
                 <TextBlock Text="Summary Options" FontSize="12"/>
-                <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11"/>
+                <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked"/>
                 <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
             </StackPanel>
         </GroupBox>
@@ -78,6 +98,7 @@
                 <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
                 <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
             </StackPanel>
+
             <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0">
                 <ListView.View>
                     <GridView>
