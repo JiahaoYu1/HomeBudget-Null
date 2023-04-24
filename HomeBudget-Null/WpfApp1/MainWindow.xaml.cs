@@ -13,6 +13,7 @@ using System.Globalization;
 using Budget;
 using Microsoft.Win32;
 using System.Diagnostics;
+using WpfApp1;
 
 namespace WpfApp1
 {
@@ -24,6 +25,7 @@ namespace WpfApp1
         private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
+        private Presenter presenter;
 
         public MainWindow()
         {
@@ -119,12 +121,14 @@ namespace WpfApp1
 
         private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            AddExpenseWindow aew = new AddExpenseWindow(presenter);
+            aew.ShowDialog();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
+
     }
 }
