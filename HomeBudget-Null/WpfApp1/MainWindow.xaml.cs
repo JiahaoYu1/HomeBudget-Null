@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using WpfApp1;
 using System.ComponentModel;
+using System.Windows.Data;
 
 namespace WpfApp1
 {
@@ -31,6 +32,17 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            // Set default start date and end date to today
+            StartDatePicker.SelectedDate = DateTime.Today;
+            EndDatePicker.SelectedDate = DateTime.Today;
+        }
+
+        public MainWindow(Presenter presenter)
+        {
+            InitializeComponent();
+            this.presenter = presenter;
+/*            ExpensesListView.ItemsSource = presenter.GetExpenses();*/
+            FilterExpenses("");
         }
 
         public void GetFile(bool isCreatingNewFile)
@@ -139,7 +151,17 @@ namespace WpfApp1
 
         private void FilterExpenses(string searchedTerm)
         {
-            ICollectionView view
+            ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesListView.ItemsSource);
+            view.Filter = expenses =>
+            {
+                Expense item = expenses as Expense;
+                return item.Description.Contains(searchedTerm);
+            };
+        }
+
+        private void AboutUs_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Team name: Null", "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
