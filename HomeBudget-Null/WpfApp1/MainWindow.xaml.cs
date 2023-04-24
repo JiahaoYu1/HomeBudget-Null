@@ -28,6 +28,7 @@ namespace WpfApp1
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
         private Presenter presenter;
+        private bool _isFileLoaded;
 
         public MainWindow()
         {
@@ -67,8 +68,8 @@ namespace WpfApp1
                 string selectedFile = fileDialog.FileName;
                 /*selectedFileLabel.Content = "Selected File: " + selectedFile;
 
-                BlockingLabel.Visibility = Visibility.Hidden;
-                presenter.LoadFile(selectedFile, isCreatingNewFile);*/
+                BlockingLabel.Visibility = Visibility.Hidden;*/
+                presenter.LoadFile(selectedFile, isCreatingNewFile);
 
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
@@ -77,8 +78,14 @@ namespace WpfApp1
 
         public void DisplayError(Exception e)
         {
-            throw new NotImplementedException();
+            DisplayError(e.Message);
         }
+
+        public void DisplayError(string errorToDisplay)
+        {
+            MessageBox.Show(errorToDisplay, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
 
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
