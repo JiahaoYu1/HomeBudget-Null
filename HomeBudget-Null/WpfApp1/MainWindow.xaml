@@ -17,17 +17,21 @@
             <ColumnDefinition Width="Auto" MinWidth="50"/>
         </Grid.ColumnDefinitions>
 
-        <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,1,411">
-            <MenuItem Header="File" RenderTransformOrigin="1.961,0.114" Height="21" Click="MenuItem_Click">
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,1,0">
+            <MenuItem Header="    File" RenderTransformOrigin="1.961,0.114" Height="21" Click="MenuItem_Click" Width="59">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
                 <MenuItem Header="Save As" Click="SaveAs_Click"/>
                 <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
+            
         </Menu>
+        <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,23,1,0" VerticalAlignment="Top">
+    <MenuItem Header="About Us" Click="AboutUs_Click" Height="21" Width="59" />
+</Menu>
 
-        <GroupBox Header="Filter" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
+        <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
             <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
                 <StackPanel.RenderTransform>
                     <TransformGroup>
@@ -72,7 +76,7 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" Margin="10">
                 <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
-                <Button  x:Name="Search" Content="Search" Height="19"/>
+                <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
             </StackPanel>
             <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0">
                 <ListView.View>
