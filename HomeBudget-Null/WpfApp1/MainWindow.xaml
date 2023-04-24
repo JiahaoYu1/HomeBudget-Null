@@ -75,7 +75,15 @@
                 <Button  x:Name="Search" Content="Search" Height="19"/>
             </StackPanel>
             <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0">
-                <!-- Define the columns of the ListView here -->
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" />
+                        <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" />
+                        <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
+                        <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" />
+                        <GridViewColumn Header="Balance" DisplayMemberBinding="{Binding Balance}" />
+                    </GridView>
+                </ListView.View>
             </ListView>
         </Grid>
     </Grid>

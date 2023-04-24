@@ -14,6 +14,7 @@ using Budget;
 using Microsoft.Win32;
 using System.Diagnostics;
 using WpfApp1;
+using System.ComponentModel;
 
 namespace WpfApp1
 {
@@ -130,5 +131,15 @@ namespace WpfApp1
             Application.Current.Shutdown();
         }
 
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            string searchedTerm = SearchTextBox.Text;
+            FilterExpenses(searchedTerm);
+        }
+
+        private void FilterExpenses(string searchedTerm)
+        {
+            ICollectionView view
+        }
     }
 }
