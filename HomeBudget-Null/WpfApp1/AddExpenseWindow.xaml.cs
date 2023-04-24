@@ -30,6 +30,7 @@ namespace WpfApp1
             InitializeComponent();
             this.presenter = presenter;
             dateDatePicker.SelectedDate = DateTime.Today;
+            SetBudgetText(0);
         }
 
         public void AddCategory(string categoryName, string categoryType)
@@ -49,7 +50,7 @@ namespace WpfApp1
         public void AddExpense()
         {
             // Update the budget label
-            budgetLabel.Content = "Budget: $0";
+            SetBudgetText(0);
 
             // Clear the form
             nameTextBox.Text = "";
@@ -115,6 +116,12 @@ namespace WpfApp1
             return true;
         }
 
+        private void SetBudgetText(double money)
+        {
+            budgetLabel.Content = budgetLabel.Content = string.Format("Budget: {0:C}", money.ToString("C"));
+        }
+
+
 
         #region Events
         private void addButton_Click(object sender, RoutedEventArgs e)
@@ -167,12 +174,12 @@ namespace WpfApp1
             TextBox tb = (TextBox)sender;
             if (decimal.TryParse(tb.Text, out decimal value) && tb.Text != null)
             {
-                budgetLabel.Content = string.Format("{0:C}", tb.Text);//"Budget: $" + tb.Text;
+                SetBudgetText(double.Parse(tb.Text));
             }
             else
             {
                 tb.Text = string.Empty;
-                budgetLabel.Content = "Budget: $0";
+                SetBudgetText(0);
             }
         }
 
@@ -191,7 +198,7 @@ namespace WpfApp1
         {
             if (unsavedChanges)
             {
-                MessageBoxResult result = MessageBox.Show("There are unsaved changes. Are you sure you want to close the application? ", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("There are unsaved changes. Are you sure you want to close the window? ", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                     e.Cancel = true;
             }
