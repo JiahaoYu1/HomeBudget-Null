@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="AddExpenseWindow" Height="470" Width="800" ResizeMode="NoResize"
+        Title="AddExpenseWindow" Height="450" Width="800"
         Icon="/icon.png">
     <Window.Resources>
         <DataTemplate x:Key="MonthHeaderTemplate">
@@ -31,21 +31,21 @@
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
-            <MenuItem Header="File" Click="MenuItem_Click">
+            <MenuItem Header="File" Click="MenuItem_Click" Background="Silver">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
                 <MenuItem Header="Save As" Click="SaveAs_Click"/>
             </MenuItem>
-            
-            <MenuItem Header="About Us" Click="AboutUs_Click"/>
-            
+
+            <MenuItem Header="About Us" Click="AboutUs_Click" Background="Silver"/>
+
             <Separator/>
             <Separator/>
             <Separator/>
-            <MenuItem Header="Exit" Click="Exit_Click"/>
+            <MenuItem Header="Exit" Click="Exit_Click" Background="Red" Foreground="White"/>
         </Menu>
 
-        <Grid>
+        <Grid Height="476">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto" MinWidth="1.078"/>
@@ -89,7 +89,7 @@
                     <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63" BorderBrush="#FF59595A">
+            <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
                 <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
             </GroupBox>
 
@@ -103,7 +103,16 @@
                     <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
                 </StackPanel>
 
-                <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0">
+                <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0" SelectionChanged="ExpensesListView_SelectionChanged"
+                          MouseRightButtonDown="ExpensesListView_MouseRightButtonDown">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Delete" Click="Delete_Click"/>
+                            <MenuItem Header="Modify" Click="Modify_Click"/>
+                            <Separator/>
+                            <MenuItem Header="Cancel" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" />

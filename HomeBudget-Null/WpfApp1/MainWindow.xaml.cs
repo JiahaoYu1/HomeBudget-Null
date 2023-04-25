@@ -16,6 +16,7 @@ using System.Diagnostics;
 using WpfApp1;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace WpfApp1
 {
@@ -171,6 +172,30 @@ namespace WpfApp1
                 HeaderTemplate = (DataTemplate)this.Resources["MonthHeaderTemplate"],
                 ContainerStyle = (Style)this.Resources["MonthContainerStyle"]
             });
+        }
+
+        private void ExpensesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ExpensesListView.SelectedItem != null)
+            {
+                // Enable the ContextMenu for the selected item
+                ExpensesListView.ContextMenu.IsEnabled = true;
+            }
+            else
+            {
+                // Disable the ContextMenu if no item is selected
+                ExpensesListView.ContextMenu.IsEnabled = false;
+            }
+        }
+
+        private void ExpensesListView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListView listView = sender as ListView;
+            if (listView != null)
+            {
+                listView.ContextMenu.PlacementTarget = listView;
+                listView.ContextMenu.IsOpen = true;
+            }
         }
     }
 }
