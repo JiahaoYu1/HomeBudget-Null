@@ -27,91 +27,92 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto" MinWidth="1.078"/>
-            <ColumnDefinition Width="Auto" MinWidth="198.688"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto" MinWidth="50"/>
-        </Grid.ColumnDefinitions>
-
-        <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,1,0">
-            <MenuItem Header="    File" RenderTransformOrigin="1.961,0.114" Height="21" Click="MenuItem_Click" Width="59">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
+            <MenuItem Header="File" Click="MenuItem_Click">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
                 <MenuItem Header="Save As" Click="SaveAs_Click"/>
-                <Separator/>
-                <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
-
+            
+            <MenuItem Header="About Us" Click="AboutUs_Click"/>
+            
+            <Separator/>
+            <Separator/>
+            <Separator/>
+            <MenuItem Header="Exit" Click="Exit_Click"/>
         </Menu>
-        <Menu Grid.Row="0" Grid.ColumnSpan="2" Margin="0,23,1,0" VerticalAlignment="Top">
-            <MenuItem Header="About Us" Click="AboutUs_Click" Height="21" Width="59" />
-        </Menu>
 
-        <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
-            <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
-                <StackPanel.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform AngleY="0.315"/>
-                        <RotateTransform/>
-                        <TranslateTransform Y="0.495"/>
-                    </TransformGroup>
-                </StackPanel.RenderTransform>
-                <TextBlock Text="Display Options" FontSize="12"/>
-                <StackPanel Orientation="Horizontal" Margin="0,5" Width="178">
-                    <TextBlock Text="Start Date:" Margin="10" FontSize="10" RenderTransformOrigin="0.022,0.861"/>
-                    <DatePicker x:Name="StartDatePicker" Margin="5" Width="94"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="End Date:" Margin="10" FontSize="10"/>
-                    <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
-                </StackPanel>
-                <StackPanel Margin="0,5">
-                    <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
-                    <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100" IsEnabled="False">
-                        <!-- Add categories here -->
-                    </ComboBox>
-                </StackPanel>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
-            <StackPanel Margin="10">
-                <TextBlock Text="Summary Options" FontSize="12"/>
-                <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked"/>
-                <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
-            <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
-        </GroupBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="1.078"/>
+                <ColumnDefinition Width="Auto" MinWidth="198.688"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" MinWidth="50"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="3" Background="#FFF4F4F5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Margin="10">
-                <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
-                <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
-            </StackPanel>
+            <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
+                <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="0.315"/>
+                            <RotateTransform/>
+                            <TranslateTransform Y="0.495"/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <TextBlock Text="Display Options" FontSize="12"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5" Width="178">
+                        <TextBlock Text="Start Date:" Margin="10" FontSize="10" RenderTransformOrigin="0.022,0.861"/>
+                        <DatePicker x:Name="StartDatePicker" Margin="5" Width="94"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <TextBlock Text="End Date:" Margin="10" FontSize="10"/>
+                        <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,5">
+                        <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
+                        <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100" IsEnabled="False">
+                            <!-- Add categories here -->
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Summary Options" FontSize="12"/>
+                    <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked"/>
+                    <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
+                <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
+            </GroupBox>
 
-            <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" />
-                        <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" />
-                        <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
-                        <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" />
-                        <GridViewColumn Header="Balance" DisplayMemberBinding="{Binding Balance}" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <Grid Grid.Column="3" Background="#FFF4F4F5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
+                    <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
+                </StackPanel>
+
+                <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" />
+                            <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" />
+                            <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
+                            <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" />
+                            <GridViewColumn Header="Balance" DisplayMemberBinding="{Binding Balance}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
         </Grid>
-    </Grid>
-
-
+    </DockPanel>
 </Window>
