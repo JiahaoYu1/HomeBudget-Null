@@ -75,7 +75,7 @@
                         <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
                     </StackPanel>
                     <StackPanel Margin="0,5">
-                        <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
+                        <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" IsEnabled="false" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
                         <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100" IsEnabled="False">
                             <!-- Add categories here -->
                         </ComboBox>
