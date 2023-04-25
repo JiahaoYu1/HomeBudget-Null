@@ -67,6 +67,12 @@ namespace WpfApp1
                 BlockingLabel.Visibility = Visibility.Hidden;
                 presenter.LoadFile(selectedFile, isCreatingNewFile);
 
+                _isFileLoaded = true;
+
+                FilterByCategoryCheckBox.IsEnabled = true;
+                CategoryComboBox.ItemsSource = presenter.GetCategoryList();
+                CategoryComboBox.SelectedIndex = 0;
+
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
             }
@@ -121,8 +127,13 @@ namespace WpfApp1
 
         private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
         {
-            AddExpenseWindow aew = new AddExpenseWindow(presenter);
-            aew.ShowDialog();
+            if (_isFileLoaded)
+            {
+                AddExpenseWindow aew = new AddExpenseWindow(presenter);
+                aew.ShowDialog();
+            }
+            else
+                MessageBox.Show("Select or create a file", "Add Expense", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
