@@ -28,6 +28,7 @@ namespace WpfApp1
         private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
+        const string WINDOW_TITLE = "Home Budget";
         private Presenter presenter;
         private bool _isFileLoaded;
 
@@ -37,14 +38,8 @@ namespace WpfApp1
             // Set default start date and end date to today
             StartDatePicker.SelectedDate = DateTime.Today;
             EndDatePicker.SelectedDate = DateTime.Today;
-        }
 
-        public MainWindow(Presenter presenter)
-        {
-            InitializeComponent();
-            this.presenter = presenter;
-/*            ExpensesListView.ItemsSource = presenter.GetExpenses();*/
-            FilterExpenses("");
+            presenter = new Presenter(this);
         }
 
         public void GetFile(bool isCreatingNewFile)
@@ -67,9 +62,10 @@ namespace WpfApp1
             if (fileDialog.ShowDialog() == true)
             {
                 string selectedFile = fileDialog.FileName;
-                /*selectedFileLabel.Content = "Selected File: " + selectedFile;
+                Title = WINDOW_TITLE + " - " + Path.GetFileName(selectedFile);
+                /*selectedFileLabel.Content = "Selected File: " + selectedFile;*/
 
-                BlockingLabel.Visibility = Visibility.Hidden;*/
+                BlockingLabel.Visibility = Visibility.Hidden;
                 presenter.LoadFile(selectedFile, isCreatingNewFile);
 
                 // Save the last directory used for the budget file
@@ -105,33 +101,12 @@ namespace WpfApp1
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Database files (*.db)|*.db";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filePath = saveFileDialog.FileName;
-
-                // Create a new file at the specified location
-                File.Create(filePath);
-
-                // Optionally, open the file for editing
-                Process.Start("notepad.exe", filePath);
-            }
+            GetFile(true);
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "DB files (*.db)|*.db";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string filePath = openFileDialog.FileName;
-
-                // Open the selected file for editing
-                Process.Start("notepad.exe", filePath);
-            }
+            GetFile(false);
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)

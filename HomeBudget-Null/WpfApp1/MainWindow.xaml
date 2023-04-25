@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="AddExpenseWindow" Height="515" Width="800"
+        Title="AddExpenseWindow" Height="450" Width="800"
         Icon="/icon.png">
     <Window.Resources>
         <DataTemplate x:Key="MonthHeaderTemplate">
@@ -26,6 +26,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
     </Window.Resources>
 
     <DockPanel>
@@ -52,6 +53,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto" MinWidth="50"/>
             </Grid.ColumnDefinitions>
+            
 
             <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
                 <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
@@ -88,7 +90,7 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
-                <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click" Background="Silver"/>
+                <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
             </GroupBox>
 
             <Grid Grid.Column="3" Background="#FFF4F4F5">
@@ -122,6 +124,12 @@
                     </ListView.View>
                 </ListView>
             </Grid>
+
+            <Label x:Name="BlockingLabel" Visibility="Hidden" Content="Select a file" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="5" FontSize="72" FontWeight="Bold">
+                <Label.Background>
+                    <SolidColorBrush Color="#FF656565" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
         </Grid>
     </DockPanel>
 </Window>
