@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="AddExpenseWindow" Height="450" Width="800"
+        Title="AddExpenseWindow" Height="470" Width="800" ResizeMode="NoResize"
         Icon="/icon.png">
     <Window.Resources>
         <DataTemplate x:Key="MonthHeaderTemplate">
@@ -26,6 +26,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
     </Window.Resources>
 
     <DockPanel>
@@ -52,6 +53,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto" MinWidth="50"/>
             </Grid.ColumnDefinitions>
+            
 
             <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
                 <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
@@ -87,7 +89,7 @@
                     <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
+            <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63" BorderBrush="#FF59595A">
                 <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
             </GroupBox>
 
@@ -113,6 +115,12 @@
                     </ListView.View>
                 </ListView>
             </Grid>
+
+            <Label x:Name="BlockingLabel" Visibility="Hidden" Content="Select a file" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="5" FontSize="72" FontWeight="Bold">
+                <Label.Background>
+                    <SolidColorBrush Color="#FF656565" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
         </Grid>
     </DockPanel>
 </Window>
