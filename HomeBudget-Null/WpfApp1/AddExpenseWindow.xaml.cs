@@ -22,15 +22,18 @@ namespace WpfApp1
     /// </summary>
     public partial class AddExpenseWindow : Window, IExpense
     {
-        private Presenter presenter;
+        private Presenter homeBudgetPresenter;
+        private Presenter expensePresenter;
         private bool unsavedChanges = false;
         private bool isDarkTheme = false;
 
         public AddExpenseWindow(Presenter presenter)
         {
             InitializeComponent();
-            this.presenter = presenter;
+            this.homeBudgetPresenter = presenter;
+            this.expensePresenter = new Presenter(this);
             dateDatePicker.SelectedDate = DateTime.Today;
+            categoryComboBox.ItemsSource = expensePresenter.GetCategoryList();
             SetBudgetText(0);
         }
 
@@ -39,7 +42,7 @@ namespace WpfApp1
             // User clicked the confirm button, so update the categoryComboBox
             //presenter.AddCategory(categoryName, categoryType);
 
-            categoryComboBox.ItemsSource = presenter.GetCategoryList();
+            categoryComboBox.ItemsSource = homeBudgetPresenter.GetCategoryList();
             // Add the new category to the categoryComboBox
             //ComboBoxItem newItem = new ComboBoxItem();
             //newItem.Content = categoryName + " - " + categoryType;
@@ -135,7 +138,7 @@ namespace WpfApp1
             DateTime? date = dateDatePicker.SelectedDate;//DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             double amount = double.Parse(amountTextBox.Text.ToString());
             int index = categoryComboBox.SelectedIndex;
-            presenter.AddExpense((DateTime)date, index + 1, amount, nameTextBox.Text);
+            homeBudgetPresenter.AddExpense((DateTime)date, index + 1, amount, nameTextBox.Text);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -165,7 +168,7 @@ namespace WpfApp1
                 string categoryName = addCategoryWindow.CategoryName;
                 string categoryType = addCategoryWindow.CategoryType;
 
-                presenter.AddCategory(categoryName, categoryType);
+                homeBudgetPresenter.AddCategory(categoryName, categoryType);
             }
         }
 

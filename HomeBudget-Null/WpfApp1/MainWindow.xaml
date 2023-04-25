@@ -103,26 +103,17 @@
                     <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
                 </StackPanel>
 
-                <ListView Grid.Row="1" x:Name="ExpensesListView" Margin="10" BorderThickness="0" SelectionChanged="ExpensesListView_SelectionChanged"
-                          MouseRightButtonDown="ExpensesListView_MouseRightButtonDown">
-                    <ListView.ContextMenu>
+                <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
+                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown">
+                    <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Delete" Click="Delete_Click"/>
-                            <MenuItem Header="Modify" Click="Modify_Click"/>
+                            <MenuItem Header="Delete"/>
+                            <MenuItem Header="Modify"/>
                             <Separator/>
                             <MenuItem Header="Cancel" />
                         </ContextMenu>
-                    </ListView.ContextMenu>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" />
-                            <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" />
-                            <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Description}" />
-                            <GridViewColumn Header="Amount" DisplayMemberBinding="{Binding Amount}" />
-                            <GridViewColumn Header="Balance" DisplayMemberBinding="{Binding Balance}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
             </Grid>
 
             <Label x:Name="BlockingLabel" Visibility="Hidden" Content="Select a file" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="5" FontSize="72" FontWeight="Bold">

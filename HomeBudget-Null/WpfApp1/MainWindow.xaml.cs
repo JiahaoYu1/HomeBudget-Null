@@ -74,6 +74,8 @@ namespace WpfApp1
                 CategoryComboBox.ItemsSource = presenter.GetCategoryList();
                 CategoryComboBox.SelectedIndex = 0;
 
+                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
             }
@@ -132,6 +134,8 @@ namespace WpfApp1
             {
                 AddExpenseWindow aew = new AddExpenseWindow(presenter);
                 aew.ShowDialog();
+
+                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
             }
             else
                 MessageBox.Show("Select or create a file", "Add Expense", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -150,7 +154,7 @@ namespace WpfApp1
 
         private void FilterExpenses(string searchedTerm)
         {
-            ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesListView.ItemsSource);
+            ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
             view.Filter = expenses =>
             {
                 Expense item = expenses as Expense;
@@ -165,36 +169,36 @@ namespace WpfApp1
 
         private void ByMonthCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            // Set the group description for the ListView to group expenses by month
-            ExpensesListView.GroupStyle.Clear();
-            ExpensesListView.GroupStyle.Add(new GroupStyle
+            // Set the group description for the DataGrid to group expenses by month
+            ExpensesDataGrid.GroupStyle.Clear();
+            ExpensesDataGrid.GroupStyle.Add(new GroupStyle
             {
                 HeaderTemplate = (DataTemplate)this.Resources["MonthHeaderTemplate"],
                 ContainerStyle = (Style)this.Resources["MonthContainerStyle"]
             });
         }
 
-        private void ExpensesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ExpensesListView.SelectedItem != null)
+            if (ExpensesDataGrid.SelectedItem != null)
             {
                 // Enable the ContextMenu for the selected item
-                ExpensesListView.ContextMenu.IsEnabled = true;
+                ExpensesDataGrid.ContextMenu.IsEnabled = true;
             }
             else
             {
                 // Disable the ContextMenu if no item is selected
-                ExpensesListView.ContextMenu.IsEnabled = false;
+                ExpensesDataGrid.ContextMenu.IsEnabled = false;
             }
         }
 
-        private void ExpensesListView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void ExpensesDataGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListView listView = sender as ListView;
-            if (listView != null)
+            DataGrid expenseGrid = sender as DataGrid;
+            if (expenseGrid != null)
             {
-                listView.ContextMenu.PlacementTarget = listView;
-                listView.ContextMenu.IsOpen = true;
+                expenseGrid.ContextMenu.PlacementTarget = expenseGrid;
+                expenseGrid.ContextMenu.IsOpen = true;
             }
         }
     }
