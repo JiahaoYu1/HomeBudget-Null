@@ -31,6 +31,7 @@ namespace WpfApp1
         const string WINDOW_TITLE = "Home Budget";
         private Presenter presenter;
         private bool _isFileLoaded;
+        private bool _fileSelected = false;
 
         public MainWindow()
         {
@@ -109,11 +110,31 @@ namespace WpfApp1
 
         private void New_Click(object sender, RoutedEventArgs e)
         {
+            // Set _fileSelected to true
+            _fileSelected = true;
+
+            // Set the Visibility property of the DataGridTextColumn elements to Visible
+            DateColumn.Visibility = Visibility.Visible;
+            CategoryColumn.Visibility = Visibility.Visible;
+            DescriptionColumn.Visibility = Visibility.Visible;
+            AmountColumn.Visibility = Visibility.Visible;
+            BalanceColumn.Visibility = Visibility.Visible;
+
             GetFile(true);
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            // Set _fileSelected to true
+            _fileSelected = true;
+
+            // Set the Visibility property of the DataGridTextColumn elements to Visible
+            DateColumn.Visibility = Visibility.Visible;
+            CategoryColumn.Visibility = Visibility.Visible;
+            DescriptionColumn.Visibility = Visibility.Visible;
+            AmountColumn.Visibility = Visibility.Visible;
+            BalanceColumn.Visibility = Visibility.Visible;
+
             GetFile(false);
         }
 
@@ -164,7 +185,7 @@ namespace WpfApp1
 
         private void AboutUs_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Team name: Null\n Group members: Ryan Caden Kevin", "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Team name: Null\nGroup members: Ryan Caden Kevin", "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ByMonthCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -180,7 +201,10 @@ namespace WpfApp1
 
         private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ExpensesDataGrid.SelectedItem != null)
+            if(!_fileSelected){
+                ExpensesDataGrid.UnselectAll();
+            }
+             if (ExpensesDataGrid.SelectedItem != null)
             {
                 // Enable the ContextMenu for the selected item
                 ExpensesDataGrid.ContextMenu.IsEnabled = true;
