@@ -29,6 +29,8 @@ namespace WpfApp1
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
         const string WINDOW_TITLE = "Home Budget";
+        const int DATAGRID_DATE_COLUMN = 1;
+
         private Presenter presenter;
         private bool _isFileLoaded;
         private bool _fileSelected = false;
@@ -72,10 +74,10 @@ namespace WpfApp1
                 _isFileLoaded = true;
 
                 FilterByCategoryCheckBox.IsEnabled = true;
-                CategoryComboBox.ItemsSource = presenter.GetCategoryList();
+                FillDataGrid();
                 CategoryComboBox.SelectedIndex = 0;
 
-                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+                //ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
 
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
@@ -91,6 +93,20 @@ namespace WpfApp1
         {
             MessageBox.Show(errorToDisplay, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+
+        private void FillDataGrid()
+        {
+            if (!_isFileLoaded)
+            {
+                DisplayError("Create or select a file");
+                return;
+            }
+
+            ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+            ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
+        }
+
 
 
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
