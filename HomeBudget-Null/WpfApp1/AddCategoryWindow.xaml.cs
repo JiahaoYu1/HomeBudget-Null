@@ -39,6 +39,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             categoryTypeComboBox.ItemsSource = Presenter.GetCategoryTypes();
+            categoryTypeComboBox.SelectedIndex = 0;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

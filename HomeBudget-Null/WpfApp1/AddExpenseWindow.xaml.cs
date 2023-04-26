@@ -33,7 +33,7 @@ namespace WpfApp1
             this.homeBudgetPresenter = presenter;
             this.expensePresenter = new Presenter(this);
             dateDatePicker.SelectedDate = DateTime.Today;
-            categoryComboBox.ItemsSource = expensePresenter.GetCategoryList();
+            categoryComboBox.ItemsSource = homeBudgetPresenter.GetCategoryList();
             SetBudgetText(0);
         }
 
@@ -169,6 +169,7 @@ namespace WpfApp1
                 string categoryType = addCategoryWindow.CategoryType;
 
                 homeBudgetPresenter.AddCategory(categoryName, categoryType);
+                categoryComboBox.ItemsSource = homeBudgetPresenter.GetCategoryList();
             }
         }
 

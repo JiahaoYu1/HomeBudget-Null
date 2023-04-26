@@ -15,9 +15,10 @@ namespace WpfApp1
         /// Initializes a new instance of the Presenter class that uses a view that uses the IExpense interface
         /// </summary>
         /// <param name="newView">The IExpense view to use for displaying</param>
-        public Presenter(IExpense newView)
+        public Presenter(IExpense newView, HomeBudget newBudget = null)
         {
             expenseView = newView;
+            budget = newBudget;
         }
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace WpfApp1
 
                     // Attempt to add the new category
                     budget.categories.Add(name, (Category.CategoryType)Enum.Parse(typeof(Category.CategoryType), parsableType));
-                    expenseView.AddCategory(name, parsableType);
+                        //expenseView.AddCategory(name, parsableType);
                 }
                 catch (Exception e)
                 {
@@ -82,7 +83,6 @@ namespace WpfApp1
                 try
                 {
                     budget.expenses.Add(date, categoryId, amount, desc);
-                    expenseView.AddExpense();
                 }
                 catch (Exception e)
                 {
