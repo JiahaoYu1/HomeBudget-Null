@@ -114,11 +114,11 @@ namespace WpfApp1
             _fileSelected = true;
 
             // Set the Visibility property of the DataGridTextColumn elements to Visible
-            DateColumn.Visibility = Visibility.Visible;
-            CategoryColumn.Visibility = Visibility.Visible;
-            DescriptionColumn.Visibility = Visibility.Visible;
-            AmountColumn.Visibility = Visibility.Visible;
-            BalanceColumn.Visibility = Visibility.Visible;
+            //DateColumn.Visibility = Visibility.Visible;
+            //CategoryColumn.Visibility = Visibility.Visible;
+            //DescriptionColumn.Visibility = Visibility.Visible;
+            //AmountColumn.Visibility = Visibility.Visible;
+            //BalanceColumn.Visibility = Visibility.Visible;
 
             GetFile(true);
         }
@@ -129,11 +129,11 @@ namespace WpfApp1
             _fileSelected = true;
 
             // Set the Visibility property of the DataGridTextColumn elements to Visible
-            DateColumn.Visibility = Visibility.Visible;
-            CategoryColumn.Visibility = Visibility.Visible;
-            DescriptionColumn.Visibility = Visibility.Visible;
-            AmountColumn.Visibility = Visibility.Visible;
-            BalanceColumn.Visibility = Visibility.Visible;
+            //DateColumn.Visibility = Visibility.Visible;
+            //CategoryColumn.Visibility = Visibility.Visible;
+            //DescriptionColumn.Visibility = Visibility.Visible;
+            //AmountColumn.Visibility = Visibility.Visible;
+            //BalanceColumn.Visibility = Visibility.Visible;
 
             GetFile(false);
         }
