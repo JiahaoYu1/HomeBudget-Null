@@ -105,6 +105,13 @@
 
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
                           MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="DateColumn" Header="Date" Binding="{Binding Date}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="CategoryColumn" Header="Category" Binding="{Binding Category}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="DescriptionColumn" Header="Description" Binding="{Binding Description}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="AmountColumn" Header="Amount" Binding="{Binding Amount}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="BalanceColumn" Header="Balance" Binding="{Binding Balance}" Visibility="Collapsed"/>
+                    </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Delete"/>
