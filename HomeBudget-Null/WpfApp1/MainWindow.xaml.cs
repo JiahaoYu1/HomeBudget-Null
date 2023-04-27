@@ -115,9 +115,9 @@ namespace WpfApp1
                 List<Expense> expenses = new List<Expense>();
                 List<BudgetItemsByMonth> budgetItems = presenter.GetExpensesByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
-                foreach(BudgetItemsByMonth bgitemMonth in budgetItems)
+                foreach (BudgetItemsByMonth bgitemMonth in budgetItems)
                 {
-                    foreach(BudgetItem bgitem in bgitemMonth.Details)
+                    foreach (BudgetItem bgitem in bgitemMonth.Details)
                     {
                         expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
                     }

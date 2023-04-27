@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Content="Date:" Margin="10"/>
-        <DatePicker Grid.Row="1" x:Name="Datepicker" Margin="10" SelectedDate="{Binding Date}"/>
+        <DatePicker Grid.Row="1" x:Name="Datepicker" Margin="10" SelectedDate="{Binding Date}" />
 
         <Label Grid.Row="2" Content="Category:" Margin="10"/>
         <ComboBox Grid.Row="3" x:Name="CategoryComboBox" Margin="10" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}"/>
