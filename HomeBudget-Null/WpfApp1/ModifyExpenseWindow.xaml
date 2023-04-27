@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -23,10 +24,13 @@
         <ComboBox Grid.Row="3" x:Name="CategoryComboBox" Margin="10" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}"/>
 
         <Label Grid.Row="4" Content="Amount:" Margin="10"/>
-        <TextBox Grid.Row="5" x:Name="AmountTextBox" Margin="10,10,10,157" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Row="4" x:Name="AmountTextBox" Margin="65,10,420,10" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Row="5" Content="Description:" Margin="10,10,10,171"/>
+        <TextBox Grid.Row="5" x:Name="DescriptionTextBox" Margin="85,10,420,171" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10"/>
-        <Button Content="Cancel" Margin="24,21,631,170" Click="CancelButton_Click" Grid.Row="5"/>
-        <Button Content="OK" Click="OkButton_Click" Margin="337,21,318,170" Grid.Row="5"/>
+        <Button Content="Cancel" Margin="24,90,631,100" Click="CancelButton_Click" Grid.Row="5"/>
+        <Button Content="OK" Click="OkButton_Click" Margin="328,95,328,96" Grid.Row="5" RenderTransformOrigin="0.522,3.638"/>
     </Grid>
 </Window>

@@ -31,7 +31,7 @@
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
-            <MenuItem Header="File" Click="MenuItem_Click" Background="Silver">
+            <MenuItem Header="File" Background="Silver">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
                 <MenuItem Header="Save As" Click="SaveAs_Click"/>

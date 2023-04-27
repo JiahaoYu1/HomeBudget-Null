@@ -39,16 +39,7 @@ namespace WpfApp1
 
         public void AddCategory(string categoryName, string categoryType)
         {
-            // User clicked the confirm button, so update the categoryComboBox
-            //presenter.AddCategory(categoryName, categoryType);
-
             categoryComboBox.ItemsSource = homeBudgetPresenter.GetCategoryList();
-            // Add the new category to the categoryComboBox
-            //ComboBoxItem newItem = new ComboBoxItem();
-            //newItem.Content = categoryName + " - " + categoryType;
-            //categoryComboBox.Items.Add(newItem);
-            //// Select the newly added category
-            //categoryComboBox.SelectedItem = newItem;
         }
 
         public void AddExpense()
@@ -59,11 +50,8 @@ namespace WpfApp1
             // Clear the form
             nameTextBox.Text = "";
             amountTextBox.Text = "";
-            // dateDatePicker.SelectedDate = null;
-            //categoryComboBox.SelectedIndex = -1;
 
             // Set unsavedChanges to true
-            //MessageBox.Show("Expense Added", "Expense Status");
             unsavedChanges = true;
         }
 
@@ -100,22 +88,11 @@ namespace WpfApp1
                 return false;
             }
 
-            //if (!DateTime.TryParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-            //{
-            //    MessageBox.Show("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd", "Expense Date");
-            //    return false;
-            //}
-
             if (categoryComboBox.SelectedIndex == -1)
             {
                 DisplayError("Please select a Category in which the Expense falls under.");
                 return false;
             }
-            /*if(selectedFileLabel.Content.ToString() == "Selected File: ")
-            {
-                MessageBox.Show("Please select a file for the Expense to be stored in.", "Expense File");
-                return false;
-            }*/
 
             return true;
         }
