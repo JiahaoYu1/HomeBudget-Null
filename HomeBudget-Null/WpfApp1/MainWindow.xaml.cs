@@ -35,6 +35,8 @@ namespace WpfApp1
         private bool _isFileLoaded;
         private bool _fileSelected = false;
 
+        private List<Expense> _expensesList = new List<Expense>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -241,5 +243,52 @@ namespace WpfApp1
                 expenseGrid.ContextMenu.IsOpen = true;
             }
         }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the selected item in the data grid
+            var selectedItem = ExpensesDataGrid.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                // Show a message box to confirm the deletion
+                var messageBoxResult = MessageBox.Show("Are you sure you want to delete this?", "Confirm Deletion", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    // Remove the selected item from the data source
+                    _expensesList.Remove((Expense)selectedItem);
+
+                    // Reset the data grid by updating the ItemsSource property
+                    ExpensesDataGrid.ItemsSource = _expensesList;
+                }
+            }
+        }
+
+        private void Modify_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the selected item in the data grid
+            var selectedItem = ExpensesDataGrid.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                // Show a dialog or window to allow the user to modify the item
+                var dialog = new ModifyExpenseWindow((Expense)selectedItem);
+
+                // Show the dialog and wait for the user's response
+                bool? result = dialog.ShowDialog();
+
+                if (result == true)
+                {
+                    // Update the data source with the modified item
+                    var modifiedExpense = dialog.Expense;
+                    var index = _expensesList.IndexOf((Expense)selectedItem);
+                    _expensesList[index] = modifiedExpense;
+
+                    // Reset the data grid by updating the ItemsSource property
+                    ExpensesDataGrid.ItemsSource = _expensesList;
+                }
+            }
+        }
     }
+
 }
