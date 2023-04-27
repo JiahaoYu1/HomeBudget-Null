@@ -106,6 +106,8 @@ namespace WpfApp1
             }
 
             ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+            CategoryComboBox.ItemsSource = presenter.GetCategoryList();
+
             ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
         }
 
