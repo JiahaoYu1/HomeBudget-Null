@@ -31,7 +31,7 @@
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
-            <MenuItem Header="File" Click="MenuItem_Click" Background="Silver">
+            <MenuItem Header="File" Background="Silver">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
                 <MenuItem Header="Save As" Click="SaveAs_Click"/>
@@ -101,18 +101,11 @@
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
                     <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
+                    <TextBlock x:Name="FileNameTextBlock" Text="File: " Width="471" Height="16" Margin="35,0,0,0"/>
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
                           MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown">
-                    <DataGrid.Columns>
-                        <!--
-                        <DataGridTextColumn x:Name="DateColumn" Header="Date" Binding="{Binding Date}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="CategoryColumn" Header="Category" Binding="{Binding Category}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="DescriptionColumn" Header="Description" Binding="{Binding Description}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="AmountColumn" Header="Amount" Binding="{Binding Amount}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="BalanceColumn" Header="Balance" Binding="{Binding Balance}" Visibility="Collapsed"/>-->
-                    </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Delete" Click="Delete_Click"/>

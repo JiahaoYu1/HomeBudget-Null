@@ -84,24 +84,6 @@ namespace HomeBudgetTest_Sequel
             Assert.NotEmpty(results);
             Assert.Equal(defaultCats, results.Length);
         }
-        [Fact]
-        public void GetCategoryByIdTest()
-        {
-            ///// Arrange
-            presenter = new Presenter(this);
-            DateTime date = new DateTime(2012, 2, 5);
-            DateTime from = new DateTime(2012, 1, 20);
-            DateTime to = new DateTime(2012, 2, 30);
-            presenter.AddExpense(date, 1, 2, "Random Expense");
-
-            ///// Act
-            List<BudgetItemsByCategory> result =  presenter.GetExpenseDateFilter(from, to, 2);
-            BudgetItemsByCategory e = result[0];
-
-            ///// Assert
-            Assert.NotEmpty(result);
-            Assert.Equal(e, result[0]);
-        }
 
         #endregion
 

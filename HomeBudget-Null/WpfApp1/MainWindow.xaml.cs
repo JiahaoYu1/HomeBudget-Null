@@ -68,7 +68,6 @@ namespace WpfApp1
             {
                 string selectedFile = fileDialog.FileName;
                 Title = WINDOW_TITLE + " - " + Path.GetFileName(selectedFile);
-                /*selectedFileLabel.Content = "Selected File: " + selectedFile;*/
 
                 BlockingLabel.Visibility = Visibility.Hidden;
                 presenter.LoadFile(selectedFile, isCreatingNewFile);
@@ -81,8 +80,6 @@ namespace WpfApp1
 
                 FillDataGrid();
                 CategoryComboBox.SelectedIndex = 0;
-
-                //ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
 
                 // Save the last directory used for the budget file
                 File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
@@ -159,22 +156,10 @@ namespace WpfApp1
             CategoryComboBox.IsEnabled = false;
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void New_Click(object sender, RoutedEventArgs e)
         {
             // Set _fileSelected to true
             _fileSelected = true;
-
-            // Set the Visibility property of the DataGridTextColumn elements to Visible
-            //DateColumn.Visibility = Visibility.Visible;
-            //CategoryColumn.Visibility = Visibility.Visible;
-            //DescriptionColumn.Visibility = Visibility.Visible;
-            //AmountColumn.Visibility = Visibility.Visible;
-            //BalanceColumn.Visibility = Visibility.Visible;
 
             GetFile(true);
         }
@@ -183,13 +168,6 @@ namespace WpfApp1
         {
             // Set _fileSelected to true
             _fileSelected = true;
-
-            // Set the Visibility property of the DataGridTextColumn elements to Visible
-            //DateColumn.Visibility = Visibility.Visible;
-            //CategoryColumn.Visibility = Visibility.Visible;
-            //DescriptionColumn.Visibility = Visibility.Visible;
-            //AmountColumn.Visibility = Visibility.Visible;
-            //BalanceColumn.Visibility = Visibility.Visible;
 
             GetFile(false);
         }
@@ -297,10 +275,10 @@ namespace WpfApp1
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private void Delete_Click(object sender, RoutedEventArgs e) 
         {
             // Get the selected item in the data grid
-            var selectedItem = ExpensesDataGrid.SelectedItem;
+            Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
 
             if (selectedItem != null)
             {
@@ -308,11 +286,8 @@ namespace WpfApp1
                 var messageBoxResult = MessageBox.Show("Are you sure you want to delete this?", "Confirm Deletion", MessageBoxButton.YesNo);
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
-                    // Remove the selected item from the data source
-                    _expensesList.Remove((Expense)selectedItem);
-
-                    // Reset the data grid by updating the ItemsSource property
-                    ExpensesDataGrid.ItemsSource = _expensesList;
+                    presenter.DeleteExpense(selectedItem.Id);
+                    FillDataGrid();
                 }
             }
         }
@@ -320,25 +295,20 @@ namespace WpfApp1
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
             // Get the selected item in the data grid
-            var selectedItem = ExpensesDataGrid.SelectedItem;
+            Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
 
             if (selectedItem != null)
             {
                 // Show a dialog or window to allow the user to modify the item
-                var dialog = new ModifyExpenseWindow((Expense)selectedItem);
+                var dialog = new ModifyExpenseWindow(selectedItem, presenter);
 
                 // Show the dialog and wait for the user's response
                 bool? result = dialog.ShowDialog();
 
                 if (result == true)
                 {
-                    // Update the data source with the modified item
-                    var modifiedExpense = dialog.Expense;
-                    var index = _expensesList.IndexOf((Expense)selectedItem);
-                    _expensesList[index] = modifiedExpense;
-
                     // Reset the data grid by updating the ItemsSource property
-                    ExpensesDataGrid.ItemsSource = _expensesList;
+                    FillDataGrid();
                 }
             }
         }
