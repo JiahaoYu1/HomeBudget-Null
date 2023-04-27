@@ -131,13 +131,6 @@ namespace WpfApp1
             // Set _fileSelected to true
             _fileSelected = true;
 
-            // Set the Visibility property of the DataGridTextColumn elements to Visible
-            //DateColumn.Visibility = Visibility.Visible;
-            //CategoryColumn.Visibility = Visibility.Visible;
-            //DescriptionColumn.Visibility = Visibility.Visible;
-            //AmountColumn.Visibility = Visibility.Visible;
-            //BalanceColumn.Visibility = Visibility.Visible;
-
             GetFile(true);
         }
 
@@ -145,14 +138,12 @@ namespace WpfApp1
         {
             // Set _fileSelected to true
             _fileSelected = true;
-
-            // Set the Visibility property of the DataGridTextColumn elements to Visible
-            //DateColumn.Visibility = Visibility.Visible;
-            //CategoryColumn.Visibility = Visibility.Visible;
-            //DescriptionColumn.Visibility = Visibility.Visible;
-            //AmountColumn.Visibility = Visibility.Visible;
-            //BalanceColumn.Visibility = Visibility.Visible;
-
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Update the file name in the UI
+                FileNameTextBlock.Text = "File: " + openFileDialog.FileName;
+            }
             GetFile(false);
         }
 
@@ -249,10 +240,13 @@ namespace WpfApp1
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private void Delete_Click(object sender, RoutedEventArgs e) 
         {
             // Get the selected item in the data grid
-            var selectedItem = ExpensesDataGrid.SelectedItem;
+            var menuItem = sender as MenuItem;
+            var contextMenu = menuItem.Parent as ContextMenu;
+            var dataGridRow = contextMenu.PlacementTarget as DataGridRow;
+            var selectedItem = dataGridRow.Item as Expense;
 
             if (selectedItem != null)
             {
@@ -261,7 +255,7 @@ namespace WpfApp1
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     // Remove the selected item from the data source
-                    _expensesList.Remove((Expense)selectedItem);
+                    _expensesList.Remove(selectedItem);
 
                     // Reset the data grid by updating the ItemsSource property
                     ExpensesDataGrid.ItemsSource = _expensesList;
