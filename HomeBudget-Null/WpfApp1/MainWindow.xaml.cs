@@ -20,7 +20,7 @@ namespace WpfApp1
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
         const string WINDOW_TITLE = "Home Budget";
-        const int DATAGRID_DATE_COLUMN = 1;
+        const int DATAGRID_DATE_COLUMN = 2;
 
         private Presenter presenter;
         private bool _isFileLoaded;
@@ -32,8 +32,8 @@ namespace WpfApp1
         {
             InitializeComponent();
             // Set default start date and end date to today
-            StartDatePicker.SelectedDate = DateTime.Today;
-            EndDatePicker.SelectedDate = DateTime.Today;
+            //StartDatePicker.SelectedDate = DateTime.Today;
+            //EndDatePicker.SelectedDate = DateTime.Today;
 
             presenter = new Presenter(this);
         }
@@ -70,6 +70,7 @@ namespace WpfApp1
                 ByMonthCheckBox.IsEnabled = true;
 
                 FillDataGrid();
+                CategoryComboBox.ItemsSource = presenter.GetCategoryList();
                 CategoryComboBox.SelectedIndex = 0;
 
                 // Save the last directory used for the budget file
@@ -101,10 +102,13 @@ namespace WpfApp1
             DateTime? endDate = EndDatePicker.SelectedDate;
             int categoryId = CategoryComboBox.SelectedIndex;
 
+            List<Category> categories1 = presenter.GetCategoryList();
+
+
             if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
             {
                 List<Expense> expenses = new List<Expense>();
-                List<BudgetItemsByMonth> budgetItems = presenter.GetExpensesByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+                List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
                 foreach (BudgetItemsByMonth bgitemMonth in budgetItems)
                 {
@@ -119,7 +123,7 @@ namespace WpfApp1
             else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
             {
                 List<Expense> expenses = new List<Expense>();
-                List<BudgetItemsByCategory> budgetItems = presenter.GetExpensesByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+                List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
                 foreach (BudgetItemsByCategory bgitemCategory in budgetItems)
                 {
@@ -135,7 +139,7 @@ namespace WpfApp1
             {
                 List<Expense> expenses = new List<Expense>();
                 List<Category> categories = presenter.GetCategoryList();
-                List<Dictionary<string, object>> dictionaries = presenter.GetExpenseDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+                List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
                 foreach (Dictionary<string, object> dictionary in dictionaries)
                 {
@@ -163,10 +167,12 @@ namespace WpfApp1
                 ExpensesDataGrid.ItemsSource = expenses;
             }
             else
-                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+            {
 
-
-            CategoryComboBox.ItemsSource = presenter.GetCategoryList();
+                List<Expense> expenses = new List<Expense>();
+                List<BudgetItem> budgetItems = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+                ExpensesDataGrid.ItemsSource = budgetItems;
+            } 
 
             ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
         }
@@ -211,13 +217,9 @@ namespace WpfApp1
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Database files (*.db)|*.db";
+            _fileSelected = true;
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                // Code to save the file to the selected location goes here
-            }
+            GetFile(true);
         }
 
         private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
@@ -226,8 +228,11 @@ namespace WpfApp1
             {
                 AddExpenseWindow aew = new AddExpenseWindow(presenter);
                 aew.ShowDialog();
+                int selectedIndex = CategoryComboBox.SelectedIndex;
 
+                CategoryComboBox.ItemsSource = presenter.GetCategoryList();
                 ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+                CategoryComboBox.SelectedIndex = selectedIndex >= CategoryComboBox.Items.Count ? 0 : selectedIndex;
             }
             else
                 MessageBox.Show("Select or create a file", "Add Expense", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -247,10 +252,10 @@ namespace WpfApp1
         private void FilterExpenses(string searchedTerm)
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
-            view.Filter = expenses =>
+            view.Filter = budgetItems =>
             {
-                Expense item = expenses as Expense;
-                return item.Description.Contains(searchedTerm);
+                BudgetItem item = budgetItems as BudgetItem;
+                return item.ShortDescription.Contains(searchedTerm);
             };
         }
 
@@ -315,29 +320,36 @@ namespace WpfApp1
         private void Delete_Click(object sender, RoutedEventArgs e) 
         {
             // Get the selected item in the data grid
-            Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
-
-            if (selectedItem != null)
+            try
             {
-                // Show a message box to confirm the deletion
-                var messageBoxResult = MessageBox.Show("Are you sure you want to delete this?", "Confirm Deletion", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
+                BudgetItem selectedItem = (BudgetItem)ExpensesDataGrid.SelectedItem;
+
+                if (selectedItem != null)
                 {
-                    presenter.DeleteExpense(selectedItem.Id);
-                    FillDataGrid();
+                    // Show a message box to confirm the deletion
+                    var messageBoxResult = MessageBox.Show("Are you sure you want to delete this?", "Confirm Deletion", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        presenter.DeleteExpense(selectedItem.ExpenseID);
+                        FillDataGrid();
+                    }
                 }
+            }
+            catch(Exception exception) 
+            { 
+                DisplayError(exception);
             }
         }
 
         private void Modify_Click(object sender, RoutedEventArgs e)
         {
             // Get the selected item in the data grid
-            Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
+            BudgetItem selectedItem = (BudgetItem)ExpensesDataGrid.SelectedItem;
 
             if (selectedItem != null)
             {
                 // Show a dialog or window to allow the user to modify the item
-                var dialog = new ModifyExpenseWindow(selectedItem, presenter);
+                var dialog = new ModifyExpenseWindow(presenter.GetExpenseById(selectedItem.ExpenseID), presenter);
 
                 // Show the dialog and wait for the user's response
                 bool? result = dialog.ShowDialog();
@@ -348,6 +360,11 @@ namespace WpfApp1
                     FillDataGrid();
                 }
             }
+        }
+
+        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FillDataGrid();
         }
     }
 
