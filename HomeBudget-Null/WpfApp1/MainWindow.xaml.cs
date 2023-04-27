@@ -1,20 +1,11 @@
 ﻿using Budget;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using MahApps.Metro;
-using ControlzEx.Theming;
-using System.Globalization;
-using Budget;
-using Microsoft.Win32;
-using System.Diagnostics;
-using WpfApp1;
-using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -143,13 +134,29 @@ namespace WpfApp1
             else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
             {
                 List<Expense> expenses = new List<Expense>();
+                List<Category> categories = presenter.GetCategoryList();
                 List<Dictionary<string, object>> dictionaries = presenter.GetExpenseDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
                 foreach (Dictionary<string, object> dictionary in dictionaries)
                 {
-                    foreach (string key in dictionary.Keys)
+                    foreach (Category category in categories)
                     {
-                       //expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                        object categoryAmount = null;
+                        dictionary.TryGetValue(category.Description, out categoryAmount);
+
+                        if (categoryAmount is not null)
+                        {
+                            object objItem = null;
+                            dictionary.TryGetValue(String.Format("details:{0}", category.Description), out objItem);
+
+                            if (objItem is not null)
+                            {
+                                List<BudgetItem> budgetItems = (List<BudgetItem>)objItem;
+
+                                foreach(BudgetItem bg in budgetItems)
+                                    expenses.Add(presenter.GetExpenseById(bg.ExpenseID));
+                            }
+                        }
                     }
                 }
 
