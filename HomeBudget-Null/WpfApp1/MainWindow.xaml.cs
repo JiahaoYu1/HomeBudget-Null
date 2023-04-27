@@ -106,14 +106,14 @@ namespace WpfApp1
             }
 
             object expenseList = null;
-            DateTime startDate = (DateTime)StartDatePicker.SelectedDate;
-            DateTime endDate = (DateTime)EndDatePicker.SelectedDate;
+            DateTime? startDate = StartDatePicker.SelectedDate;
+            DateTime? endDate = EndDatePicker.SelectedDate;
             int categoryId = CategoryComboBox.SelectedIndex;
 
             if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
             {
                 List<Expense> expenses = new List<Expense>();
-                List<BudgetItemsByMonth> budgetItems = presenter.GetExpensesByMonth(startDate, endDate, false categoryId);
+                List<BudgetItemsByMonth> budgetItems = presenter.GetExpensesByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
                 foreach(BudgetItemsByMonth bgitemMonth in budgetItems)
                 {
@@ -125,11 +125,36 @@ namespace WpfApp1
 
                 ExpensesDataGrid.ItemsSource = expenses;
             }
-                
-
             else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
-                ExpensesDataGrid.ItemsSource = presenter.GetExpenseDateFilter(startDate, endDate, categoryId);
+            {
+                List<Expense> expenses = new List<Expense>();
+                List<BudgetItemsByCategory> budgetItems = presenter.GetExpensesByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
+                foreach (BudgetItemsByCategory bgitemCategory in budgetItems)
+                {
+                    foreach (BudgetItem bgitem in bgitemCategory.Details)
+                    {
+                        expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                    }
+                }
+
+                ExpensesDataGrid.ItemsSource = expenses;
+            }
+            else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
+            {
+                List<Expense> expenses = new List<Expense>();
+                List<Dictionary<string, object>> dictionaries = presenter.GetExpenseDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+
+                foreach (Dictionary<string, object> dictionary in dictionaries)
+                {
+                    foreach (string key in dictionary.Keys)
+                    {
+                        //expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                    }
+                }
+
+                ExpensesDataGrid.ItemsSource = expenses;
+            }
             else
                 ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
 
@@ -152,11 +177,13 @@ namespace WpfApp1
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CategoryComboBox.IsEnabled = true;
+            FillDataGrid();
         }
 
         private void FilterByCategoryCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             CategoryComboBox.IsEnabled = false;
+            FillDataGrid();
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
