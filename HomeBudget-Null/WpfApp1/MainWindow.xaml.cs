@@ -1,5 +1,4 @@
 ﻿using Budget;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -97,92 +96,36 @@ namespace WpfApp1
                 return;
             }
 
-            object expenseList = null;
             DateTime? startDate = StartDatePicker.SelectedDate;
             DateTime? endDate = EndDatePicker.SelectedDate;
             int categoryId = CategoryComboBox.SelectedIndex;
 
-            List<Category> categories1 = presenter.GetCategoryList();
 
 
             if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
-            {
-                List<Expense> expenses = new List<Expense>();
-                List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-
-                foreach (BudgetItemsByMonth bgitemMonth in budgetItems)
-                {
-                    foreach (BudgetItem bgitem in bgitemMonth.Details)
-                    {
-                        expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
-                    }
-                }
-
-                ExpensesDataGrid.ItemsSource = expenses;
-            }
+                ExpensesDataGrid.ItemsSource = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
             else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
-            {
-                List<Expense> expenses = new List<Expense>();
-                List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-
-                foreach (BudgetItemsByCategory bgitemCategory in budgetItems)
-                {
-                    foreach (BudgetItem bgitem in bgitemCategory.Details)
-                    {
-                        expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
-                    }
-                }
-
-                ExpensesDataGrid.ItemsSource = expenses;
-            }
+                ExpensesDataGrid.ItemsSource = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
             else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
             {
-                List<Expense> expenses = new List<Expense>();
-                List<Category> categories = presenter.GetCategoryList();
-                List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+                List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
+                List<BudgetItem> budgetItems = new List<BudgetItem>();
 
-                foreach (Dictionary<string, object> dictionary in dictionaries)
+                foreach(Dictionary<string, object> dictionary in dictionaries)
                 {
-                    foreach (Category category in categories)
+                    foreach (Category category in presenter.GetCategoryList())
                     {
-                        object categoryAmount = null;
-                        dictionary.TryGetValue(category.Description, out categoryAmount);
 
-                        if (categoryAmount is not null)
-                        {
-                            object objItem = null;
-                            dictionary.TryGetValue(String.Format("details:{0}", category.Description), out objItem);
-
-                            if (objItem is not null)
-                            {
-                                List<BudgetItem> budgetItems = (List<BudgetItem>)objItem;
-
-                                foreach(BudgetItem bg in budgetItems)
-                                    expenses.Add(presenter.GetExpenseById(bg.ExpenseID));
-                            }
-                        }
                     }
                 }
-
-                ExpensesDataGrid.ItemsSource = expenses;
+                
+                
+                ExpensesDataGrid.ItemsSource = budgetItems;
             }
             else
-            {
+                ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
-                List<Expense> expenses = new List<Expense>();
-                List<BudgetItem> budgetItems = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-                ExpensesDataGrid.ItemsSource = budgetItems;
-            } 
-
-            ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
-        }
-
-        private void SortDataGrid()
-        {
-            if (_isFileLoaded)
-            {
-
-            }
+           // ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
         }
 
 
@@ -348,8 +291,10 @@ namespace WpfApp1
 
             if (selectedItem != null)
             {
+                Expense expense = presenter.GetExpenseById(selectedItem.ExpenseID);
+
                 // Show a dialog or window to allow the user to modify the item
-                var dialog = new ModifyExpenseWindow(presenter.GetExpenseById(selectedItem.ExpenseID), presenter);
+                var dialog = new ModifyExpenseWindow(expense, presenter);
 
                 // Show the dialog and wait for the user's response
                 bool? result = dialog.ShowDialog();

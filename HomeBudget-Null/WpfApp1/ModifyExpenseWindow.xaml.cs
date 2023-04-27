@@ -58,9 +58,10 @@ namespace WpfApp1
             this.presenter = presenter;
             // Initialize the controls with the current expense data
             CategoryComboBox.ItemsSource = presenter.GetCategoryList();
+            CategoryComboBox.SelectedIndex = expense.Category;
             Datepicker.SelectedDate = expense.Date;
-            CategoryComboBox.SelectedItem = expense.Category;
             AmountTextBox.Text = expense.Amount.ToString();
+            DescriptionTextBox.Text = expense.Description;
 
             Expense = expense;
             this.expense = expense;
@@ -89,7 +90,7 @@ namespace WpfApp1
                 return;
             }
 
-            presenter.UpdateExpense(expense.Id, date, expense.Category, amount, DescriptionTextBox.Text);
+            presenter.UpdateExpense(expense.Id, date, ((Category)CategoryComboBox.SelectedItem).Id, amount, DescriptionTextBox.Text);
             DialogResult = true;
             Close();
         }
