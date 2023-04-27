@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -109,18 +110,37 @@ namespace WpfApp1
             else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
             {
                 List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
-                List<BudgetItem> budgetItems = new List<BudgetItem>();
 
-                foreach(Dictionary<string, object> dictionary in dictionaries)
+                ExpensesDataGrid.ItemsSource = dictionaries;
+                ExpensesDataGrid.Columns.Clear();
+
+                
+                var monthColumn = new DataGridTextColumn();
+                monthColumn.Header = "Month";
+                monthColumn.Binding = new Binding($"[Month]"); // Notice the square brackets!
+                monthColumn.CanUserResize = false;
+                monthColumn.CanUserReorder = false;
+                ExpensesDataGrid.Columns.Add(monthColumn);
+
+
+                foreach (Category category in presenter.GetCategoryList())
                 {
-                    foreach (Category category in presenter.GetCategoryList())
-                    {
-
-                    }
+                    var column = new DataGridTextColumn();
+                    column.Header = category.Description;
+                    column.Binding = new Binding($"[{category.Description}]"); // Notice the square brackets!
+                    column.CanUserResize = false;
+                    column.CanUserReorder = false;
+                    ExpensesDataGrid.Columns.Add(column);
                 }
+
+
+                //foreach (Dictionary<string, object> dictionary in dictionaries)
+                //{
+                    
+                //}
                 
                 
-                ExpensesDataGrid.ItemsSource = budgetItems;
+                //ExpensesDataGrid.ItemsSource = budgetItems;
             }
             else
                 ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
