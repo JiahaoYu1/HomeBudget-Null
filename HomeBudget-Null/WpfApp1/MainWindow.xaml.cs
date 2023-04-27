@@ -76,6 +76,9 @@ namespace WpfApp1
                 _isFileLoaded = true;
 
                 FilterByCategoryCheckBox.IsEnabled = true;
+                ByCategoryCheckBox.IsEnabled = true;
+                ByMonthCheckBox.IsEnabled = true;
+
                 FillDataGrid();
                 CategoryComboBox.SelectedIndex = 0;
 
@@ -105,10 +108,43 @@ namespace WpfApp1
                 return;
             }
 
-            ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+            object expenseList = null;
+            DateTime startDate = (DateTime)StartDatePicker.SelectedDate;
+            DateTime endDate = (DateTime)EndDatePicker.SelectedDate;
+            int categoryId = CategoryComboBox.SelectedIndex;
+
+            if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
+            {
+                List<Expense> expenses = new List<Expense>();
+                List<BudgetItemsByMonth> budgetItems = presenter.GetExpenseMonthFilter(startDate, endDate, categoryId);
+
+                foreach(BudgetItemsByMonth bgitem in budgetItems)
+                {
+                    //expenses.Add();
+                }
+
+                ExpensesDataGrid.ItemsSource = expenses;
+            }
+                
+
+            else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
+                ExpensesDataGrid.ItemsSource = presenter.GetExpenseDateFilter(startDate, endDate, categoryId);
+
+            else
+                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+
+
             CategoryComboBox.ItemsSource = presenter.GetCategoryList();
 
             ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
+        }
+
+        private void SortDataGrid()
+        {
+            if (_isFileLoaded)
+            {
+
+            }
         }
 
 
@@ -210,18 +246,28 @@ namespace WpfApp1
 
         private void ByMonthCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            var view = (CollectionView)CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
-            if (ByMonthCheckBox.IsChecked == true)
+            if (_isFileLoaded)
             {
-                // Order by month
-                view.SortDescriptions.Clear();
-                view.SortDescriptions.Add(new SortDescription("Month", ListSortDirection.Ascending));
+                FillDataGrid();
             }
-            else
+        }
+
+        private void ByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_isFileLoaded)
             {
-                // Remove sorting by month
-                view.SortDescriptions.Remove(new SortDescription("Month", ListSortDirection.Ascending));
+                FillDataGrid();
             }
+        }
+
+        private void ByMonthCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FillDataGrid();
+        }
+
+        private void ByCategoryCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FillDataGrid();
         }
 
         private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -294,22 +340,6 @@ namespace WpfApp1
                     // Reset the data grid by updating the ItemsSource property
                     ExpensesDataGrid.ItemsSource = _expensesList;
                 }
-            }
-        }
-
-        private void ByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            var view = (CollectionView)CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
-            if (ByCategoryCheckBox.IsChecked == true)
-            {
-                // Order by category
-                view.SortDescriptions.Clear();
-                view.SortDescriptions.Add(new SortDescription("Category", ListSortDirection.Ascending));
-            }
-            else
-            {
-                // Remove sorting by category
-                view.SortDescriptions.Remove(new SortDescription("Category", ListSortDirection.Ascending));
             }
         }
     }
