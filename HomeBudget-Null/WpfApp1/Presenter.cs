@@ -174,13 +174,9 @@ namespace WpfApp1
         /// <param name="to">Expenses to an ending date</param>
         /// <param name="categoryId">The id of the category wanted</param>
         /// <returns>A list of BudgetItemsByCategory</returns>
-        public List<BudgetItemsByCategory> GetExpenseDateFilter(DateTime from, DateTime to, int categoryId)
+        public List<BudgetItem> GetExpenseDateFilter(DateTime from, DateTime to, bool filterFlag, int categoryId)
         {
-            bool flag = false;
-            if (from != null && to != null)
-                flag = true;
-
-            return budget.GetBudgetItemsByCategory(from, to, flag, categoryId);
+            return budget.GetBudgetItems(to, from, filterFlag, categoryId);
         }
 
         /// <summary>
@@ -190,13 +186,14 @@ namespace WpfApp1
         /// <param name="to">Expenses to an ending date</param>
         /// <param name="categoryId">The id of the category wanted</param>
         /// <returns>A list of BudgetItemsByMonth</returns>
-        public List<BudgetItemsByMonth> GetExpenseMonthFilter(DateTime from, DateTime to, int categoryId)
+        public List<BudgetItemsByMonth> GetExpensesByMonth(DateTime from, DateTime to, bool filterFlag, int categoryId)
         {
-            bool flag = false;
-            if (from != null && to != null)
-                flag = true;
+            return budget.GetBudgetItemsByMonth(to, from, filterFlag, categoryId);
+        }
 
-            return budget.GetBudgetItemsByMonth(to, from, flag, categoryId);
+        public List<BudgetItemsByCategory> GetExpensesByCategory(DateTime from, DateTime to, bool filterFlag, int categoryId)
+        {
+            return budget.GetBudgetItemsByCategory(to, from, filterFlag, categoryId);
         }
 
         //Need documentation
@@ -206,15 +203,14 @@ namespace WpfApp1
         }
         //Need documentation
 
-        public BudgetItem GetExpenseById(int id)
+        public Expense GetExpenseById(int id)
         {
-            List<BudgetItem> expenses= new List<BudgetItem>();
-            expenses = budget.GetBudgetItems(null,null,false,id);
-
-            foreach(BudgetItem item in expenses)
+            List<Expense> expenses = budget.expenses.List();
+            
+            foreach(Expense expense in expenses)
             {
-                if(item.ExpenseID == id)
-                    return item;
+                if (expense.Id == id)
+                    return expense;
             }
 
             throw new Exception("No Id found");
