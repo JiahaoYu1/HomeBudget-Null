@@ -174,7 +174,7 @@ namespace WpfApp1
         /// <param name="to">Expenses to an ending date</param>
         /// <param name="categoryId">The id of the category wanted</param>
         /// <returns>A list of BudgetItemsByCategory</returns>
-        public List<BudgetItem> GetExpenseDateFilter(DateTime from, DateTime to, bool filterFlag, int categoryId)
+        public List<BudgetItem> GetExpenseDateFilter(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
         {
             return budget.GetBudgetItems(to, from, filterFlag, categoryId);
         }
@@ -186,15 +186,21 @@ namespace WpfApp1
         /// <param name="to">Expenses to an ending date</param>
         /// <param name="categoryId">The id of the category wanted</param>
         /// <returns>A list of BudgetItemsByMonth</returns>
-        public List<BudgetItemsByMonth> GetExpensesByMonth(DateTime from, DateTime to, bool filterFlag, int categoryId)
+        public List<BudgetItemsByMonth> GetExpensesByMonth(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
         {
             return budget.GetBudgetItemsByMonth(to, from, filterFlag, categoryId);
         }
 
-        public List<BudgetItemsByCategory> GetExpensesByCategory(DateTime from, DateTime to, bool filterFlag, int categoryId)
+        public List<BudgetItemsByCategory> GetExpensesByCategory(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
         {
             return budget.GetBudgetItemsByCategory(to, from, filterFlag, categoryId);
         }
+
+        public List<Dictionary<string, object>> GetExpenseDictionaryByMonthAndCategory(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
+        {
+            return budget.GetBudgetDictionaryByCategoryAndMonth(to, from, filterFlag, categoryId);
+        }
+
 
         //Need documentation
         public Category GetCatergoryById(int id)
