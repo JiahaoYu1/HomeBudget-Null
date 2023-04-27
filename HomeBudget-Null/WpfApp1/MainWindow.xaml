@@ -115,8 +115,8 @@
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Delete"/>
-                            <MenuItem Header="Modify"/>
+                            <MenuItem Header="Delete" Click="Delete_Click"/>
+                            <MenuItem Header="Modify" Click="Modify_Click"/>
                             <Separator/>
                             <MenuItem Header="Cancel" />
                         </ContextMenu>

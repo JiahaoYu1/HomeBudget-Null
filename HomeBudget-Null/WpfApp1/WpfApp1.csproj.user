@@ -8,12 +8,18 @@
     <Compile Update="AddExpenseWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ModifyExpenseWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="AddCategoryWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="AddExpenseWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ModifyExpenseWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
