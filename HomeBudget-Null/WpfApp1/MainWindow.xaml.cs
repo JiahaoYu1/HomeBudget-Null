@@ -229,7 +229,7 @@ namespace WpfApp1
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private void Delete_Click(object sender, RoutedEventArgs e) 
         {
             // Get the selected item in the data grid
             Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
