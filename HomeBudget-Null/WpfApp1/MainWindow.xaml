@@ -85,8 +85,8 @@
             <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
                 <StackPanel Margin="10">
                     <TextBlock Text="Summary Options" FontSize="12"/>
-                    <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked"/>
-                    <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11" Checked="ByCategoryCheckBox_Checked"/>
+                    <CheckBox x:Name="ByMonthCheckBox" IsEnabled="false" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked" Unchecked="ByMonthCheckBox_Unchecked"/>
+                    <CheckBox x:Name="ByCategoryCheckBox" IsEnabled="false" Content="By Category" Margin="10" FontSize="11" Checked="ByCategoryCheckBox_Checked" Unchecked="ByCategoryCheckBox_Unchecked"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
