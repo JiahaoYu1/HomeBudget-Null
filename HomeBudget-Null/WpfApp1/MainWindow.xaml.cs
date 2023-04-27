@@ -113,11 +113,14 @@ namespace WpfApp1
             if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
             {
                 List<Expense> expenses = new List<Expense>();
-                List<BudgetItemsByMonth> budgetItems = presenter.GetExpenseMonthFilter(startDate, endDate, categoryId);
+                List<BudgetItemsByMonth> budgetItems = presenter.GetExpensesByMonth(startDate, endDate, false categoryId);
 
-                foreach(BudgetItemsByMonth bgitem in budgetItems)
+                foreach(BudgetItemsByMonth bgitemMonth in budgetItems)
                 {
-                    //expenses.Add();
+                    foreach(BudgetItem bgitem in bgitemMonth.Details)
+                    {
+                        expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                    }
                 }
 
                 ExpensesDataGrid.ItemsSource = expenses;
