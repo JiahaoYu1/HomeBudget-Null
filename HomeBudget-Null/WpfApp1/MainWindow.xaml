@@ -86,7 +86,7 @@
                 <StackPanel Margin="10">
                     <TextBlock Text="Summary Options" FontSize="12"/>
                     <CheckBox x:Name="ByMonthCheckBox" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked"/>
-                    <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11"/>
+                    <CheckBox x:Name="ByCategoryCheckBox" Content="By Category" Margin="10" FontSize="11" Checked="ByCategoryCheckBox_Checked"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">

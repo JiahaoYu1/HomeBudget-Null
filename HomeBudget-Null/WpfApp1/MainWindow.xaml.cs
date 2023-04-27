@@ -208,13 +208,18 @@ namespace WpfApp1
 
         private void ByMonthCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            // Set the group description for the DataGrid to group expenses by month
-            ExpensesDataGrid.GroupStyle.Clear();
-            ExpensesDataGrid.GroupStyle.Add(new GroupStyle
+            var view = (CollectionView)CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
+            if (ByMonthCheckBox.IsChecked == true)
             {
-                HeaderTemplate = (DataTemplate)this.Resources["MonthHeaderTemplate"],
-                ContainerStyle = (Style)this.Resources["MonthContainerStyle"]
-            });
+                // Order by month
+                view.SortDescriptions.Clear();
+                view.SortDescriptions.Add(new SortDescription("Month", ListSortDirection.Ascending));
+            }
+            else
+            {
+                // Remove sorting by month
+                view.SortDescriptions.Remove(new SortDescription("Month", ListSortDirection.Ascending));
+            }
         }
 
         private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -287,6 +292,22 @@ namespace WpfApp1
                     // Reset the data grid by updating the ItemsSource property
                     ExpensesDataGrid.ItemsSource = _expensesList;
                 }
+            }
+        }
+
+        private void ByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            var view = (CollectionView)CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
+            if (ByCategoryCheckBox.IsChecked == true)
+            {
+                // Order by category
+                view.SortDescriptions.Clear();
+                view.SortDescriptions.Add(new SortDescription("Category", ListSortDirection.Ascending));
+            }
+            else
+            {
+                // Remove sorting by category
+                view.SortDescriptions.Remove(new SortDescription("Category", ListSortDirection.Ascending));
             }
         }
     }
