@@ -5,67 +5,123 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Add Expense" Height="350" Width="600" ResizeMode="NoResize" Closing="MainWindow_Closing">
-    <StackPanel Margin="0,0,0,-86">
-        <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
+        Title="Home Budget" Height="550" Width="1005"
+        Icon="/icon.png">
+    <Window.Resources>
+        <DataTemplate x:Key="MonthHeaderTemplate">
+            <Border BorderThickness="1" BorderBrush="Gray" Background="#F0F0F0" Padding="5">
+                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+            </Border>
+        </DataTemplate>
+        <Style x:Key="MonthContainerStyle" TargetType="{x:Type GroupItem}">
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <StackPanel>
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                            <ItemsPresenter Margin="15,0,0,0"/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </Window.Resources>
 
-        <GroupBox Header="Home Budget" Margin="10,20,10,20">
-            <Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
+            <MenuItem Header="File" Background="Silver">
+                <MenuItem Header="New" Click="New_Click"/>
+                <MenuItem Header="Open" Click="Open_Click"/>
+                <MenuItem Header="Save As" Click="SaveAs_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="About Us" Click="AboutUs_Click" Background="Silver"/>
+
+            <Separator/>
+            <Separator/>
+            <Separator/>
+            <MenuItem Header="Exit" Click="Exit_Click" Background="Red" Foreground="White"/>
+        </Menu>
+
+        <Grid Height="476">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="1.078"/>
+                <ColumnDefinition Width="Auto" MinWidth="198.688"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" MinWidth="50"/>
+            </Grid.ColumnDefinitions>
+            
+
+            <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
+                <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="0.315"/>
+                            <RotateTransform/>
+                            <TranslateTransform Y="0.495"/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <TextBlock Text="Display Options" FontSize="12"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5" Width="178">
+                        <TextBlock Text="Start Date:" Margin="10" FontSize="10" RenderTransformOrigin="0.022,0.861"/>
+                        <DatePicker x:Name="StartDatePicker" Margin="5" Width="94"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <TextBlock Text="End Date:" Margin="10" FontSize="10"/>
+                        <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,5">
+                        <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" IsEnabled="false" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
+                        <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100" IsEnabled="False">
+                            <!-- Add categories here -->
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Summary Options" FontSize="12"/>
+                    <CheckBox x:Name="ByMonthCheckBox" IsEnabled="false" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked" Unchecked="ByMonthCheckBox_Unchecked"/>
+                    <CheckBox x:Name="ByCategoryCheckBox" IsEnabled="false" Content="By Category" Margin="10" FontSize="11" Checked="ByCategoryCheckBox_Checked" Unchecked="ByCategoryCheckBox_Unchecked"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
+                <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
+            </GroupBox>
+
+            <Grid Grid.Column="3" Background="#FFF4F4F5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock x:Name="GeneralMargin" Visibility="Hidden">
-                    2
-                </TextBlock>
-
-
-                <Label Content="Expense Name:" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="nameTextBox" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}" TextChanged="nameTextBox_TextChanged"/>
-
-                <Label Content="Amount:" Grid.Row="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-
-                <Label Content="Date:" Grid.Row="2" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-
-                <Label Content="Category:" Grid.Row="3" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="{Binding ElementName=GeneralMargin,Path=Text}">
-                    <ComboBox x:Name="categoryComboBox" Width="150" SelectionChanged="categoryComboBox_SelectionChanged" Background="Silver">
-                    </ComboBox>
-                    <Label x:Name="selectedCategoryLabel" Margin="5,0"/>
-                    <Button x:Name="addCategoryButton" Content="Add Category" Click="addCategoryButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" HorizontalAlignment="Right" Background="Silver" Foreground="DarkBlue"/>
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
+                    <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
+                    <TextBlock x:Name="FileNameTextBlock" Text="File: " Width="471" Height="16" Margin="35,0,0,0"/>
                 </StackPanel>
 
-                <Button Content="Choose File" Name="chooseFileButton" Click="chooseFile_Click" Grid.Row="5" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
-                <Button Content="Create File" Name="createFile" Click="createFile_Click" Grid.Row="6" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
-                <Button x:Name="cancelButton" Content="Cancel" Grid.Row="7" Click="cancelButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin,Path=Text}" VerticalAlignment="Center" Background="Silver" Foreground="Red"/>
-
-                <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="1" Click="addButton_Click" Margin="{Binding ElementName=GeneralMargin,Path=Text}" Background="Silver" Foreground="DarkBlue"/>
-
-                <Label x:Name="budgetLabel" Content="Budget: $0.00" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
-                <Label x:Name="selectedFileLabel" Content="Selected File: " Grid.Row="6" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin,Path=Text}"/>
-
-                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White"/>
-
-                <Label x:Name="BlockingLabel" Content="Select or Create a File" OpacityMask="Black" Foreground="White" Grid.Column="1" Grid.RowSpan="6" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="36">
-                    <Label.Background>
-                        <SolidColorBrush Color="Black" Opacity="0.4"/>
-                    </Label.Background>
-                </Label>
+                <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
+                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Delete" Click="Delete_Click"/>
+                            <MenuItem Header="Modify" Click="Modify_Click"/>
+                            <Separator/>
+                            <MenuItem Header="Cancel" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
             </Grid>
-        </GroupBox>
 
-    </StackPanel>
+            <Label x:Name="BlockingLabel" Visibility="Hidden" Content="Select a file" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="5" FontSize="72" FontWeight="Bold">
+                <Label.Background>
+                    <SolidColorBrush Color="#FF656565" Opacity="0.4"/>
+                </Label.Background>
+            </Label>
+        </Grid>
+    </DockPanel>
 </Window>

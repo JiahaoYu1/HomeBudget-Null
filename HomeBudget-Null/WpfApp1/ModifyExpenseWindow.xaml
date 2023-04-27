@@ -1,0 +1,36 @@
+﻿<Window x:Class="WpfApp1.ModifyExpenseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="ModifyExpenseWindow" Height="450" Width="800">
+    <Grid Height="440" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Date:" Margin="10"/>
+        <DatePicker Grid.Row="1" x:Name="Datepicker" Margin="10" SelectedDate="{Binding Date}" />
+
+        <Label Grid.Row="2" Content="Category:" Margin="10"/>
+        <ComboBox Grid.Row="3" x:Name="CategoryComboBox" Margin="10" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}"/>
+
+        <Label Grid.Row="4" Content="Amount:" Margin="10"/>
+        <TextBox Grid.Row="4" x:Name="AmountTextBox" Margin="65,10,420,10" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Row="5" Content="Description:" Margin="10,10,10,171"/>
+        <TextBox Grid.Row="5" x:Name="DescriptionTextBox" Margin="85,10,420,171" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10"/>
+        <Button Content="Cancel" Margin="24,90,631,100" Click="CancelButton_Click" Grid.Row="5"/>
+        <Button Content="OK" Click="OkButton_Click" Margin="328,95,328,96" Grid.Row="5" RenderTransformOrigin="0.522,3.638"/>
+    </Grid>
+</Window>

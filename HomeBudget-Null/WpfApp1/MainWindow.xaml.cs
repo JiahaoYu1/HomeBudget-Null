@@ -1,85 +1,47 @@
 ﻿using Budget;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using MahApps.Metro;
-using ControlzEx.Theming;
-using System.Globalization;
-using Budget;
-
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace WpfApp1
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, ViewInterface
+    public partial class MainWindow : Window, IHomeBudget
     {
         private readonly string DEFAULT_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Budgets";
         private readonly string APPDATA_DIRECTORY = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         const string FILEDIALOG_FILTER = "Database Files (*.db)|*.db";
+        const string WINDOW_TITLE = "Home Budget";
+        const int DATAGRID_DATE_COLUMN = 1;
 
         private Presenter presenter;
-        private const string dbFile = "../../../testDBInput.db";
-        private bool unsavedChanges = false;
-        private bool isDarkTheme = false;
+        private bool _isFileLoaded;
+        private bool _fileSelected = false;
+
+        private List<Expense> _expensesList = new List<Expense>();
 
         public MainWindow()
         {
             InitializeComponent();
-            this.presenter = new Presenter(this);
-            dateDatePicker.SelectedDate = DateTime.Today;
+            // Set default start date and end date to today
+            StartDatePicker.SelectedDate = DateTime.Today;
+            EndDatePicker.SelectedDate = DateTime.Today;
+
+            presenter = new Presenter(this);
         }
-
-        // Define color themes
-        public enum ColorTheme
-        {
-            Light,
-            Dark,
-            Blue,
-            Green
-        }
-
-        public void AddCategory(string categoryName, string categoryType)
-        {
-            // User clicked the confirm button, so update the categoryComboBox
-            //presenter.AddCategory(categoryName, categoryType);
-
-            categoryComboBox.ItemsSource = presenter.GetCategoryList();
-            // Add the new category to the categoryComboBox
-            //ComboBoxItem newItem = new ComboBoxItem();
-            //newItem.Content = categoryName + " - " + categoryType;
-            //categoryComboBox.Items.Add(newItem);
-            //// Select the newly added category
-            //categoryComboBox.SelectedItem = newItem;
-        }
-
-        public void AddExpense()
-        {
-            // Update the budget label
-            budgetLabel.Content = "Budget: $0.00";
-
-            // Clear the form
-            nameTextBox.Text = "";
-            amountTextBox.Text = "";
-           // dateDatePicker.SelectedDate = null;
-            //categoryComboBox.SelectedIndex = -1;
-
-            // Set unsavedChanges to true
-            //MessageBox.Show("Expense Added", "Expense Status");
-            unsavedChanges = true;
-        }
-
 
         public void GetFile(bool isCreatingNewFile)
         {
             // Get the file that holds the path to the last directory used to save a file in this app
-            string lastDirFile = Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
+            string lastDirFile = System.IO.Path.Combine(APPDATA_DIRECTORY, "LastBudgetDirectory.txt");
             string defaultDir = File.Exists(lastDirFile) ? File.ReadAllText(lastDirFile) : DEFAULT_DIRECTORY;
 
             if (!Directory.Exists(defaultDir))
@@ -96,167 +58,297 @@ namespace WpfApp1
             if (fileDialog.ShowDialog() == true)
             {
                 string selectedFile = fileDialog.FileName;
-                selectedFileLabel.Content = "Selected File: " + selectedFile;
+                Title = WINDOW_TITLE + " - " + Path.GetFileName(selectedFile);
 
                 BlockingLabel.Visibility = Visibility.Hidden;
                 presenter.LoadFile(selectedFile, isCreatingNewFile);
 
-                // Save the last directory used for the budget file
-                File.WriteAllText(lastDirFile, Path.GetDirectoryName(selectedFile));
+                _isFileLoaded = true;
 
-                categoryComboBox.ItemsSource = presenter.GetCategoryList();
+                FilterByCategoryCheckBox.IsEnabled = true;
+                ByCategoryCheckBox.IsEnabled = true;
+                ByMonthCheckBox.IsEnabled = true;
+
+                FillDataGrid();
+                CategoryComboBox.SelectedIndex = 0;
+
+                // Save the last directory used for the budget file
+                File.WriteAllText(lastDirFile, System.IO.Path.GetDirectoryName(selectedFile));
             }
         }
 
-
-        public void DisplayError(Exception errorToDisplay)
+        public void DisplayError(Exception e)
         {
-            DisplayError(errorToDisplay.Message);
+            DisplayError(e.Message);
         }
 
-        private void DisplayError(string errorToDisplay)
+        public void DisplayError(string errorToDisplay)
         {
             MessageBox.Show(errorToDisplay, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
 
-        private bool AreInputsFilledOut()
+        private void FillDataGrid()
         {
-
-            if (string.IsNullOrEmpty(nameTextBox.Text))
+            if (!_isFileLoaded)
             {
-                DisplayError("Please provide a name for the Expense.");
-                return false;
-            }
-            if (string.IsNullOrEmpty(amountTextBox.Text))
-            {
-                DisplayError("Please provide an amount for the Expense");
-                return false;
-            }
-
-            DateTime? date = dateDatePicker.SelectedDate;
-            if (date is null)
-            {
-                DisplayError("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd");
-                return false;
-            }
-
-            //if (!DateTime.TryParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-            //{
-            //    MessageBox.Show("Please provide a valid date for the Expense\nFormat: yyyy-mm-dd", "Expense Date");
-            //    return false;
-            //}
-
-            if (categoryComboBox.SelectedIndex == -1) 
-            {
-                DisplayError("Please select a Category in which the Expense falls under.");
-                return false;
-            }
-            /*if(selectedFileLabel.Content.ToString() == "Selected File: ")
-            {
-                MessageBox.Show("Please select a file for the Expense to be stored in.", "Expense File");
-                return false;
-            }*/
-
-            return true;
-        }
-
-
-        #region Events
-        private void addButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Validate that all fields are filled
-            if(!AreInputsFilledOut())
+                DisplayError("Create or select a file");
                 return;
+            }
 
-            // Add the expense to the budget using the presenter
-            DateTime? date = dateDatePicker.SelectedDate;//DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            double amount = double.Parse(amountTextBox.Text.ToString());
-            int index = categoryComboBox.SelectedIndex;
-            presenter.AddExpense((DateTime)date, index+1, amount, nameTextBox.Text);
+            object expenseList = null;
+            DateTime? startDate = StartDatePicker.SelectedDate;
+            DateTime? endDate = EndDatePicker.SelectedDate;
+            int categoryId = CategoryComboBox.SelectedIndex;
+
+            if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
+            {
+                List<Expense> expenses = new List<Expense>();
+                List<BudgetItemsByMonth> budgetItems = presenter.GetExpensesByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+
+                foreach (BudgetItemsByMonth bgitemMonth in budgetItems)
+                {
+                    foreach (BudgetItem bgitem in bgitemMonth.Details)
+                    {
+                        expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                    }
+                }
+
+                ExpensesDataGrid.ItemsSource = expenses;
+            }
+            else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
+            {
+                List<Expense> expenses = new List<Expense>();
+                List<BudgetItemsByCategory> budgetItems = presenter.GetExpensesByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+
+                foreach (BudgetItemsByCategory bgitemCategory in budgetItems)
+                {
+                    foreach (BudgetItem bgitem in bgitemCategory.Details)
+                    {
+                        expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                    }
+                }
+
+                ExpensesDataGrid.ItemsSource = expenses;
+            }
+            else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
+            {
+                List<Expense> expenses = new List<Expense>();
+                List<Category> categories = presenter.GetCategoryList();
+                List<Dictionary<string, object>> dictionaries = presenter.GetExpenseDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+
+                foreach (Dictionary<string, object> dictionary in dictionaries)
+                {
+                    foreach (Category category in categories)
+                    {
+                        object categoryAmount = null;
+                        dictionary.TryGetValue(category.Description, out categoryAmount);
+
+                        if (categoryAmount is not null)
+                        {
+                            object objItem = null;
+                            dictionary.TryGetValue(String.Format("details:{0}", category.Description), out objItem);
+
+                            if (objItem is not null)
+                            {
+                                List<BudgetItem> budgetItems = (List<BudgetItem>)objItem;
+
+                                foreach(BudgetItem bg in budgetItems)
+                                    expenses.Add(presenter.GetExpenseById(bg.ExpenseID));
+                            }
+                        }
+                    }
+                }
+
+                ExpensesDataGrid.ItemsSource = expenses;
+            }
+            else
+                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+
+
+            CategoryComboBox.ItemsSource = presenter.GetCategoryList();
+
+            ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        private void SortDataGrid()
         {
-            unsavedChanges = false;
-            nameTextBox.Text = "";
-            amountTextBox.Text = "";
-            dateDatePicker.SelectedDate = DateTime.Now;
-            categoryComboBox.SelectedIndex = -1;
+            if (_isFileLoaded)
+            {
+
+            }
         }
 
-        private void chooseFile_Click(object sender, RoutedEventArgs e)
+
+
+        private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            GetFile(false);
+            CategoryComboBox.IsEnabled = true;
+            FillDataGrid();
         }
 
-        private void closeFile_Click(object sender, RoutedEventArgs e)
+        private void FilterByCategoryCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            Close();
+            CategoryComboBox.IsEnabled = false;
+            FillDataGrid();
         }
 
-        private void createFile_Click(object sender, RoutedEventArgs e)
+        private void New_Click(object sender, RoutedEventArgs e)
         {
+            // Set _fileSelected to true
+            _fileSelected = true;
+
             GetFile(true);
         }
 
-        private void addCategoryButton_Click(object sender, RoutedEventArgs e)
+        private void Open_Click(object sender, RoutedEventArgs e)
         {
-            // Create a new instance of the AddCategoryWindow
-            AddCategoryWindow addCategoryWindow = new AddCategoryWindow();
+            // Set _fileSelected to true
+            _fileSelected = true;
 
-            // Show the window as a modal dialog
-            bool? userCreatedCategory = addCategoryWindow.ShowDialog();
+            GetFile(false);
+        }
 
-            if (userCreatedCategory == true)
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Database files (*.db)|*.db";
+
+            if (saveFileDialog.ShowDialog() == true)
             {
-                string categoryName = addCategoryWindow.CategoryName;
-                string categoryType = addCategoryWindow.CategoryType;
-
-                presenter.AddCategory(categoryName, categoryType);
+                // Code to save the file to the selected location goes here
             }
         }
 
-        private void amountTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void AddExpenseButton_Click(object sender, RoutedEventArgs e)
         {
-            unsavedChanges = true;
-            TextBox tb = (TextBox)sender;
-            if (decimal.TryParse(tb.Text, out decimal value) && tb.Text != null)
+            if (_isFileLoaded)
             {
-                budgetLabel.Content = "Budget: $" + tb.Text;
+                AddExpenseWindow aew = new AddExpenseWindow(presenter);
+                aew.ShowDialog();
+
+                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
+            }
+            else
+                MessageBox.Show("Select or create a file", "Add Expense", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            string searchedTerm = SearchTextBox.Text;
+            FilterExpenses(searchedTerm);
+        }
+
+        private void FilterExpenses(string searchedTerm)
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
+            view.Filter = expenses =>
+            {
+                Expense item = expenses as Expense;
+                return item.Description.Contains(searchedTerm);
+            };
+        }
+
+        private void AboutUs_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Team name: Null\nGroup members: Ryan Caden Kevin", "About Us", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ByMonthCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_isFileLoaded)
+            {
+                FillDataGrid();
+            }
+        }
+
+        private void ByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_isFileLoaded)
+            {
+                FillDataGrid();
+            }
+        }
+
+        private void ByMonthCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FillDataGrid();
+        }
+
+        private void ByCategoryCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FillDataGrid();
+        }
+
+        private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(!_fileSelected){
+                ExpensesDataGrid.UnselectAll();
+            }
+             if (ExpensesDataGrid.SelectedItem != null)
+            {
+                // Enable the ContextMenu for the selected item
+                ExpensesDataGrid.ContextMenu.IsEnabled = true;
             }
             else
             {
-                tb.Text = string.Empty;
-                budgetLabel.Content = "Budget: $0.00";
+                // Disable the ContextMenu if no item is selected
+                ExpensesDataGrid.ContextMenu.IsEnabled = false;
             }
         }
 
-        private void nameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ExpensesDataGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            unsavedChanges = true;
-        }
-
-        private void categoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            unsavedChanges = true;
-        }
-
-
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (unsavedChanges)
+            DataGrid expenseGrid = sender as DataGrid;
+            if (expenseGrid != null)
             {
-                MessageBoxResult result = MessageBox.Show("There are unsaved changes. Are you sure you want to close the application? ", "Confirm Close", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                    e.Cancel = true;
+                expenseGrid.ContextMenu.PlacementTarget = expenseGrid;
+                expenseGrid.ContextMenu.IsOpen = true;
             }
         }
 
-        private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Delete_Click(object sender, RoutedEventArgs e) 
         {
-            unsavedChanges = true;
+            // Get the selected item in the data grid
+            Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                // Show a message box to confirm the deletion
+                var messageBoxResult = MessageBox.Show("Are you sure you want to delete this?", "Confirm Deletion", MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    presenter.DeleteExpense(selectedItem.Id);
+                    FillDataGrid();
+                }
+            }
         }
-        #endregion
+
+        private void Modify_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the selected item in the data grid
+            Expense selectedItem = (Expense)ExpensesDataGrid.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                // Show a dialog or window to allow the user to modify the item
+                var dialog = new ModifyExpenseWindow(selectedItem, presenter);
+
+                // Show the dialog and wait for the user's response
+                bool? result = dialog.ShowDialog();
+
+                if (result == true)
+                {
+                    // Reset the data grid by updating the ItemsSource property
+                    FillDataGrid();
+                }
+            }
+        }
     }
+
 }

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace WpfApp1
 {
-    public interface ViewInterface
+    public interface IExpense
     {
         public void AddCategory(string categoryName, string categoryType);
         public void AddExpense();
-        public void GetFile(bool isCreatingNewFile);
         public void DisplayError(Exception errorToDisplay);
     }
 }
