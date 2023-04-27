@@ -149,7 +149,7 @@ namespace WpfApp1
                 {
                     foreach (string key in dictionary.Keys)
                     {
-                        //expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
+                       //expenses.Add(presenter.GetExpenseById(bgitem.ExpenseID));
                     }
                 }
 
