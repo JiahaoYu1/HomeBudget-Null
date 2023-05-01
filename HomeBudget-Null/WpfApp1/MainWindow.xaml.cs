@@ -24,6 +24,7 @@ namespace WpfApp1
         private Presenter presenter;
         private bool _isFileLoaded;
         private bool _fileSelected = false;
+        private bool _isDatagridModifiable = false;
 
         private List<Expense> _expensesList = new List<Expense>();
 
@@ -158,6 +159,7 @@ namespace WpfApp1
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CategoryComboBox.IsEnabled = true;
+            // presenter.UpdateData(byMonthCheckBox.value,...)
             FillDataGrid();
         }
 
@@ -214,18 +216,23 @@ namespace WpfApp1
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             string searchedTerm = SearchTextBox.Text;
-            FilterExpenses(searchedTerm);
+            //FilterExpenses(searchedTerm);
+
+            foreach(object item in ExpensesDataGrid.Items)
+            {
+
+            }
         }
 
-        private void FilterExpenses(string searchedTerm)
-        {
-            ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
-            view.Filter = budgetItems =>
-            {
-                BudgetItem item = budgetItems as BudgetItem;
-                return item.ShortDescription.Contains(searchedTerm);
-            };
-        }
+        //private void FilterExpenses(string searchedTerm)
+        //{
+        //    ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
+        //    view.Filter = budgetItems =>
+        //    {
+        //        BudgetItem item = budgetItems as BudgetItem;
+        //        return item.ShortDescription.Contains(searchedTerm);
+        //    };
+        //}
 
         private void AboutUs_Click(object sender, RoutedEventArgs e)
         {
@@ -260,10 +267,10 @@ namespace WpfApp1
 
         private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(!_fileSelected){
+            if(!_fileSelected)
                 ExpensesDataGrid.UnselectAll();
-            }
-             if (ExpensesDataGrid.SelectedItem != null)
+
+            if (ExpensesDataGrid.SelectedItem != null)
             {
                 // Enable the ContextMenu for the selected item
                 ExpensesDataGrid.ContextMenu.IsEnabled = true;

@@ -12,11 +12,13 @@ namespace HomeBudgetTest_Sequel
         private int expensesAdded = 0;
         private int errorsDisplayed = 0;
 
+        public bool calledAddCategory = false;
 
         #region ViewInterface Methods
         public void AddCategory(string categoryName, string categoryType)
         {
             categoriesAdded++;
+            calledAddCategory= true;
         }
 
         public void AddExpense()
