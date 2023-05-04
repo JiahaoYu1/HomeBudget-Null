@@ -98,7 +98,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="10">
-                    <TextBox x:Name="SearchTextBox" Margin="5" Width="158"/>
+                    <TextBox x:Name="SearchTextBox" Margin="5" Width="158" TextChanged="SearchTextBox_TextChanged"/>
                     <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
                     <TextBlock x:Name="FileNameTextBlock" Text="File: " Width="471" Height="16" Margin="35,0,0,0"/>
                 </StackPanel>

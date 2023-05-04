@@ -26,6 +26,7 @@ namespace WpfApp1
         private bool _fileSelected = false;
         private bool _isDatagridModifiable = false;
 
+
         private List<Expense> _expensesList = new List<Expense>();
 
         public MainWindow()
@@ -103,7 +104,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
 
-            if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
+           /* if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
             {
                 List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
                 ExpensesDataGrid.ItemsSource = budgetItems;
@@ -121,7 +122,7 @@ namespace WpfApp1
                 CreateDatagridColumn("Category", "Category");
                 CreateDatagridColumn("Total", "Total");
             }
-                
+
             else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
             {
                 List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
@@ -140,9 +141,9 @@ namespace WpfApp1
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
-            ExpensesDataGrid.CanUserDeleteRows = false;
-            
-           // ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
+            ExpensesDataGrid.CanUserDeleteRows = false;*/
+
+            // ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
         }
 
         private void CreateDatagridColumn(string columnHeader, string bindingProperty)
@@ -215,12 +216,42 @@ namespace WpfApp1
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            string searchedTerm = SearchTextBox.Text;
-            //FilterExpenses(searchedTerm);
+            int selectedIndex = -1;
+            string searchedText = SearchTextBox.Text.ToLower();
+            int startingIndex = selectedIndex + 1;
+            bool matchFound = false;
+            if (!string.IsNullOrEmpty(searchedText)){
+                bool found = false;
+                int startingRowIndex = ExpensesDataGrid.SelectedIndex + 1;
 
-            foreach(object item in ExpensesDataGrid.Items)
-            {
+                if(startingRowIndex >= ExpensesDataGrid.Items.Count)
+                {
+                    startingRowIndex = 0;
+                }
 
+                for(int i = startingRowIndex; i < ExpensesDataGrid.Items.Count; i++)
+                {
+                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+
+                    if (row != null)
+                    {
+                        BudgetItem item = (BudgetItem)row.Item;
+
+                        if(item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                        {
+                            row.IsSelected = true;
+                            row.BringIntoView();
+                            found = true;
+                            break;
+                        }
+
+                    }
+                }
+                if (!found)
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                    MessageBox.Show("Nothing Found");
+                }
             }
         }
 
@@ -267,7 +298,7 @@ namespace WpfApp1
 
         private void ExpensesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(!_fileSelected)
+            if (!_fileSelected)
                 ExpensesDataGrid.UnselectAll();
 
             if (ExpensesDataGrid.SelectedItem != null)
@@ -292,7 +323,7 @@ namespace WpfApp1
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e) 
+        private void Delete_Click(object sender, RoutedEventArgs e)
         {
             // Get the selected item in the data grid
             try
@@ -310,8 +341,8 @@ namespace WpfApp1
                     }
                 }
             }
-            catch(Exception exception) 
-            { 
+            catch (Exception exception)
+            {
                 DisplayError(exception);
             }
         }
@@ -342,6 +373,11 @@ namespace WpfApp1
         private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FillDataGrid();
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 
