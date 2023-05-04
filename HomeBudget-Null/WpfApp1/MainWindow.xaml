@@ -106,7 +106,7 @@
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
                           MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False">
                     <DataGrid.ContextMenu>
-                        <ContextMenu>
+                        <ContextMenu x:Name="DataGridContextMenu">
                             <MenuItem Header="Delete" Click="Delete_Click"/>
                             <MenuItem Header="Modify" Click="Modify_Click"/>
                             <Separator/>

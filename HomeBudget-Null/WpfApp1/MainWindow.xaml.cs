@@ -25,7 +25,7 @@ namespace WpfApp1
         private Presenter presenter;
         private bool _isFileLoaded;
         private bool _fileSelected = false;
-        private bool _isDatagridModifiable = false;
+        private bool _isDatagridNormal = false;
 
 
         private List<Expense> _expensesList = new List<Expense>();
@@ -84,6 +84,14 @@ namespace WpfApp1
         {
             ExpensesDataGrid.ItemsSource = items;
 
+            CreateDatagridColumn("ID", "ExpenseID");
+            CreateDatagridColumn("Name", "ShortDescription");
+            CreateDatagridColumn("Month", "Month");
+            CreateDatagridColumn("Category", "Category");
+            CreateDatagridColumn("Amount", "Amount");
+            CreateDatagridColumn("Balance", "Balance");
+
+            _isDatagridNormal = true;
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
             ExpensesDataGrid.CanUserDeleteRows = false;
@@ -150,6 +158,7 @@ namespace WpfApp1
                 DisplayError("Create or select a file");
                 return;
             }
+            _isDatagridNormal = false;
 
             DateTime? startDate = StartDatePicker.SelectedDate;
             DateTime? endDate = EndDatePicker.SelectedDate;
@@ -286,6 +295,7 @@ namespace WpfApp1
             string searchedText = SearchTextBox.Text.ToLower();
             int startingIndex = selectedIndex + 1;
             bool matchFound = false;
+
             if (!string.IsNullOrEmpty(searchedText)){
                 bool found = false;
                 int startingRowIndex = ExpensesDataGrid.SelectedIndex + 1;
