@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -78,6 +79,58 @@ namespace WpfApp1
             }
         }
 
+        public void UpdateExpenses(List<BudgetItem> items)
+        {
+            ExpensesDataGrid.ItemsSource = items;
+
+            ExpensesDataGrid.IsReadOnly = true;
+            ExpensesDataGrid.CanUserAddRows = false;
+            ExpensesDataGrid.CanUserDeleteRows = false;
+        }
+
+        public void UpdateExpensesByMonth(List<BudgetItemsByMonth> items)
+        {
+            ExpensesDataGrid.ItemsSource = items;
+            ExpensesDataGrid.Columns.Clear();
+
+            CreateDatagridColumn("Month", "Month");
+            CreateDatagridColumn("Totals", "Total");
+
+            ExpensesDataGrid.IsReadOnly = true;
+            ExpensesDataGrid.CanUserAddRows = false;
+            ExpensesDataGrid.CanUserDeleteRows = false;
+        }
+
+        public void UpdateExpensesByCategory(List<BudgetItemsByCategory> items)
+        {
+            ExpensesDataGrid.ItemsSource = items;
+            ExpensesDataGrid.Columns.Clear();
+
+            CreateDatagridColumn("Category", "Category");
+            CreateDatagridColumn("Totals", "Total");
+
+            ExpensesDataGrid.IsReadOnly = true;
+            ExpensesDataGrid.CanUserAddRows = false;
+            ExpensesDataGrid.CanUserDeleteRows = false;
+        }
+
+        public void UpdateExpensesByMonthAndCategory(List<Dictionary<string, object>> items)
+        {
+            ExpensesDataGrid.ItemsSource = items;
+            ExpensesDataGrid.Columns.Clear();
+
+            CreateDatagridColumn("Month", "[Month]");
+
+
+            foreach (Category category in presenter.GetCategoryList())
+                CreateDatagridColumn(category.Description, $"[{category.Description}]");
+
+            ExpensesDataGrid.IsReadOnly = true;
+            ExpensesDataGrid.CanUserAddRows = false;
+            ExpensesDataGrid.CanUserDeleteRows = false;
+        }
+
+
         public void DisplayError(Exception e)
         {
             DisplayError(e.Message);
@@ -99,44 +152,45 @@ namespace WpfApp1
 
             DateTime? startDate = StartDatePicker.SelectedDate;
             DateTime? endDate = EndDatePicker.SelectedDate;
-            int categoryId = CategoryComboBox.SelectedIndex;
+            int categoryId = CategoryComboBox.SelectedIndex + 1;
             ExpensesDataGrid.Columns.Clear();
 
+            presenter.UpdateData(ByMonthCheckBox.IsChecked, ByCategoryCheckBox.IsChecked, startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
-            if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
-            {
-                List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-                ExpensesDataGrid.ItemsSource = budgetItems;
-                ExpensesDataGrid.Columns.Clear();
+            //if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
+            //{
+            //    List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+            //    ExpensesDataGrid.ItemsSource = budgetItems;
+            //    ExpensesDataGrid.Columns.Clear();
 
-                CreateDatagridColumn("Month", "Month");
-                CreateDatagridColumn("Total", "Total");
-            }
-            else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
-            {
-                List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-                ExpensesDataGrid.ItemsSource = budgetItems;
-                ExpensesDataGrid.Columns.Clear();
+            //    CreateDatagridColumn("Month", "Month");
+            //    CreateDatagridColumn("Total", "Total");
+            //}
+            //else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
+            //{
+            //    List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+            //    ExpensesDataGrid.ItemsSource = budgetItems;
+            //    ExpensesDataGrid.Columns.Clear();
 
-                CreateDatagridColumn("Category", "Category");
-                CreateDatagridColumn("Total", "Total");
-            }
+            //    CreateDatagridColumn("Category", "Category");
+            //    CreateDatagridColumn("Total", "Total");
+            //}
                 
-            else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
-            {
-                List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
+            //else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
+            //{
+            //    List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
 
-                ExpensesDataGrid.ItemsSource = dictionaries;
-                ExpensesDataGrid.Columns.Clear();
+            //    ExpensesDataGrid.ItemsSource = dictionaries;
+            //    ExpensesDataGrid.Columns.Clear();
 
-                CreateDatagridColumn("Month", "[Month]");
+            //    CreateDatagridColumn("Month", "[Month]");
 
 
-                foreach (Category category in presenter.GetCategoryList())
-                    CreateDatagridColumn(category.Description, $"[{category.Description}]");
-            }
-            else
-                ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+            //    foreach (Category category in presenter.GetCategoryList())
+            //        CreateDatagridColumn(category.Description, $"[{category.Description}]");
+            //}
+            //else
+            //    ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;

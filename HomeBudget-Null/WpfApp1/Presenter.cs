@@ -173,8 +173,17 @@ namespace WpfApp1
         //    return budget.GetBudgetItems(to, from, filterFlag, categoryId);
         //}
 
-        public void UpdateData()
+        public void UpdateData(bool? isDisplayingByMonth, bool? isDisplayingByCategory, DateTime? startDate, DateTime? endDate, bool filterFlag, int categoryId)
         {
+            if (isDisplayingByMonth == true && isDisplayingByCategory == false)
+                homeBudgetView.UpdateExpensesByMonth(budget.GetBudgetItemsByMonth(startDate, endDate, filterFlag, categoryId));
+            else if (isDisplayingByMonth == false && isDisplayingByCategory == true)
+                homeBudgetView.UpdateExpensesByCategory(budget.GetBudgetItemsByCategory(startDate, endDate, filterFlag, categoryId));
+            else if (isDisplayingByMonth == true && isDisplayingByCategory == true)
+                homeBudgetView.UpdateExpensesByMonthAndCategory(budget.GetBudgetDictionaryByCategoryAndMonth(startDate, endDate, filterFlag, categoryId));
+            else
+                homeBudgetView.UpdateExpenses(budget.GetBudgetItems(startDate, endDate, filterFlag, categoryId));
+
             // if monthchebox and categorycheckbox {
             //  BudgetItemsByMonthAnbCategory data = homeBudget.getBudgetItemsByMonthAndCategory(...)
             //  view.updateGridMonthAndCategory(data)

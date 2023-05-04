@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Budget;
 
 namespace WpfApp1
 {
@@ -11,5 +12,14 @@ namespace WpfApp1
         public void DisplayError(Exception e);
 
         public void GetFile(bool isCreatingNewFile);
+
+        public void UpdateExpenses(List<BudgetItem> items);
+
+        public void UpdateExpensesByMonth(List<BudgetItemsByMonth> items);
+
+        public void UpdateExpensesByCategory(List<BudgetItemsByCategory> items);
+
+        public void UpdateExpensesByMonthAndCategory(List<Dictionary<string, object>> items);
+
     }
 }
