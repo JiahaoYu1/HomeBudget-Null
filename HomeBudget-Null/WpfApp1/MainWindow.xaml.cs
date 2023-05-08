@@ -291,36 +291,50 @@ namespace WpfApp1
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            int selectedIndex = -1;
             string searchedText = SearchTextBox.Text.ToLower();
-            int startingIndex = selectedIndex + 1;
-            bool matchFound = false;
 
             if (!string.IsNullOrEmpty(searchedText)){
                 bool found = false;
-                int startingRowIndex = ExpensesDataGrid.SelectedIndex + 1;
+                int selectIndex = ExpensesDataGrid.SelectedIndex;
+                int startingIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
+                int itemCount = ExpensesDataGrid.Items.Count;
 
-                if(startingRowIndex >= ExpensesDataGrid.Items.Count)
-                {
-                    startingRowIndex = 0;
-                }
-
-                for(int i = startingRowIndex; i < ExpensesDataGrid.Items.Count; i++)
+                for(int i = startingIndex; i<ExpensesDataGrid.Items.Count; i++)
                 {
                     DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
-                    if (row != null)
+                    if(row != null)
                     {
                         BudgetItem item = (BudgetItem)row.Item;
 
                         if(item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                         {
-                            row.IsSelected = true;
+                            ExpensesDataGrid.SelectedItem = item;
                             row.BringIntoView();
                             found = true;
                             break;
                         }
+                    }
+                }
+                if (!found)
+                {
+                    // Wrap around and continue searching from the beginning
+                    for (int i = 0; i < startingIndex; i++)
+                    {
+                        DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
+                        if (row != null)
+                        {
+                            BudgetItem item = (BudgetItem)row.Item;
+
+                            if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                            {
+                                ExpensesDataGrid.SelectedItem = item;
+                                row.BringIntoView();
+                                found = true;
+                                break;
+                            }
+                        }
                     }
                 }
                 if (!found)
