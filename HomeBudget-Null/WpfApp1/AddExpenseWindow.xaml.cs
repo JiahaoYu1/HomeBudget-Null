@@ -118,6 +118,9 @@ namespace WpfApp1
             homeBudgetPresenter.AddExpense((DateTime)date, index + 1, amount, nameTextBox.Text);
 
             cancelButton_Click(sender, e);
+            //ScrolledIntoView 3
+            //Selected Item 2 
+            //Focus 1
             
         }
 

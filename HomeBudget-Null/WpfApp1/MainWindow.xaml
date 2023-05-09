@@ -104,8 +104,18 @@
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
-                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
-                          SelectionUnit="FullRow">
+                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionUnit="FullRow" 
+                            Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+                            SelectedItem="{Binding SelectedItem}" 
+                            SelectionMode="Single" 
+                            RowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                            AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                    <DataGrid.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                         Color="Blue" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" 
+                         Color="White" />
+                    </DataGrid.Resources>
 
                     <DataGrid.ContextMenu>
                         <ContextMenu x:Name="DataGridContextMenu">
