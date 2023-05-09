@@ -116,6 +116,9 @@ namespace WpfApp1
             double amount = double.Parse(amountTextBox.Text.ToString());
             int index = categoryComboBox.SelectedIndex;
             homeBudgetPresenter.AddExpense((DateTime)date, index + 1, amount, nameTextBox.Text);
+
+            cancelButton_Click(sender, e);
+            
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -189,6 +192,16 @@ namespace WpfApp1
         private void descriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             unsavedChanges = true;
+        }
+
+        private void ClearValues()
+        {
+            unsavedChanges = false;
+
+            nameTextBox = null;
+            categoryComboBox.SelectedIndex = 0;
+            dateDatePicker = null;
+            amountTextBox = null;
         }
         #endregion
     }
