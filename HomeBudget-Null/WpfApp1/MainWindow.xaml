@@ -30,7 +30,7 @@
     </Window.Resources>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Margin="0,0,1,0" Style="{Binding Mode=OneWay, Source={StaticResource MenuBar}}">
+        <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
             <MenuItem Header="File">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
