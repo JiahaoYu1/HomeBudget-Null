@@ -293,21 +293,22 @@ namespace WpfApp1
         {
             string searchedText = SearchTextBox.Text.ToLower();
 
-            if (!string.IsNullOrEmpty(searchedText)){
+            if (!string.IsNullOrEmpty(searchedText))
+            {
                 bool found = false;
                 int selectIndex = ExpensesDataGrid.SelectedIndex;
                 int startingIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
                 int itemCount = ExpensesDataGrid.Items.Count;
 
-                for(int i = startingIndex; i<ExpensesDataGrid.Items.Count; i++)
+                for (int i = startingIndex; i < ExpensesDataGrid.Items.Count; i++)
                 {
                     DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
-                    if(row != null)
+                    if (row != null)
                     {
                         BudgetItem item = (BudgetItem)row.Item;
 
-                        if(item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                         {
                             ExpensesDataGrid.SelectedItem = item;
                             row.BringIntoView();
@@ -316,6 +317,7 @@ namespace WpfApp1
                         }
                     }
                 }
+
                 if (!found)
                 {
                     // Wrap around and continue searching from the beginning
@@ -337,6 +339,7 @@ namespace WpfApp1
                         }
                     }
                 }
+
                 if (!found)
                 {
                     System.Media.SystemSounds.Beep.Play();
@@ -344,6 +347,7 @@ namespace WpfApp1
                 }
             }
         }
+
 
         //private void FilterExpenses(string searchedTerm)
         //{
