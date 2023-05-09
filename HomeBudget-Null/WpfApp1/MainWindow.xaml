@@ -7,23 +7,6 @@
         mc:Ignorable="d"
         Title="Home Budget" Height="550" Width="1005"
         Icon="/icon.png">
-
-    <!--<Application.Resources>
-        <ResourceDictionary>
-
-            <Style x:Key="MenuBar" TargetType="TextBlock">
-                <Setter Property="Background">
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FFC8BEBE" Offset="1"/>
-                        <GradientStop Color="White" Offset="0"/>
-                        <GradientStop Color="#FFF4F4F4" Offset="0.463"/>
-                    </LinearGradientBrush>
-                </Setter>
-            </Style>
-
-        </ResourceDictionary>
-    </Application.Resources>-->
-    
     <Window.Resources>
         <DataTemplate x:Key="MonthHeaderTemplate">
             <Border BorderThickness="1" BorderBrush="Gray" Background="#F0F0F0" Padding="5">
@@ -47,14 +30,7 @@
     </Window.Resources>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
-            <Menu.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFC8BEBE" Offset="1"/>
-                    <GradientStop Color="White" Offset="0"/>
-                    <GradientStop Color="#FFF4F4F4" Offset="0.463"/>
-                </LinearGradientBrush>
-            </Menu.Background>
+        <Menu DockPanel.Dock="Top" Margin="0,0,1,0" Style="{Binding Mode=OneWay, Source={StaticResource MenuBar}}">
             <MenuItem Header="File">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
