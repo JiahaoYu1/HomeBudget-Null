@@ -13,6 +13,8 @@ namespace WpfApp1
 
         public void GetFile(bool isCreatingNewFile);
 
+        public void AddExpense();
+
         public void UpdateExpenses(List<BudgetItem> items);
 
         public void UpdateExpensesByMonth(List<BudgetItemsByMonth> items);

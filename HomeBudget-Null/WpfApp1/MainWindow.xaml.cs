@@ -139,6 +139,14 @@ namespace WpfApp1
             ExpensesDataGrid.CanUserDeleteRows = false;
         }
 
+        public void AddExpense()
+        {
+            int selectedIndex = CategoryComboBox.SelectedIndex;
+
+            FillDataGrid();
+            CategoryComboBox.SelectedIndex = selectedIndex >= CategoryComboBox.Items.Count ? 0 : selectedIndex;
+        }
+
 
         public void DisplayError(Exception e)
         {
@@ -274,11 +282,6 @@ namespace WpfApp1
             {
                 AddExpenseWindow aew = new AddExpenseWindow(presenter);
                 aew.ShowDialog();
-                int selectedIndex = CategoryComboBox.SelectedIndex;
-
-                CategoryComboBox.ItemsSource = presenter.GetCategoryList();
-                ExpensesDataGrid.ItemsSource = presenter.GetExpenseList();
-                CategoryComboBox.SelectedIndex = selectedIndex >= CategoryComboBox.Items.Count ? 0 : selectedIndex;
             }
             else
                 MessageBox.Show("Select or create a file", "Add Expense", MessageBoxButton.OK, MessageBoxImage.Exclamation);
