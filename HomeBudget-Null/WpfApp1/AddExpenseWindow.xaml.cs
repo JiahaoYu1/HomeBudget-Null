@@ -51,8 +51,8 @@ namespace WpfApp1
             nameTextBox.Text = "";
             amountTextBox.Text = "";
 
-            // Set unsavedChanges to true
-            unsavedChanges = true;
+            // Set unsavedChanges to false
+            unsavedChanges = false;
         }
 
 
@@ -115,13 +115,10 @@ namespace WpfApp1
             DateTime? date = dateDatePicker.SelectedDate;//DateTime.ParseExact(dateDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             double amount = double.Parse(amountTextBox.Text.ToString());
             int index = categoryComboBox.SelectedIndex;
-            homeBudgetPresenter.AddExpense((DateTime)date, index + 1, amount, nameTextBox.Text);
 
-            cancelButton_Click(sender, e);
-            //ScrolledIntoView 3
-            //Selected Item 2 
-            //Focus 1
-            
+            unsavedChanges = false;
+            this.Close();
+            homeBudgetPresenter.AddExpense((DateTime)date, index + 1, amount, nameTextBox.Text);
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

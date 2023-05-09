@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace WpfApp1
 {
@@ -91,8 +92,8 @@ namespace WpfApp1
             CreateDatagridColumn("Name", "ShortDescription");
             CreateDatagridColumn("Date", "Date", "d");
             CreateDatagridColumn("Category", "Category");
-            CreateDatagridColumn("Amount", "Amount");
-            CreateDatagridColumn("Balance", "Balance");
+            CreateDatagridColumn("Amount", "Amount", "c");
+            CreateDatagridColumn("Balance", "Balance", "c");
 
             _isDatagridNormal = true;
             ExpensesDataGrid.IsReadOnly = true;
@@ -106,7 +107,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("Month", "Month");
-            CreateDatagridColumn("Totals", "Total");
+            CreateDatagridColumn("Totals", "Total", "c");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -119,7 +120,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("Category", "Category");
-            CreateDatagridColumn("Totals", "Total");
+            CreateDatagridColumn("Totals", "Total", "c");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -135,7 +136,7 @@ namespace WpfApp1
 
 
             foreach (Category category in presenter.GetCategoryList())
-                CreateDatagridColumn(category.Description, $"[{category.Description}]");
+                CreateDatagridColumn(category.Description, $"[{category.Description}]", "c");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -151,14 +152,15 @@ namespace WpfApp1
 
             if (newExpenseId >= 0)
             {
-                ExpensesDataGrid.Focus();
-                
                 foreach(var row in ExpensesDataGrid.Items)
                 {
                     if (row is BudgetItem && ((BudgetItem)row).ExpenseID == newExpenseId)
                     {
+                        
                         ExpensesDataGrid.SelectedItem = row;
                         ExpensesDataGrid.ScrollIntoView(row);
+                        ExpensesDataGrid.Focus();
+                       //((DataGridRow)row).Background = Brushes.Blue;
                         break;
                     }
                 }
@@ -285,7 +287,8 @@ namespace WpfApp1
                         {
                             // Select the row
                             ExpensesDataGrid.SelectedItem = item;
-                            row.BringIntoView();
+                            ExpensesDataGrid.ScrollIntoView(row);
+                            ExpensesDataGrid.Focus();
                             found = true;
                             break;
                         }
