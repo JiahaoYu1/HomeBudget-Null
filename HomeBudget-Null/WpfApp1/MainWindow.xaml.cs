@@ -297,27 +297,32 @@ namespace WpfApp1
             {
                 bool found = false;
                 int selectIndex = ExpensesDataGrid.SelectedIndex;
-                int startingIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
-                int itemCount = ExpensesDataGrid.Items.Count;
+                int currentIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
 
-                for (int i = startingIndex; i < ExpensesDataGrid.Items.Count; i++)
+                for(int i = startingIndex; i<ExpensesDataGrid.Items.Count; i++)
                 {
-                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(currentIndex);
 
                     if (row != null)
                     {
                         BudgetItem item = (BudgetItem)row.Item;
 
-                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                        if(item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                         {
+                            // Select the row
                             ExpensesDataGrid.SelectedItem = item;
                             row.BringIntoView();
                             found = true;
                             break;
                         }
                     }
-                }
 
+                    // Make the search wrap back up to the top of the grid if it has reached the bottom
+                    if (currentIndex < ExpensesDataGrid.Items.Count)
+                        currentIndex++;
+                    else
+                        currentIndex = 0;
+                }
                 if (!found)
                 {
                     // Wrap around and continue searching from the beginning
@@ -325,9 +330,9 @@ namespace WpfApp1
                     {
                         DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
-                        if (row != null)
-                        {
-                            BudgetItem item = (BudgetItem)row.Item;
+                //        if (row != null)
+                //        {
+                //            BudgetItem item = (BudgetItem)row.Item;
 
                             if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                             {
@@ -339,7 +344,6 @@ namespace WpfApp1
                         }
                     }
                 }
-
                 if (!found)
                 {
                     System.Media.SystemSounds.Beep.Play();
