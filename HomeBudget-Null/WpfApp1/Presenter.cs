@@ -84,6 +84,7 @@ namespace WpfApp1
                 try
                 {
                     budget.expenses.Add(date, categoryId, amount, desc);
+                    homeBudgetView.AddExpense();
                 }
                 catch (Exception e)
                 {
