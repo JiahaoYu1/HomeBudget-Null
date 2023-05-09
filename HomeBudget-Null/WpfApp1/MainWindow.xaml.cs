@@ -29,6 +29,8 @@ namespace WpfApp1
 
 
         private List<Expense> _expensesList = new List<Expense>();
+        private string filePath = Path.GetFullPath("filename.txt");
+        
 
         public MainWindow()
         {
@@ -167,52 +169,52 @@ namespace WpfApp1
 
             presenter.UpdateData(ByMonthCheckBox.IsChecked, ByCategoryCheckBox.IsChecked, startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
-           /* if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
-            {
-                List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-                ExpensesDataGrid.ItemsSource = budgetItems;
-                ExpensesDataGrid.Columns.Clear();
-            //if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
-            //{
-            //    List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-            //    ExpensesDataGrid.ItemsSource = budgetItems;
-            //    ExpensesDataGrid.Columns.Clear();
+            /* if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
+             {
+                 List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+                 ExpensesDataGrid.ItemsSource = budgetItems;
+                 ExpensesDataGrid.Columns.Clear();
+             //if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
+             //{
+             //    List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+             //    ExpensesDataGrid.ItemsSource = budgetItems;
+             //    ExpensesDataGrid.Columns.Clear();
 
-            //    CreateDatagridColumn("Month", "Month");
-            //    CreateDatagridColumn("Total", "Total");
-            //}
-            //else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
-            //{
-            //    List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-            //    ExpensesDataGrid.ItemsSource = budgetItems;
-            //    ExpensesDataGrid.Columns.Clear();
+             //    CreateDatagridColumn("Month", "Month");
+             //    CreateDatagridColumn("Total", "Total");
+             //}
+             //else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
+             //{
+             //    List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
+             //    ExpensesDataGrid.ItemsSource = budgetItems;
+             //    ExpensesDataGrid.Columns.Clear();
 
-                CreateDatagridColumn("Category", "Category");
-                CreateDatagridColumn("Total", "Total");
-            }
+                 CreateDatagridColumn("Category", "Category");
+                 CreateDatagridColumn("Total", "Total");
+             }
 
-            else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
-            {
-                List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
-            //    CreateDatagridColumn("Category", "Category");
-            //    CreateDatagridColumn("Total", "Total");
-            //}
-                
-            //else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
-            //{
-            //    List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
+             else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
+             {
+                 List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
+             //    CreateDatagridColumn("Category", "Category");
+             //    CreateDatagridColumn("Total", "Total");
+             //}
 
-            //    ExpensesDataGrid.ItemsSource = dictionaries;
-            //    ExpensesDataGrid.Columns.Clear();
+             //else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
+             //{
+             //    List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
 
-            //    CreateDatagridColumn("Month", "[Month]");
+             //    ExpensesDataGrid.ItemsSource = dictionaries;
+             //    ExpensesDataGrid.Columns.Clear();
+
+             //    CreateDatagridColumn("Month", "[Month]");
 
 
-            //    foreach (Category category in presenter.GetCategoryList())
-            //        CreateDatagridColumn(category.Description, $"[{category.Description}]");
-            //}
-            //else
-            //    ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); */
+             //    foreach (Category category in presenter.GetCategoryList())
+             //        CreateDatagridColumn(category.Description, $"[{category.Description}]");
+             //}
+             //else
+             //    ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); */
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -257,7 +259,6 @@ namespace WpfApp1
         {
             // Set _fileSelected to true
             _fileSelected = true;
-
             GetFile(false);
         }
 
@@ -299,7 +300,8 @@ namespace WpfApp1
                 int selectIndex = ExpensesDataGrid.SelectedIndex;
                 int currentIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
 
-                for(int i = startingIndex; i<ExpensesDataGrid.Items.Count; i++)
+
+                for (int i = 0; i < ExpensesDataGrid.Items.Count; i++)
                 {
                     DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(currentIndex);
 
@@ -307,7 +309,8 @@ namespace WpfApp1
                     {
                         BudgetItem item = (BudgetItem)row.Item;
 
-                        if(item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+
+                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                         {
                             // Select the row
                             ExpensesDataGrid.SelectedItem = item;
@@ -323,27 +326,27 @@ namespace WpfApp1
                     else
                         currentIndex = 0;
                 }
-                if (!found)
-                {
-                    // Wrap around and continue searching from the beginning
-                    for (int i = 0; i < startingIndex; i++)
-                    {
-                        DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                //if (!found)
+                //{
+                //    // Wrap around and continue searching from the beginning
+                //    for (int i = 0; i < currentIndex; i++)
+                //    {
+                //        DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
                 //        if (row != null)
                 //        {
                 //            BudgetItem item = (BudgetItem)row.Item;
 
-                            if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
-                            {
-                                ExpensesDataGrid.SelectedItem = item;
-                                row.BringIntoView();
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-                }
+                //            if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                //            {
+                //                ExpensesDataGrid.SelectedItem = item;
+                //                row.BringIntoView();
+                //                found = true;
+                //                break;
+                //            }
+                //        }
+                //    }
+                //}
                 if (!found)
                 {
                     System.Media.SystemSounds.Beep.Play();
@@ -351,7 +354,6 @@ namespace WpfApp1
                 }
             }
         }
-
 
         //private void FilterExpenses(string searchedTerm)
         //{
