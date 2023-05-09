@@ -85,10 +85,11 @@ namespace WpfApp1
         public void UpdateExpenses(List<BudgetItem> items)
         {
             ExpensesDataGrid.ItemsSource = items;
+            ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("ID", "ExpenseID");
             CreateDatagridColumn("Name", "ShortDescription");
-            CreateDatagridColumn("Month", "Month");
+            CreateDatagridColumn("Date", "Date", "d");
             CreateDatagridColumn("Category", "Category");
             CreateDatagridColumn("Amount", "Amount");
             CreateDatagridColumn("Balance", "Balance");
@@ -177,65 +178,17 @@ namespace WpfApp1
 
             presenter.UpdateData(ByMonthCheckBox.IsChecked, ByCategoryCheckBox.IsChecked, startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
 
-            /* if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
-             {
-                 List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-                 ExpensesDataGrid.ItemsSource = budgetItems;
-                 ExpensesDataGrid.Columns.Clear();
-             //if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == false)
-             //{
-             //    List<BudgetItemsByMonth> budgetItems = presenter.GetBudgetItemsByMonth(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-             //    ExpensesDataGrid.ItemsSource = budgetItems;
-             //    ExpensesDataGrid.Columns.Clear();
-
-             //    CreateDatagridColumn("Month", "Month");
-             //    CreateDatagridColumn("Total", "Total");
-             //}
-             //else if (ByMonthCheckBox.IsChecked == false && ByCategoryCheckBox.IsChecked == true)
-             //{
-             //    List<BudgetItemsByCategory> budgetItems = presenter.GetBudgetItemsByCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId);
-             //    ExpensesDataGrid.ItemsSource = budgetItems;
-             //    ExpensesDataGrid.Columns.Clear();
-
-                 CreateDatagridColumn("Category", "Category");
-                 CreateDatagridColumn("Total", "Total");
-             }
-
-             else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
-             {
-                 List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
-             //    CreateDatagridColumn("Category", "Category");
-             //    CreateDatagridColumn("Total", "Total");
-             //}
-
-             //else if (ByMonthCheckBox.IsChecked == true && ByCategoryCheckBox.IsChecked == true)
-             //{
-             //    List<Dictionary<string, object>> dictionaries = presenter.GetBudgetDictionaryByMonthAndCategory(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); ;
-
-             //    ExpensesDataGrid.ItemsSource = dictionaries;
-             //    ExpensesDataGrid.Columns.Clear();
-
-             //    CreateDatagridColumn("Month", "[Month]");
-
-
-             //    foreach (Category category in presenter.GetCategoryList())
-             //        CreateDatagridColumn(category.Description, $"[{category.Description}]");
-             //}
-             //else
-             //    ExpensesDataGrid.ItemsSource = presenter.GetBudgetItems(startDate, endDate, (bool)FilterByCategoryCheckBox.IsChecked, categoryId); */
-
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
             ExpensesDataGrid.CanUserDeleteRows = false;
-
-            // ((DataGridTextColumn)ExpensesDataGrid.Columns[DATAGRID_DATE_COLUMN]).Binding.StringFormat = "d";
         }
 
-        private void CreateDatagridColumn(string columnHeader, string bindingProperty)
+        private void CreateDatagridColumn(string columnHeader, string bindingProperty, string bindingFormat = null)
         {
             var newColumn = new DataGridTextColumn();
             newColumn.Header = columnHeader;
             newColumn.Binding = new Binding(bindingProperty);
+            newColumn.Binding.StringFormat = bindingFormat;
             newColumn.CanUserResize = false;
             newColumn.CanUserReorder = false;
             ExpensesDataGrid.Columns.Add(newColumn);
