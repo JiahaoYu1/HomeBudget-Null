@@ -83,8 +83,19 @@ namespace WpfApp1
             {
                 try
                 {
+                    Expense addedExpense = null;
                     budget.expenses.Add(date, categoryId, amount, desc);
-                    homeBudgetView.AddExpense();
+
+                    foreach(Expense expense in GetExpenseList())
+                    {
+                        if (expense.Date == date && expense.Category == categoryId && expense.Amount == amount && expense.Description == desc)
+                        {
+                            addedExpense = expense;
+                            break;
+                        }
+                    }
+
+                    homeBudgetView.AddExpense(addedExpense is null ? -1 : addedExpense.Id);
                 }
                 catch (Exception e)
                 {
