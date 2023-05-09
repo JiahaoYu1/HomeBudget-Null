@@ -142,12 +142,27 @@ namespace WpfApp1
             ExpensesDataGrid.CanUserDeleteRows = false;
         }
 
-        public void AddExpense()
+        public void AddExpense(int newExpenseId)
         {
             int selectedIndex = CategoryComboBox.SelectedIndex;
 
             FillDataGrid();
             CategoryComboBox.SelectedIndex = selectedIndex >= CategoryComboBox.Items.Count ? 0 : selectedIndex;
+
+            if (newExpenseId >= 0)
+            {
+                ExpensesDataGrid.Focus();
+                
+                foreach(var row in ExpensesDataGrid.Items)
+                {
+                    if (row is BudgetItem && ((BudgetItem)row).ExpenseID == newExpenseId)
+                    {
+                        ExpensesDataGrid.SelectedItem = row;
+                        ExpensesDataGrid.ScrollIntoView(row);
+                        break;
+                    }
+                }
+            }
         }
 
 
