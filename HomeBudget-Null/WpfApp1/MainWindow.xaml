@@ -103,6 +103,8 @@
                     
                 </StackPanel>
 
+                <!--RESOURCES AND COLOR BINDING WAS TAKEN FROM CHATGPT
+                PROMT: How do you change the selected color item instead of being grey-->
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
                           MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionUnit="FullRow" 
                             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
