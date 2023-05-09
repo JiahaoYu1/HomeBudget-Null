@@ -92,19 +92,21 @@
                 <Button x:Name="AddExpenseButton" Content="Add Expense" Margin="10" Click="AddExpenseButton_Click"/>
             </GroupBox>
 
-            <Grid Grid.Column="3" Background="#FFF4F4F5">
+            <Grid Grid.Column="3" Background="#FFF4F4F5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <TextBox x:Name="SearchTextBox" Margin="5" Width="158" TextChanged="SearchTextBox_TextChanged"/>
-                    <Button  x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
-                    <TextBlock x:Name="FileNameTextBlock" Text="File: " Width="471" Height="16" Margin="35,0,0,0"/>
+                    <Button x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
+                    
                 </StackPanel>
 
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
-                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False">
+                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"
+                          SelectionUnit="FullRow">
+
                     <DataGrid.ContextMenu>
                         <ContextMenu x:Name="DataGridContextMenu">
                             <MenuItem Header="Delete" Click="Delete_Click"/>
