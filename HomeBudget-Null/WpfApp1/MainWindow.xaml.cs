@@ -89,8 +89,8 @@ namespace WpfApp1
             CreateDatagridColumn("Name", "ShortDescription");
             CreateDatagridColumn("Date", "Date", "d");
             CreateDatagridColumn("Category", "Category");
-            CreateDatagridColumn("Amount", "Amount", "c");
-            CreateDatagridColumn("Balance", "Balance", "c");
+            CreateDatagridColumn("Amount", "Amount");
+            CreateDatagridColumn("Balance", "Balance");
 
             _isDatagridNormal = true;
             ExpensesDataGrid.IsReadOnly = true;
@@ -104,7 +104,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("Month", "Month");
-            CreateDatagridColumn("Totals", "Total", "c");
+            CreateDatagridColumn("Totals", "Total");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -117,7 +117,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("Category", "Category");
-            CreateDatagridColumn("Totals", "Total", "c");
+            CreateDatagridColumn("Totals", "Total");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
