@@ -116,10 +116,6 @@ namespace WpfApp1
         /// <summary>
         /// Saves the budget to a database file
         /// </summary>
-        //public void SaveToFile()
-        //{
-        //    budget.SaveToFile(dbFileName);
-        //}
 
         private bool isFileLoaded()
         {
@@ -180,11 +176,6 @@ namespace WpfApp1
             budget.expenses.UpdateProperties(expenseId, date, categoryId, amount, description);
         }
 
-        //public List<BudgetItem> GetBudgetItems(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
-        //{
-        //    return budget.GetBudgetItems(to, from, filterFlag, categoryId);
-        //}
-
         public void UpdateData(bool? isDisplayingByMonth, bool? isDisplayingByCategory, DateTime? startDate, DateTime? endDate, bool filterFlag, int categoryId)
         {
             if (isDisplayingByMonth == true && isDisplayingByCategory == false)
@@ -195,23 +186,7 @@ namespace WpfApp1
                 homeBudgetView.UpdateExpensesByMonthAndCategory(budget.GetBudgetDictionaryByCategoryAndMonth(startDate, endDate, filterFlag, categoryId));
             else
                 homeBudgetView.UpdateExpenses(budget.GetBudgetItems(startDate, endDate, filterFlag, categoryId));
-
-            // if monthchebox and categorycheckbox {
-            //  BudgetItemsByMonthAnbCategory data = homeBudget.getBudgetItemsByMonthAndCategory(...)
-            //  view.updateGridMonthAndCategory(data)
-            // }
-            // elsif monthbox and not categorybox {
-            //   data = homeBudget.getBudgetItemsbyMonth(...)
-            //   view.updateGridByMonth(data)
-            //}
-            // etc
-
-
-
         }
-
-
-
 
         /// <summary>
         /// Retrieves Expenses based on a month given
@@ -220,21 +195,6 @@ namespace WpfApp1
         /// <param name="to">Expenses to an ending date</param>
         /// <param name="categoryId">The id of the category wanted</param>
         /// <returns>A list of BudgetItemsByMonth</returns>
-        //public List<BudgetItemsByMonth> GetBudgetItemsByMonth(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
-        //{
-        //    return budget.GetBudgetItemsByMonth(to, from, filterFlag, categoryId);
-        //}
-
-        //public List<BudgetItemsByCategory> GetBudgetItemsByCategory(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
-        //{
-        //    return budget.GetBudgetItemsByCategory(to, from, filterFlag, categoryId);
-        //} 
-
-        //public List<Dictionary<string, object>> GetBudgetDictionaryByMonthAndCategory(DateTime? from, DateTime? to, bool filterFlag, int categoryId)
-        //{
-        //    return budget.GetBudgetDictionaryByCategoryAndMonth(to, from, filterFlag, categoryId);
-        //}
-
 
         //Need documentation
         public Category GetCatergoryById(int id)

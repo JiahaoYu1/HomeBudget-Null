@@ -36,9 +36,6 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            // Set default start date and end date to today
-            //StartDatePicker.SelectedDate = DateTime.Today;
-            //EndDatePicker.SelectedDate = DateTime.Today;
 
             presenter = new Presenter(this);
         }
@@ -300,27 +297,7 @@ namespace WpfApp1
                     else
                         currentIndex = 0;
                 }
-                //if (!found)
-                //{
-                //    // Wrap around and continue searching from the beginning
-                //    for (int i = 0; i < currentIndex; i++)
-                //    {
-                //        DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
 
-                //        if (row != null)
-                //        {
-                //            BudgetItem item = (BudgetItem)row.Item;
-
-                //            if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
-                //            {
-                //                ExpensesDataGrid.SelectedItem = item;
-                //                row.BringIntoView();
-                //                found = true;
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
                 if (!found)
                 {
                     System.Media.SystemSounds.Beep.Play();
@@ -328,16 +305,6 @@ namespace WpfApp1
                 }
             }
         }
-
-        //private void FilterExpenses(string searchedTerm)
-        //{
-        //    ICollectionView view = CollectionViewSource.GetDefaultView(ExpensesDataGrid.ItemsSource);
-        //    view.Filter = budgetItems =>
-        //    {
-        //        BudgetItem item = budgetItems as BudgetItem;
-        //        return item.ShortDescription.Contains(searchedTerm);
-        //    };
-        //}
 
         private void AboutUs_Click(object sender, RoutedEventArgs e)
         {
