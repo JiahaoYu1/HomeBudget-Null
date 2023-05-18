@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.IO;
 using System.Security.Permissions;
 using System.Windows;
@@ -231,9 +232,7 @@ namespace WpfApp1
                         if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                         {
                             // Select the row
-                            ExpensesDataGrid.SelectedItem = item;
-                            ExpensesDataGrid.ScrollIntoView(row);
-                            ExpensesDataGrid.Focus();
+                            SelectExpenseGridRow(row);
                             found = true;
                             break;
                         }
@@ -252,6 +251,15 @@ namespace WpfApp1
                     MessageBox.Show("Nothing Found");
                 }
             }
+        }
+
+        private void SelectExpenseGridRow(DataGridRow row)
+        {
+            BudgetItem item = (BudgetItem)row.Item;
+
+            ExpensesDataGrid.SelectedItem = item;
+            ExpensesDataGrid.ScrollIntoView(row);
+            ExpensesDataGrid.Focus();
         }
 
 
@@ -436,7 +444,10 @@ namespace WpfApp1
 
         private void ExpensesDataGrid_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Tab)
+            {
 
+            }
         }
         #endregion
     }
