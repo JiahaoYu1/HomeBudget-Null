@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Add Expense" Height="350" Width="600" ResizeMode="NoResize" Closing="MainWindow_Closing">
-    <StackPanel Margin="0,0,0,-86">
+    <StackPanel Margin="0,0,0,-86" Background="Gray">
         <Label x:Name="MenuBarMargin" Visibility="Collapsed">2</Label>
 
         <GroupBox Header="Details" Margin="10,20,10,20">
@@ -31,16 +31,16 @@
                 </TextBlock>
 
 
-                <Label Content="Expense Name:" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <Label Content="Expense Name:" Margin="2,2,2,2" Grid.ColumnSpan="2" Foreground="White"/>
                 <TextBox x:Name="nameTextBox" Grid.Column="2" Margin="2,2,2,2" TextChanged="nameTextBox_TextChanged"/>
 
-                <Label Content="Amount:" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <Label Content="Amount:" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" Foreground="White"/>
                 <TextBox x:Name="amountTextBox" TextChanged="amountTextBox_TextChanged"  Grid.Row="1" Grid.Column="2" Margin="2,2,2,2"/>
 
-                <Label Content="Date:" Grid.Row="2" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <Label Content="Date:" Grid.Row="2" Margin="2,2,2,2" Grid.ColumnSpan="2" Foreground="White"/>
                 <DatePicker x:Name="dateDatePicker" Grid.Row="2" Grid.Column="2" Margin="2,2,2,2" SelectedDateFormat="Short"/>
 
-                <Label Content="Category:" Grid.Row="3" Margin="2,2,2,2" Grid.ColumnSpan="2"/>
+                <Label Content="Category:" Grid.Row="3" Margin="2,2,2,2" Grid.ColumnSpan="2" Foreground="White"/>
                 <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" Margin="2,2,2,2">
                     <ComboBox x:Name="categoryComboBox" Width="150" SelectionChanged="categoryComboBox_SelectionChanged" Background="Silver">
                     </ComboBox>
@@ -52,7 +52,7 @@
 
                 <Button x:Name="addButton" Content="Add" Grid.Row="5" Grid.Column="2" Click="addButton_Click" Margin="2,2,2,2" Background="Silver" Foreground="DarkBlue"/>
 
-                <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Foreground="White"/>
 
                 <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White">
                     <Button.Style>

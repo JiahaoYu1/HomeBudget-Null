@@ -10,14 +10,14 @@
         
         KeyboardNavigation.TabNavigation="None"
         KeyDown="ExpensesDataGrid_KeyDown">
-    
+
     <Window.Resources>
         <SolidColorBrush x:Key="PrimaryColorBrush" Color="#FF0078D7" />
         <SolidColorBrush x:Key="PrimaryColorLightBrush" Color="#FF90C8F7" />
         <SolidColorBrush x:Key="PrimaryColorDarkBrush" Color="#FF004B8F" />
         <DataTemplate x:Key="MonthHeaderTemplate">
-            <Border BorderThickness="1" BorderBrush="Gray" Background="#F0F0F0" Padding="5">
-                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+            <Border BorderThickness="1" BorderBrush="#FFA9A9A9" Background="#F0F0F0" Padding="5">
+                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Foreground="White"/>
             </Border>
         </DataTemplate>
         <Style x:Key="MonthContainerStyle" TargetType="{x:Type GroupItem}">
@@ -33,21 +33,21 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
     </Window.Resources>
 
-    <DockPanel>
-        <Menu DockPanel.Dock="Top" Margin="0,0,1,0">
-            <MenuItem Header="File">
+    <DockPanel Background="Gray">
+        <Menu DockPanel.Dock="Top" Margin="0,0,1,0" Background="Gray">
+            <MenuItem Header="File" Background="Gray" Foreground="White">
                 <MenuItem Header="New" Click="New_Click"/>
                 <MenuItem Header="Open" Click="Open_Click"/>
             </MenuItem>
 
-            <MenuItem Header="About Us" Click="AboutUs_Click"/>
+            <MenuItem Header="About Us" Click="AboutUs_Click" Background="Gray" Foreground="White"/>
 
-            <Separator/>
-            <Separator/>
-            <Separator/>
+            <Separator Background="Gray"/>
+            <Separator Background="Gray"/>
+            <Separator Background="Gray"/>
             <MenuItem Header="Exit" Click="Exit_Click" Background="Red" Foreground="White"/>
         </Menu>
 
@@ -59,7 +59,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto" MinWidth="50"/>
             </Grid.ColumnDefinitions>
-            
+
 
             <GroupBox Header="Filter" RenderTransformOrigin="1.961,0.114" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Height="208" Width="200">
                 <StackPanel Margin="10,0,-2,0" RenderTransformOrigin="0.5,0.5">
@@ -71,17 +71,17 @@
                             <TranslateTransform Y="0.495"/>
                         </TransformGroup>
                     </StackPanel.RenderTransform>
-                    <TextBlock Text="Display Options" FontSize="12"/>
+                    <TextBlock Text="Display Options" FontSize="12" Foreground="White"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5" Width="178">
-                        <TextBlock Text="Start Date:" Margin="10" FontSize="10" RenderTransformOrigin="0.022,0.861"/>
+                        <TextBlock Text="Start Date:" Margin="10" FontSize="10" Foreground="White" RenderTransformOrigin="0.022,0.861"/>
                         <DatePicker x:Name="StartDatePicker" Margin="5" Width="94"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="End Date:" Margin="10" FontSize="10"/>
+                        <TextBlock Text="End Date:" Margin="10" FontSize="10" Foreground="White"/>
                         <DatePicker x:Name="EndDatePicker" Margin="5" Width="95"/>
                     </StackPanel>
                     <StackPanel Margin="0,5">
-                        <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" IsEnabled="false" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked"/>
+                        <CheckBox x:Name="FilterByCategoryCheckBox" Content="Filter By Category?" IsEnabled="false" Margin="10" FontSize="11" Checked="FilterByCategoryCheckBox_Checked" Unchecked="FilterByCategoryCheckBox_Unchecked" Foreground="White"/>
                         <ComboBox x:Name="CategoryComboBox" Margin="5" Width="100" IsEnabled="False" SelectionChanged="CategoryComboBox_SelectionChanged">
                             <!-- Add categories here -->
                         </ComboBox>
@@ -90,9 +90,9 @@
             </GroupBox>
             <GroupBox Header="Summary" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,213,0,0" Width="200" Height="129">
                 <StackPanel Margin="10">
-                    <TextBlock Text="Summary Options" FontSize="12"/>
-                    <CheckBox x:Name="ByMonthCheckBox" IsEnabled="false" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked" Unchecked="ByMonthCheckBox_Unchecked"/>
-                    <CheckBox x:Name="ByCategoryCheckBox" IsEnabled="false" Content="By Category" Margin="10" FontSize="11" Checked="ByCategoryCheckBox_Checked" Unchecked="ByCategoryCheckBox_Unchecked"/>
+                    <TextBlock Text="Summary Options" FontSize="12" Foreground="White"/>
+                    <CheckBox x:Name="ByMonthCheckBox" IsEnabled="false" Content="By Month" Margin="10" FontSize="11" Checked="ByMonthCheckBox_Checked" Unchecked="ByMonthCheckBox_Unchecked" Foreground="White"/>
+                    <CheckBox x:Name="ByCategoryCheckBox" IsEnabled="false" Content="By Category" Margin="10" FontSize="11" Checked="ByCategoryCheckBox_Checked" Unchecked="ByCategoryCheckBox_Unchecked" Foreground="white"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Action" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,347,0,0" Width="200" Height="63">
@@ -134,36 +134,32 @@
                 </Button>
             </GroupBox>
 
-            <Grid Grid.Column="3" Background="#FFF4F4F5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid Grid.Column="3" Background="#FFA9A9A9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
-                
+
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <TextBox x:Name="SearchTextBox" Margin="5" Width="158" TextChanged="SearchTextBox_TextChanged" KeyDown="SearchTextBox_KeyDown"/>
                     <Button x:Name="Search" Content="Search" Height="19" Click="Search_Click" Background="LightBlue"/>
-                    
                 </StackPanel>
 
-                <!--RESOURCES AND COLOR BINDING WAS TAKEN FROM CHATGPT
-                PROMT: How do you change the selected color item instead of being grey-->
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
-                          MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionUnit="FullRow" 
-                            Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
-                            SelectedItem="{Binding SelectedItem}" 
-                            SelectionMode="Single" 
-                            RowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                            AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                            KeyboardNavigation.TabNavigation="None"
-                          IsTabStop="False"
-                          PreviewKeyDown="ExpensesDataGrid_PreviewKeyDown">
+              MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionUnit="FullRow" 
+              Background="#FFA9A9A9" Foreground="White"
+              SelectedItem="{Binding SelectedItem}" 
+              SelectionMode="Single" 
+              RowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+              AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+              KeyboardNavigation.TabNavigation="None"
+              IsTabStop="False"
+              PreviewKeyDown="ExpensesDataGrid_PreviewKeyDown">
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
-                         Color="Blue" />
+                             Color="Blue" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" 
-                         Color="White" />
+                             Color="White" />
                     </DataGrid.Resources>
 
                     <DataGrid.ContextMenu>
@@ -179,7 +175,7 @@
 
             <Label x:Name="BlockingLabel" Visibility="Hidden" Content="Select a file" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="5" FontSize="72" FontWeight="Bold">
                 <Label.Background>
-                    <SolidColorBrush Color="#FF656565" Opacity="0.4"/>
+                    <SolidColorBrush Color="Black" Opacity="0.4"/>
                 </Label.Background>
             </Label>
         </Grid>
