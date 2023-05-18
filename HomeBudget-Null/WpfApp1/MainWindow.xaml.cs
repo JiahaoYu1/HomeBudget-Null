@@ -208,7 +208,55 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Add(newColumn);
         }
 
+        private void SearchForBudgetItem()
+        {
+            string searchedText = SearchTextBox.Text.ToLower();
 
+            if (!string.IsNullOrEmpty(searchedText))
+            {
+                bool found = false;
+                int selectIndex = ExpensesDataGrid.SelectedIndex;
+                int currentIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
+
+
+                for (int i = 0; i < ExpensesDataGrid.Items.Count; i++)
+                {
+                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(currentIndex);
+
+                    if (row != null)
+                    {
+                        BudgetItem item = (BudgetItem)row.Item;
+
+
+                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                        {
+                            // Select the row
+                            ExpensesDataGrid.SelectedItem = item;
+                            ExpensesDataGrid.ScrollIntoView(row);
+                            ExpensesDataGrid.Focus();
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // Make the search wrap back up to the top of the grid if it has reached the bottom
+                    if (currentIndex < ExpensesDataGrid.Items.Count)
+                        currentIndex++;
+                    else
+                        currentIndex = 0;
+                }
+
+                if (!found)
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                    MessageBox.Show("Nothing Found");
+                }
+            }
+        }
+
+
+
+        #region Events
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CategoryComboBox.IsEnabled = true;
@@ -262,48 +310,13 @@ namespace WpfApp1
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            string searchedText = SearchTextBox.Text.ToLower();
+            SearchForBudgetItem();
+        }
 
-            if (!string.IsNullOrEmpty(searchedText))
-            {
-                bool found = false;
-                int selectIndex = ExpensesDataGrid.SelectedIndex;
-                int currentIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
-
-
-                for (int i = 0; i < ExpensesDataGrid.Items.Count; i++)
-                {
-                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(currentIndex);
-
-                    if (row != null)
-                    {
-                        BudgetItem item = (BudgetItem)row.Item;
-
-
-                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
-                        {
-                            // Select the row
-                            ExpensesDataGrid.SelectedItem = item;
-                            ExpensesDataGrid.ScrollIntoView(row);
-                            ExpensesDataGrid.Focus();
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    // Make the search wrap back up to the top of the grid if it has reached the bottom
-                    if (currentIndex < ExpensesDataGrid.Items.Count)
-                        currentIndex++;
-                    else
-                        currentIndex = 0;
-                }
-
-                if (!found)
-                {
-                    System.Media.SystemSounds.Beep.Play();
-                    MessageBox.Show("Nothing Found");
-                }
-            }
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                SearchForBudgetItem();
         }
 
         private void AboutUs_Click(object sender, RoutedEventArgs e)
@@ -420,6 +433,12 @@ namespace WpfApp1
         {
 
         }
+
+        private void ExpensesDataGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+        #endregion
     }
 
 }

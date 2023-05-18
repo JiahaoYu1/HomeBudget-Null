@@ -97,8 +97,10 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
+                
                 <StackPanel Orientation="Horizontal" Margin="10">
-                    <TextBox x:Name="SearchTextBox" Margin="5" Width="158" TextChanged="SearchTextBox_TextChanged"/>
+                    <TextBox x:Name="SearchTextBox" Margin="5" Width="158" TextChanged="SearchTextBox_TextChanged" KeyDown="SearchTextBox_KeyDown"/>
                     <Button x:Name="Search" Content="Search" Height="19" Click="Search_Click"/>
                     
                 </StackPanel>
@@ -111,7 +113,8 @@
                             SelectedItem="{Binding SelectedItem}" 
                             SelectionMode="Single" 
                             RowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                            AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                            AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                          KeyDown="ExpensesDataGrid_KeyDown">
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
                          Color="Blue" />
