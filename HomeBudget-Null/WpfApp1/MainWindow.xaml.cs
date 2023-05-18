@@ -232,7 +232,7 @@ namespace WpfApp1
                         if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
                         {
                             // Select the row
-                            SelectExpenseGridRow(row);
+                            SelectDatagridRow(row.GetIndex());
                             found = true;
                             break;
                         }
@@ -253,8 +253,24 @@ namespace WpfApp1
             }
         }
 
-        private void SelectExpenseGridRow(DataGridRow row)
+        private void CycleDatagridSelection()
         {
+            if (ExpensesDataGrid.Items.Count > 0)
+            {
+                int nextIndex = ExpensesDataGrid.SelectedIndex;
+
+                if (nextIndex == -1)
+                    nextIndex = 0;
+                else
+                    nextIndex = nextIndex == ExpensesDataGrid.Items.Count - 1 ? 0 : nextIndex + 1;
+
+                SelectDatagridRow(nextIndex);
+            } 
+        }
+
+        private void SelectDatagridRow(int rowIndex)
+        {
+            DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex);
             BudgetItem item = (BudgetItem)row.Item;
 
             ExpensesDataGrid.SelectedItem = item;
@@ -446,8 +462,15 @@ namespace WpfApp1
         {
             if (e.Key == Key.Tab)
             {
-
+                if (ExpensesDataGrid.SelectedIndex== -1 || !ExpensesDataGrid.IsFocused)
+                    CycleDatagridSelection();
             }
+        }
+
+        private void ExpensesDataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+                CycleDatagridSelection();
         }
         #endregion
     }

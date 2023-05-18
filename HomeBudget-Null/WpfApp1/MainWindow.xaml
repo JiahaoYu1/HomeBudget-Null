@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Home Budget" Height="550" Width="1005"
-        Icon="/icon.png">
+        Icon="/icon.png"
+        
+        KeyboardNavigation.TabNavigation="None"
+        KeyDown="ExpensesDataGrid_KeyDown">
+    
     <Window.Resources>
         <DataTemplate x:Key="MonthHeaderTemplate">
             <Border BorderThickness="1" BorderBrush="Gray" Background="#F0F0F0" Padding="5">
@@ -114,7 +118,9 @@
                             SelectionMode="Single" 
                             RowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
                             AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-                          KeyDown="ExpensesDataGrid_KeyDown">
+                            KeyboardNavigation.TabNavigation="None"
+                          IsTabStop="False"
+                          PreviewKeyDown="ExpensesDataGrid_PreviewKeyDown">
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
                          Color="Blue" />
