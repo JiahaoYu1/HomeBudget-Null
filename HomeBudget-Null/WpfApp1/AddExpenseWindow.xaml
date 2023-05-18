@@ -54,7 +54,31 @@
 
                 <Label x:Name="budgetLabel" Content="Budget: $0" FontWeight="Bold" Grid.Row="7" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
 
-                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White"/>
+                <Button x:Name="closeButton" Content="Close" Click="closeFile_Click" Grid.Column="1" Margin="96,33,183,-37" Grid.Row="7" Background="Red" Foreground="White">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Padding" Value="10" />
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#B30000" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter Property="Background" Value="#800000" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
         </GroupBox>
 
