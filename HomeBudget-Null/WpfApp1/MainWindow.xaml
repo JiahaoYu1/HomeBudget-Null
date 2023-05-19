@@ -39,8 +39,8 @@
     <DockPanel Background="Gray">
         <Menu DockPanel.Dock="Top" Margin="0,0,1,0" Background="Gray">
             <MenuItem Header="File" Background="Gray" Foreground="White">
-                <MenuItem Header="New" Click="New_Click"/>
-                <MenuItem Header="Open" Click="Open_Click"/>
+                <MenuItem Header="New" Click="New_Click" Background="Gray"/>
+                <MenuItem Header="Open" Click="Open_Click" Background="Gray"/>
             </MenuItem>
 
             <MenuItem Header="About Us" Click="AboutUs_Click" Background="Gray" Foreground="White"/>
@@ -147,7 +147,7 @@
 
                 <DataGrid Grid.Row="1" x:Name="ExpensesDataGrid" Margin="10" BorderThickness="0" SelectionChanged="ExpensesDataGrid_SelectionChanged"
               MouseRightButtonDown="ExpensesDataGrid_MouseRightButtonDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionUnit="FullRow" 
-              Background="#FFA9A9A9" Foreground="White"
+              Background="White" Foreground="Black"
               SelectedItem="{Binding SelectedItem}" 
               SelectionMode="Single" 
               RowBackground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
