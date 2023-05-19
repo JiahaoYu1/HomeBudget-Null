@@ -157,7 +157,6 @@ namespace WpfApp1
                         ExpensesDataGrid.SelectedItem = row;
                         ExpensesDataGrid.ScrollIntoView(row);
                         ExpensesDataGrid.Focus();
-                       //((DataGridRow)row).Background = Brushes.Blue;
                         break;
                     }
                 }
