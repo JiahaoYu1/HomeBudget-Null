@@ -30,7 +30,56 @@
         <TextBox Grid.Row="5" x:Name="DescriptionTextBox" Margin="85,10,420,171" Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10"/>
-        <Button Content="Cancel" Margin="24,90,631,100" Click="CancelButton_Click" Grid.Row="5"/>
-        <Button Content="OK" Click="OkButton_Click" Margin="328,95,328,96" Grid.Row="5" RenderTransformOrigin="0.522,3.638"/>
+        <Button Content="Cancel" Margin="24,90,631,100" Click="CancelButton_Click" Grid.Row="5" Foreground="White">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Padding" Value="10" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="#D70000" BorderThickness="0" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF444444" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#FF222222" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Content="OK" Click="OkButton_Click" Margin="328,95,328,96" Grid.Row="5" RenderTransformOrigin="0.522,3.638" Foreground="White">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Padding" Value="10" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="#0078D7" BorderThickness="0" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF39D68C" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="#FF27AE60" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>

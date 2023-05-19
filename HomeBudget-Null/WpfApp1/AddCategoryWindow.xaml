@@ -27,9 +27,62 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <Button x:Name="confirmButton" Content="Confirm" Click="confirmButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
-            <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}"/>
+
+            <Button x:Name="confirmButton" Content="Confirm" Click="confirmButton_Click" Grid.Column="0" Margin="{Binding ElementName=GeneralMargin, Path=Text}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#0078D7" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Padding" Value="10" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#005AAB" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#004B8F" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Grid.Column="1" Margin="{Binding ElementName=GeneralMargin, Path=Text}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#D70000" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Padding" Value="10" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="5">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#AB0000" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="#8F0000" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
     </Grid>
 </Window>

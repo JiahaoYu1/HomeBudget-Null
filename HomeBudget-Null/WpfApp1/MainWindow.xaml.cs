@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.IO;
 using System.Security.Permissions;
 using System.Windows;
@@ -89,8 +90,8 @@ namespace WpfApp1
             CreateDatagridColumn("Name", "ShortDescription");
             CreateDatagridColumn("Date", "Date", "d");
             CreateDatagridColumn("Category", "Category");
-            CreateDatagridColumn("Amount", "Amount", "c");
-            CreateDatagridColumn("Balance", "Balance", "c");
+            CreateDatagridColumn("Amount", "Amount");
+            CreateDatagridColumn("Balance", "Balance");
 
             _isDatagridNormal = true;
             ExpensesDataGrid.IsReadOnly = true;
@@ -104,7 +105,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("Month", "Month");
-            CreateDatagridColumn("Totals", "Total", "c");
+            CreateDatagridColumn("Totals", "Total");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -117,7 +118,7 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Clear();
 
             CreateDatagridColumn("Category", "Category");
-            CreateDatagridColumn("Totals", "Total", "c");
+            CreateDatagridColumn("Totals", "Total");
 
             ExpensesDataGrid.IsReadOnly = true;
             ExpensesDataGrid.CanUserAddRows = false;
@@ -207,7 +208,78 @@ namespace WpfApp1
             ExpensesDataGrid.Columns.Add(newColumn);
         }
 
+        private void SearchForBudgetItem()
+        {
+            string searchedText = SearchTextBox.Text.ToLower();
 
+            if (!string.IsNullOrEmpty(searchedText))
+            {
+                bool found = false;
+                int selectIndex = ExpensesDataGrid.SelectedIndex;
+                int currentIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
+
+
+                for (int i = 0; i < ExpensesDataGrid.Items.Count; i++)
+                {
+                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(currentIndex);
+
+                    if (row != null)
+                    {
+                        BudgetItem item = (BudgetItem)row.Item;
+
+
+                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
+                        {
+                            // Select the row
+                            SelectDatagridRow(row.GetIndex());
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // Make the search wrap back up to the top of the grid if it has reached the bottom
+                    if (currentIndex < ExpensesDataGrid.Items.Count)
+                        currentIndex++;
+                    else
+                        currentIndex = 0;
+                }
+
+                if (!found)
+                {
+                    System.Media.SystemSounds.Beep.Play();
+                    MessageBox.Show("Nothing Found");
+                }
+            }
+        }
+
+        private void CycleDatagridSelection()
+        {
+            if (ExpensesDataGrid.Items.Count > 0)
+            {
+                int nextIndex = ExpensesDataGrid.SelectedIndex;
+
+                if (nextIndex == -1)
+                    nextIndex = 0;
+                else
+                    nextIndex = nextIndex == ExpensesDataGrid.Items.Count - 1 ? 0 : nextIndex + 1;
+
+                SelectDatagridRow(nextIndex);
+            } 
+        }
+
+        private void SelectDatagridRow(int rowIndex)
+        {
+            DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex);
+            BudgetItem item = (BudgetItem)row.Item;
+
+            ExpensesDataGrid.SelectedItem = item;
+            ExpensesDataGrid.ScrollIntoView(row);
+            ExpensesDataGrid.Focus();
+        }
+
+
+
+        #region Events
         private void FilterByCategoryCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             CategoryComboBox.IsEnabled = true;
@@ -261,48 +333,13 @@ namespace WpfApp1
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            string searchedText = SearchTextBox.Text.ToLower();
+            SearchForBudgetItem();
+        }
 
-            if (!string.IsNullOrEmpty(searchedText))
-            {
-                bool found = false;
-                int selectIndex = ExpensesDataGrid.SelectedIndex;
-                int currentIndex = (selectIndex == -1) ? 0 : selectIndex + 1;
-
-
-                for (int i = 0; i < ExpensesDataGrid.Items.Count; i++)
-                {
-                    DataGridRow row = (DataGridRow)ExpensesDataGrid.ItemContainerGenerator.ContainerFromIndex(currentIndex);
-
-                    if (row != null)
-                    {
-                        BudgetItem item = (BudgetItem)row.Item;
-
-
-                        if (item.ShortDescription.ToLower().Contains(searchedText) || item.Amount.ToString().Contains(searchedText))
-                        {
-                            // Select the row
-                            ExpensesDataGrid.SelectedItem = item;
-                            ExpensesDataGrid.ScrollIntoView(row);
-                            ExpensesDataGrid.Focus();
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    // Make the search wrap back up to the top of the grid if it has reached the bottom
-                    if (currentIndex < ExpensesDataGrid.Items.Count)
-                        currentIndex++;
-                    else
-                        currentIndex = 0;
-                }
-
-                if (!found)
-                {
-                    System.Media.SystemSounds.Beep.Play();
-                    MessageBox.Show("Nothing Found");
-                }
-            }
+        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                SearchForBudgetItem();
         }
 
         private void AboutUs_Click(object sender, RoutedEventArgs e)
@@ -419,6 +456,22 @@ namespace WpfApp1
         {
 
         }
+
+        private void ExpensesDataGrid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+            {
+                if (ExpensesDataGrid.SelectedIndex== -1 || !ExpensesDataGrid.IsFocused)
+                    CycleDatagridSelection();
+            }
+        }
+
+        private void ExpensesDataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Tab)
+                CycleDatagridSelection();
+        }
+        #endregion
     }
 
 }
