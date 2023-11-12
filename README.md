@@ -24,7 +24,7 @@ To get started with the Home Budget App, follow these steps:
    ```
 2. **Installation:**
    ```
-   cd home-budget-app
+   cd HomeBudget-Null
    npm install
    ```
 3. **Usage:**
