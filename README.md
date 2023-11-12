@@ -20,4 +20,15 @@ To get started with the Home Budget App, follow these steps:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-username/home-budget-app.git
+   git clone https://github.com/JiahaoYu1/HomeBudget-Null.git
+   ```
+2. **Installation:**
+   ```
+   cd home-budget-app
+   npm install
+   ```
+3. **Usage:**
+   ```
+   npm start
+   ```
+   
