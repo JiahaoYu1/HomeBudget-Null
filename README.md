@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Budget Visualization App is a user-friendly tool designed to help
+Home Budget App is a user-friendly tool designed to help
 individuals manage and visualize their daily expenses. 
 This app provides a simple and intuitive interface for users to track 
 their spending, analyze patterns, and make informed financial decisions.
