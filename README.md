@@ -1,5 +1,11 @@
 # HomeBudget-Null
 
+## Menu
+
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+
 ## Overview
 
 Home Budget App is a user-friendly tool designed to help
